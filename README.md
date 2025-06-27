@@ -1,6 +1,6 @@
 ## Project structure
 
-project/
+```project/
 ├── src/
 │   ├── cpu.v              // top-level
 │   ├── pc.v
@@ -18,7 +18,7 @@ project/
 ├── coe/
 │   └── instr_mem.coe
 └── build/
-    └── cpu_design.tcl
+    └── cpu_design.tcl```
 
 
 ## Order
