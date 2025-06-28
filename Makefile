@@ -1,6 +1,5 @@
 # Makefile for Icarus simulations, dumping VCDs into waves/<module>.vcd
 
-# Optional per-component mode: `make sim COMPONENT=pc`
 ifdef COMPONENT
 SRC := $(shell echo src/$(COMPONENT).v)
 TB  := $(shell echo tb/$(COMPONENT)_tb.v)

@@ -23,10 +23,8 @@ module tb_pc;
 
   // 2) Stimulus
   initial begin
-    // …inside initial begin…
     $dumpfile("dump.vcd");
     $dumpvars(0, tb_pc);
-    // then your reset/stimulus code…
 
     // Print header
     $display("Time\t reset next_pc    current_pc");

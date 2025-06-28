@@ -35,3 +35,14 @@
 8. src/branch_comp.v
 9. src/cpu.v
 10. tb/cpu_tb.v
+
+
+## Testing
+
+```
+make sim <module name>
+```
+
+`<module name>` is the name of the module, exactly how it is written in the file name.
+
+For example, `make sim alu` would run the simulation for ALU.

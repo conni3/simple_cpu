@@ -37,6 +37,9 @@ module alu_tb;
     endtask
 
     initial begin
+        $dumpfile("dump.vcd");
+        $dumpvars(0, alu_tb);
+
         $display("Starting ALU testbench...");
 
         // ADD
