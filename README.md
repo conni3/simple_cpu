@@ -26,7 +26,7 @@
 ## Order
 
 1.  src/pc.v                //done
-2.  src/imm_gen.v       
+2.  src/imm_gen.v           //done
 3.  src/control.v
 4.  src/alu_control.v
 5.  src/regfile.v           //done
@@ -35,7 +35,7 @@
 8.  src/alu.v               //done
 9.  src/data_mem.v
 10. src/instr_mem.v
-11. src/branch_comp.v       ← (only if/after you add that file)
+11. src/branch_comp.v       
 12. src/cpu.v
 13. tb/cpu_tb.v
 
