@@ -1,5 +1,5 @@
 $date
-	Sat Jun 28 17:33:28 2025
+	Sat Jun 28 19:46:25 2025
 $end
 $version
 	Icarus Verilog
@@ -37,16 +37,39 @@ $var reg 4 6 ctrl [3:0] $end
 $var reg 32 7 expected [31:0] $end
 $upscope $end
 $upscope $end
-$scope module tb_pc $end
-$var wire 32 8 current_pc [31:0] $end
-$var reg 1 9 clk $end
-$var reg 32 : next_pc [31:0] $end
-$var reg 1 ; reset $end
+$scope module reg_file_tb $end
+$var wire 32 8 read_data2 [31:0] $end
+$var wire 32 9 read_data1 [31:0] $end
+$var reg 1 : clk $end
+$var reg 5 ; read_reg1 [4:0] $end
+$var reg 5 < read_reg2 [4:0] $end
+$var reg 1 = regwrite $end
+$var reg 1 > reset $end
+$var reg 32 ? write_data [31:0] $end
+$var reg 5 @ write_reg [4:0] $end
 $scope module uut $end
-$var wire 1 9 clk $end
-$var wire 32 < next_pc [31:0] $end
-$var wire 1 ; reset $end
-$var reg 32 = current_pc [31:0] $end
+$var wire 1 : clk $end
+$var wire 5 A read_reg1 [4:0] $end
+$var wire 5 B read_reg2 [4:0] $end
+$var wire 1 = regwrite $end
+$var wire 1 > reset $end
+$var wire 32 C write_data [31:0] $end
+$var wire 5 D write_reg [4:0] $end
+$var wire 32 E read_data2 [31:0] $end
+$var wire 32 F read_data1 [31:0] $end
+$var integer 32 G i [31:0] $end
+$upscope $end
+$upscope $end
+$scope module tb_pc $end
+$var wire 32 H current_pc [31:0] $end
+$var reg 1 I clk $end
+$var reg 32 J next_pc [31:0] $end
+$var reg 1 K reset $end
+$scope module uut $end
+$var wire 1 I clk $end
+$var wire 32 L next_pc [31:0] $end
+$var wire 1 K reset $end
+$var reg 32 M current_pc [31:0] $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
@@ -65,11 +88,27 @@ b0 )
 $end
 #0
 $dumpvars
-b0 =
+b0 M
+b0 L
+1K
+b0 J
+0I
+b0 H
+bx G
+b0 F
+b0 E
+b0 D
+b0 C
+b0 B
+b0 A
+b0 @
+b0 ?
+1>
+0=
 b0 <
-1;
-b0 :
-09
+b0 ;
+0:
+b0 9
 b0 8
 b11001 7
 b0 6
@@ -86,24 +125,31 @@ b11001 "
 0!
 $end
 #5000
-19
+b100000 G
+1I
+1:
 #10000
 b101 "
 b101 3
-09
-0;
+0I
+0:
+0K
 b1 #
 b1 &
 b101 7
 b1 6
+#12000
+0>
 #15000
-19
+1I
+1:
 #20000
 b10000 "
 b10000 3
-09
-b100 :
-b100 <
+0I
+0:
+b100 J
+b100 L
 b10 #
 b10 &
 b100 %
@@ -114,16 +160,24 @@ b10000 7
 b10 6
 b100 5
 b1 4
+#22000
+b10100101101001011010010110100101 ?
+b10100101101001011010010110100101 C
+b1 @
+b1 D
+1=
 #25000
-b100 8
-b100 =
-19
+b100 H
+b100 M
+1I
+1:
 #30000
 b1 "
 b1 3
-09
-b1000 :
-b1000 <
+0I
+0:
+b1000 J
+b1000 L
 b11 #
 b11 &
 b1 %
@@ -134,14 +188,22 @@ b1 7
 b11 6
 b1 5
 b11111111111111111111111111111111 4
+#32000
+b10100101101001011010010110100101 9
+b10100101101001011010010110100101 F
+b1 ;
+b1 A
+0=
 #35000
-b1000 8
-b1000 =
-19
+b1000 H
+b1000 M
+1I
+1:
 #40000
-09
-b10100000 :
-b10100000 <
+0I
+0:
+b10100000 J
+b10100000 L
 b100 #
 b100 &
 b10 %
@@ -152,13 +214,15 @@ b100 6
 b10 5
 b1 4
 #45000
-b10100000 8
-b10100000 =
-19
+b10100000 H
+b10100000 M
+1I
+1:
 #50000
 b11111111111111111111111111111111 "
 b11111111111111111111111111111111 3
-09
+0I
+0:
 b101 #
 b101 &
 b1111000011110000111100001111 %
@@ -169,12 +233,20 @@ b11111111111111111111111111111111 7
 b101 6
 b1111000011110000111100001111 5
 b11110000111100001111000011110000 4
+#52000
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 C
+b0 @
+b0 D
+1=
 #55000
-19
+1I
+1:
 #60000
 b1 "
 b1 3
-09
+0I
+0:
 b110 #
 b110 &
 b11111 %

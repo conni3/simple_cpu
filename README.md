@@ -25,9 +25,9 @@
 
 ## Order
 
-1. src/pc.v
-2. src/alu.v
-3. src/regfile.v
+1. src/pc.v         //done
+2. src/alu.v        //done
+3. src/regfile.v    //done
 4. src/immgen.v
 5. src/control.v
 6. src/dmem.v
