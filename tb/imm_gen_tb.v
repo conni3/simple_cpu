@@ -41,6 +41,10 @@ module tb_immgen;
   endtask
 
   initial begin
+    // dump waveform
+    $dumpfile("dump.vcd");
+    $dumpvars(0, tb_immgen);
+
     // Initialize counters
     passed = 0;
     failed = 0;
