@@ -30,10 +30,10 @@
 3.  src/control.v           //done
 4.  src/alu_control.v       //done
 5.  src/regfile.v           //done
-6.  src/adder.v
-7.  src/mux2.v
+6.  src/adder.v             //done
+7.  src/mux2.v              //done
 8.  src/alu.v               //done
-9.  src/data_mem.v
+9.  src/data_mem.v          //done
 10. src/instr_mem.v
 11. src/branch_comp.v       
 12. src/cpu.v
