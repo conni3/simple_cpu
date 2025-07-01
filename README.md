@@ -27,8 +27,8 @@
 
 1.  src/pc.v                //done
 2.  src/imm_gen.v           //done
-3.  src/control.v
-4.  src/alu_control.v
+3.  src/control.v           //done
+4.  src/alu_control.v       //done
 5.  src/regfile.v           //done
 6.  src/adder.v
 7.  src/mux2.v
