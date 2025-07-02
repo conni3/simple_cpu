@@ -34,9 +34,9 @@
 7.  src/mux2.v              //done
 8.  src/alu.v               //done
 9.  src/data_mem.v          //done
-10. src/instr_mem.v
-11. src/branch_comp.v       
-12. src/cpu.v
+10. src/instr_mem.v         //done
+11. src/branch_comp.v       //
+12. src/cpu.v               //
 13. tb/cpu_tb.v
 
 
