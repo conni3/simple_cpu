@@ -22,22 +22,6 @@
 
 ```
 
-## Modukes
-
-1.  src/pc.v
-2.  src/imm_gen.v
-3.  src/control.v
-4.  src/alu_control.v
-5.  src/regfile.v
-6.  src/adder.v
-7.  src/mux2.v
-8.  src/alu.v
-9.  src/data_mem.v
-10. src/instr_mem.v
-11. src/branch_comp.v
-12. src/cpu.v
-13. tb/cpu_tb.v
-
 ### Fetch
 
 1. Instr_mem
@@ -64,11 +48,6 @@
 ### Write-back
 
 1. Regfile
-
-## parameterization
-
-adder -> width
-mux2 -> width
 
 ## Testing
 
