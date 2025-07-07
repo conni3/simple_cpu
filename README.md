@@ -19,38 +19,68 @@
 │   └── instr_mem.coe
 └── build/
     └── cpu_design.tcl
-    
+
 ```
 
+## Modukes
 
-## Order
-
-1.  src/pc.v                //done
-2.  src/imm_gen.v           //done
-3.  src/control.v           //done
-4.  src/alu_control.v       //done
-5.  src/regfile.v           //done
-6.  src/adder.v             //done
-7.  src/mux2.v              //done
-8.  src/alu.v               //done
-9.  src/data_mem.v          //done
-10. src/instr_mem.v         //done
-11. src/branch_comp.v       //
-12. src/cpu.v               //
+1.  src/pc.v
+2.  src/imm_gen.v
+3.  src/control.v
+4.  src/alu_control.v
+5.  src/regfile.v
+6.  src/adder.v
+7.  src/mux2.v
+8.  src/alu.v
+9.  src/data_mem.v
+10. src/instr_mem.v
+11. src/branch_comp.v
+12. src/cpu.v
 13. tb/cpu_tb.v
 
+### Fetch
 
+1. Instr_mem
+2. pc
+3. pc mux
+
+### Decode
+
+1. control unit
+2. imm_gen
+3. rs1/rs2
+
+### Execute
+
+1. ALU
+2. ALUcontrol
+3. branch_comp
+4. branch arithmetics
+
+### Memory
+
+1. Data memory
+
+### Write-back
+
+1. Regfile
+
+## parameterization
+
+adder -> width
+mux2 -> width
 
 ## Testing
 
 ### Running simulation
+
 ```
-make sim <module name>
+make sim comp=<module name>
 ```
 
 `<module name>` is the name of the module, exactly how it is written in the file name.
 
-For example, `make sim alu` would run the simulation for ALU. Leave empty to simulate all RTL blocks.
+For example, `make sim alu` would run the simulation for ALU. Leave empty to simulate all RTL blocks. (`make sim`)
 
 The simulations have test cases. Look for ERROR. If there is none (ideally not :D), you're good!
 

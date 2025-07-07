@@ -1,14 +1,22 @@
 # Makefile for Icarus simulations, dumping VCDs into waves/<module>.vcd
 
-ifdef COMPONENT
-SRC := $(shell echo src/$(COMPONENT).v)
-TB  := $(shell echo tb/$(COMPONENT)_tb.v)
-MODULE := $(COMPONENT)
+ifdef comp
+  ifeq ($(comp),cpu)
+    SRC := $(shell ls src/*.v)
+    TB  := tb/cpu_tb.v
+    MODULE := cpu
+  else
+    SRC := src/$(comp).v
+    TB  := tb/$(comp)_tb.v
+    MODULE := $(comp)
+  endif
 else
-SRC := $(shell ls src/*.v)
-TB  := $(shell ls tb/*_tb.v)
-MODULE := all
+  SRC    := $(shell ls src/*.v)
+  ALL_TB := $(shell ls tb/*_tb.v)
+  TB     := $(filter-out tb/cpu_tb.v,$(ALL_TB)) tb/cpu_tb.v
+  MODULE := all
 endif
+
 
 OUT      := simv
 VCD_DIR  := waves

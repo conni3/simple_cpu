@@ -1,83 +1,102 @@
-// src/control.v
-// RISC-V RV32I single-cycle Control Unit
-module control(
+`include "include/defines.vh"
+
+module control (
     input  wire [6:0] opcode,
+    input  wire [2:0] funct3,
     output reg        RegWrite,
-    output reg        ALUSrc,
     output reg        MemRead,
     output reg        MemWrite,
     output reg        MemtoReg,
+    output reg        ALUSrc,
     output reg        Branch,
-    output reg [1:0]  ALUOp
+    output reg        Jump,
+    output reg  [1:0] ALUOp,
+    output reg  [2:0] ImmSrc
 );
 
   always @(*) begin
-    // Default: all zeros (no-op)
-    RegWrite  = 1'b0;
-    ALUSrc    = 1'b0;
-    MemRead   = 1'b0;
-    MemWrite  = 1'b0;
-    MemtoReg  = 1'b0;
-    Branch    = 1'b0;
-    ALUOp     = 2'b00;
+
+    RegWrite = 1'b0;
+    MemRead  = 1'b0;
+    MemWrite = 1'b0;
+    MemtoReg = 1'b0;
+    ALUSrc   = 1'b0;
+    Branch   = 1'b0;
+    Jump     = 1'b0;
+    ALUOp    = 2'b00;
+    ImmSrc   = 3'b000;
 
     case (opcode)
-      7'b0110011: begin  // R-type (add, sub, slt, etc.)
-        RegWrite  = 1;
-        ALUSrc    = 0;
-        MemtoReg  = 0;
-        MemRead   = 0;
-        MemWrite  = 0;
-        Branch    = 0;
-        ALUOp     = 2'b10;
+      `OP_RTYPE: begin
+        RegWrite = 1'b1;
+        ALUOp    = 2'b10;
       end
 
-      7'b0010011: begin  // I-type ALU (addi, slti, xori, etc.)
-        RegWrite  = 1;
-        ALUSrc    = 1;
-        MemtoReg  = 0;
-        MemRead   = 0;
-        MemWrite  = 0;
-        Branch    = 0;
-        ALUOp     = 2'b10;  // feed funct3/funct7 into alu_control
+      `OP_ITYPE: begin
+        RegWrite = 1'b1;
+        ALUSrc   = 1'b1;
+        ALUOp    = 2'b10;
+        ImmSrc   = `Imm_I;
       end
 
-      7'b0000011: begin  // Load  (lw)
-        RegWrite  = 1;
-        ALUSrc    = 1;
-        MemtoReg  = 1;
-        MemRead   = 1;
-        MemWrite  = 0;
-        Branch    = 0;
-        ALUOp     = 2'b00;  // ADD for address calculation
+      `OP_LOAD: begin
+        RegWrite = 1'b1;
+        MemRead  = 1'b1;
+        MemtoReg = 1'b1;
+        ALUSrc   = 1'b1;
+        ALUOp    = 2'b00;
+        ImmSrc   = `Imm_I;
       end
 
-      7'b0100011: begin  // Store (sw)
-        RegWrite  = 0;
-        ALUSrc    = 1;
-        MemtoReg  = 1'bx;   // don't care
-        MemRead   = 0;
-        MemWrite  = 1;
-        Branch    = 0;
-        ALUOp     = 2'b00;  // ADD for address calculation
+      `OP_STORE: begin
+        MemWrite = 1'b1;
+        ALUSrc   = 1'b1;
+        ALUOp    = 2'b00;
+        ImmSrc   = `Imm_S;
       end
 
-      7'b1100011: begin  // Branch (beq, bne, ...)
-        RegWrite  = 0;
-        ALUSrc    = 0;
-        MemtoReg  = 1'bx;   // don't care
-        MemRead   = 0;
-        MemWrite  = 0;
-        Branch    = 1;
-        ALUOp     = 2'b01;  // SUB for comparison
+      `OP_BRANCH: begin
+        Branch = 1'b1;
+        ALUOp  = 2'b01;
+        ImmSrc = `Imm_B;
       end
 
-      // (Optional) Jumps could be added here:
-      // 7'b1101111: // JAL
-      // 7'b1100111: // JALR
+      `OP_JAL: begin
+        ALUSrc   = 1'b1;
+        RegWrite = 1'b1;
+        Jump     = 1'b1;
+        ALUOp    = 2'b00;
+        ImmSrc   = `Imm_J;
+      end
+
+
+      `OP_JALR: begin
+        if (funct3 == 3'b000) begin
+          ALUSrc   = 1'b1;
+          RegWrite = 1'b1;
+          Jump     = 1'b1;
+          ALUOp    = 2'b00;
+          ImmSrc   = `Imm_I;
+        end
+      end
+
+      `OP_LUI: begin
+        RegWrite = 1'b1;
+        ALUSrc   = 1'b1;
+        ALUOp    = 2'b11;
+        ImmSrc   = `Imm_U;
+      end
+
+      `OP_AUIPC: begin
+        RegWrite = 1'b1;
+        ALUSrc   = 1'b1;
+        ALUOp    = 2'b00;
+        ImmSrc   = `Imm_U;
+      end
+
+
 
       default: begin
-        // leave defaults
       end
     endcase
   end
