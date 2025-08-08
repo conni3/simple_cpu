@@ -6,6 +6,7 @@ module adder_tb;
   reg [WIDTH-1:0] a;
   reg [WIDTH-1:0] b;
   reg [WIDTH-1:0] result;
+  integer passed, failed;
 
   adder #(
       .WIDTH(WIDTH)
@@ -36,7 +37,6 @@ module adder_tb;
 
   endtask
 
-  integer passed, failed;
 
   initial begin
     // dump waveform

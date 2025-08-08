@@ -5,54 +5,52 @@ module cpu (
     input wire clk,
     input wire reset
 );
-  // Parameters
-  localparam DATA_W = 32;
-  localparam ADDR_W = 11;
+
 
   // PCs
-  wire [31:0] current_pc;
-  wire [31:0] pc_plus4;
-  wire [31:0] branch_pc;
-  wire [31:0] next_pc;
-
+  wire [DATA_WIDTH-1:0] current_pc;
+  wire [DATA_WIDTH-1:0] pc_plus4;
+  wire [DATA_WIDTH-1:0] branch_pc;
+  wire [DATA_WIDTH-1:0] next_pc;
 
   // Instruction
-  reg [31:0] current_instr;
-  reg [6:0] opcode = current_instr[6:0];
-  reg [2:0] funct3 = current_instr[14:12];
-  reg [6:0] funct7 = current_instr[31:25];
-  reg [4:0] rs1 = current_instr[19:15];
-  reg [4:0] rs2 = current_instr[24:20];
-  reg [4:0] rd = current_instr[11:7];
+  wire [DATA_WIDTH-1:0] current_instr;
+
+  wire [           6:0] opcode = current_instr[6:0];
+  wire [           2:0] funct3 = current_instr[14:12];
+  wire [           6:0] funct7 = current_instr[31:25];
+  wire [           4:0] rs1 = current_instr[19:15];
+  wire [           4:0] rs2 = current_instr[24:20];
+  wire [           4:0] rd = current_instr[11:7];
 
 
   // Control signals
-  reg RegWrite;
-  reg MemRead;
-  reg MemWrite;
-  reg MemtoReg;
-  reg ALUSrc;
-  reg Branch;
-  reg Jump;
-  reg [1:0] ALUOp;
-  reg [2:0] ImmSrc;
+  reg                   RegWrite;
+  reg                   MemRead;
+  reg                   MemWrite;
+  reg                   MemtoReg;
+  reg                   ALUSrc;
+  reg                   BranchSig;
+  reg                   Branch;
+  reg                   Jump;
+  reg  [           1:0] ALUOp;
+  reg  [           2:0] ImmSrc;
 
   // Branching
-  reg BranchTaken;
+  reg                   BranchTaken;
   assign PCsrc = Branch & BranchTaken;
 
-
-  reg [31:0] rs1_data;
-  reg [31:0] rs2_data;
-  reg [31:0] imm_data;
+  reg [DATA_WIDTH-1:0] rs1_data;
+  reg [DATA_WIDTH-1:0] rs2_data;
+  reg [DATA_WIDTH-1:0] imm_data;
 
   // alu
   reg [3:0] ALUControl;
   reg ALUZero;
-  reg [31:0] ALUResult;
+  reg [DATA_WIDTH-1:0] ALUResult;
 
   // mem
-  reg [31:0] mem_data;
+  reg [DATA_WIDTH-1:0] mem_data;
 
   // fetch
   pc pc_inst (
@@ -63,15 +61,15 @@ module cpu (
   );
 
   adder #(
-      .WIDTH(32)
+      .WIDTH(DATA_WIDTH)
   ) pc_plus4_inst (
       .a(current_pc),
-      .b(32'd4),
+      .b(DATA_WIDTH'd4),
       .result(pc_plus4)
   );
 
   mux2 #(
-      .WIDTH(32)
+      .WIDTH(DATA_WIDTH)
   ) pc_mux_inst (
       .sel(PCsrc),
       .b  (pc_plus4),
@@ -86,14 +84,23 @@ module cpu (
 
   // decode
   control control_inst (
-      .opcode(opcode),
-      .funct3(funct3),
+    .instr(current_instr),
+      .ALUreg(ALUreg),
+      .ALUimm(ALUimm),
+      .Branch(Branch),
+      .JAL(JAL),
+      .JALR(JALR),
+      .LUI(LUI),
+      .AUIPC(AUIPC),
+      .Load(Load),
+      .Store(Store),
+      .SYSTEM(SYSTEM),
       .RegWrite(RegWrite),
       .MemRead(MemRead),
       .MemWrite(MemWrite),
       .MemtoReg(MemtoReg),
       .ALUSrc(ALUSrc),
-      .Branch(Branch),
+      .BranchSig(BranchSig),
       .Jump(Jump),
       .ALUOp(ALUOp),
       .ImmSrc(ImmSrc)
@@ -104,8 +111,6 @@ module cpu (
       .imm_sel(ImmSrc),
       .imm_out(imm_data)
   );
-
-
 
   // execute 
   branch_comp branch_comp_inst (
@@ -130,9 +135,9 @@ module cpu (
       .zero(ALUZero)
   );
 
-  wire [31:0] branch_target;
+  wire [DATA_WIDTH-1:0] branch_target;
   adder #(
-      .WIDTH(32)
+      .WIDTH(DATA_WIDTH)
   ) branch_adder (
       .a(current_pc),
       .b(imm_data),
@@ -150,7 +155,6 @@ module cpu (
   );
 
   // write back
-
   reg_file reg_file_inst (
       .clk(clk),
       .reset(reset),
@@ -162,6 +166,5 @@ module cpu (
       .read_data1(rs1_data),
       .read_data2(rs2_data)
   );
-
 
 endmodule

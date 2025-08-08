@@ -1,104 +1,103 @@
 `include "include/defines.vh"
 
-module control (
-    input  wire [6:0] opcode,
-    input  wire [2:0] funct3,
-    output reg        RegWrite,
-    output reg        MemRead,
-    output reg        MemWrite,
-    output reg        MemtoReg,
-    output reg        ALUSrc,
-    output reg        Branch,
-    output reg        Jump,
-    output reg  [1:0] ALUOp,
-    output reg  [2:0] ImmSrc
+module control #(
+    parameter DATA_WIDTH = 32
+) (
+    input  wire [DATA_WIDTH-1:0] instr,
+    input  wire                  ALUreg,
+    input  wire                  ALUimm,
+    input  wire                  Branch,
+    input  wire                  JAL,
+    input  wire                  JALR,
+    input  wire                  LUI,
+    input  wire                  AUIPC,
+    input  wire                  Load,
+    input  wire                  Store,
+    input  wire                  SYSTEM,
+    output reg                   MemRead,
+    output reg                   MemWrite,
+    output reg                   MemtoReg,
+    output reg                   ALUSrc,
+    output reg                   BranchSig,
+    output reg                   Jump,
+    output reg  [           1:0] ALUOp,
+    output reg  [           2:0] ImmSrc
 );
+
+  wire funct3 = instr[14:12];
 
   always @(*) begin
 
-    RegWrite = 1'b0;
-    MemRead  = 1'b0;
-    MemWrite = 1'b0;
-    MemtoReg = 1'b0;
-    ALUSrc   = 1'b0;
-    Branch   = 1'b0;
-    Jump     = 1'b0;
-    ALUOp    = 2'b00;
-    ImmSrc   = 3'b000;
+    MemRead   = 1'b0;
+    MemWrite  = 1'b0;
+    MemtoReg  = 1'b0;
+    ALUSrc    = 1'b0;
+    BranchSig = 1'b0;
+    Jump      = 1'b0;
+    ALUOp     = 2'b00;
+    ImmSrc    = 3'b000;
 
-    case (opcode)
-      `OP_RTYPE: begin
-        RegWrite = 1'b1;
-        ALUOp    = 2'b10;
-      end
+    if (ALUreg) begin
+      ALUOp = 2'b10;  // R-type
+    end
 
-      `OP_ITYPE: begin
-        RegWrite = 1'b1;
-        ALUSrc   = 1'b1;
-        ALUOp    = 2'b10;
-        ImmSrc   = `Imm_I;
-      end
+    if (ALUimm) begin
+      ALUSrc = 1'b1;  // I-type
+      ALUOp  = 2'b10;
+      ImmSrc = `Imm_I;
+    end
 
-      `OP_LOAD: begin
-        RegWrite = 1'b1;
-        MemRead  = 1'b1;
-        MemtoReg = 1'b1;
-        ALUSrc   = 1'b1;
-        ALUOp    = 2'b00;
-        ImmSrc   = `Imm_I;
-      end
+    if (Load) begin
+      MemRead  = 1'b1;
+      MemtoReg = 1'b1;
+      ALUSrc   = 1'b1;
+      ALUOp    = 2'b00;
+      ImmSrc   = `Imm_I;
+    end
 
-      `OP_STORE: begin
-        MemWrite = 1'b1;
-        ALUSrc   = 1'b1;
-        ALUOp    = 2'b00;
-        ImmSrc   = `Imm_S;
-      end
+    if (Store) begin
+      MemWrite = 1'b1;
+      ALUSrc   = 1'b1;
+      ALUOp    = 2'b00;
+      ImmSrc   = `Imm_S;
+    end
 
-      `OP_BRANCH: begin
-        Branch = 1'b1;
-        ALUOp  = 2'b01;
-        ImmSrc = `Imm_B;
-      end
+    if (Branch) begin
+      BranchSig = 1'b1;
+      ALUOp = 2'b01;
+      ImmSrc = `Imm_B;
+    end
 
-      `OP_JAL: begin
-        ALUSrc   = 1'b1;
-        RegWrite = 1'b1;
-        Jump     = 1'b1;
-        ALUOp    = 2'b00;
-        ImmSrc   = `Imm_J;
-      end
+    if (JAL) begin
+      ALUSrc = 1'b1;
+      Jump   = 1'b1;
+      ALUOp  = 2'b00;
+      ImmSrc = `Imm_J;
+    end
 
+    if (JALR) begin
+      ALUSrc = 1'b1;
+      Jump   = 1'b1;
+      ALUOp  = 2'b00;
+      ImmSrc = `Imm_I;
+    end
 
-      `OP_JALR: begin
-        if (funct3 == 3'b000) begin
-          ALUSrc   = 1'b1;
-          RegWrite = 1'b1;
-          Jump     = 1'b1;
-          ALUOp    = 2'b00;
-          ImmSrc   = `Imm_I;
-        end
-      end
+    if (LUI) begin
+      ALUSrc = 1'b1;
+      ALUOp  = 2'b11;
+      ImmSrc = `Imm_U;
+    end
 
-      `OP_LUI: begin
-        RegWrite = 1'b1;
-        ALUSrc   = 1'b1;
-        ALUOp    = 2'b11;
-        ImmSrc   = `Imm_U;
-      end
+    if (AUIPC) begin
+      ALUSrc = 1'b1;
+      ALUOp  = 2'b00;
+      ImmSrc = `Imm_U;
+    end
 
-      `OP_AUIPC: begin
-        RegWrite = 1'b1;
-        ALUSrc   = 1'b1;
-        ALUOp    = 2'b00;
-        ImmSrc   = `Imm_U;
-      end
+    if (SYSTEM) begin
+      // not done yet
+    end
 
-
-
-      default: begin
-      end
-    endcase
   end
 
 endmodule

@@ -1,3 +1,5 @@
+`timescale 1ps / 1ps
+
 module reg_file (
     input  wire        clk,
     input  wire        reset,

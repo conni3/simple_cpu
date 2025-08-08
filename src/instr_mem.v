@@ -7,10 +7,10 @@ module instr_mem (
     output reg  [31:0] instr
 );
 
-  reg [31:0] mem[(1<<11)-1:0];
+  reg [31:0] mem[0:(1<<11)-1];
 
   initial begin
-    $readmemb(`MEM_FILE, mem);
+    $readmemb(`MEM_FILE, mem, 0, 2);
   end
 
   always @(*) begin
