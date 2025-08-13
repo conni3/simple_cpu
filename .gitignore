@@ -1,0 +1,9 @@
+*.jou
+*.tcl
+*.log
+xsim.dir/
+logs/
+*.wcfg
+*.wdb
+*.wlf
+build/

@@ -24,8 +24,6 @@ module control #(
     output reg  [           2:0] ImmSrc
 );
 
-  wire funct3 = instr[14:12];
-
   always @(*) begin
 
     MemRead   = 1'b0;

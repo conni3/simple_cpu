@@ -14,7 +14,8 @@ module decoder #(
     output wire AUIPC,
     output wire ALUimm,
     output wire Load,
-    output wire Store
+    output wire Store,
+    output wire SYSTEM
 );
 
 

@@ -1,10 +1,10 @@
-**** module/scope: pc
-     Flip-Flops   : 32
-     Logic Gates  : 0
-     LOG[13]: 1 unaccounted
-     LOG[14]: 1 unaccounted
+**** module/scope: decoder
+     Flip-Flops   : 0
+     Logic Gates  : 153
+     EQUALITY[3]: 1 units
+     EQUALITY[7]: 10 units
 **** TOTALS
-     Flip-Flops   : 32
-     Logic Gates  : 0
-     LOG[13]: 1 unaccounted
-     LOG[14]: 1 unaccounted
+     Flip-Flops   : 0
+     Logic Gates  : 153
+     EQUALITY[3]: 1 units
+     EQUALITY[7]: 10 units
