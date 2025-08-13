@@ -74,3 +74,13 @@ gtkwave waves/<dump_file>.vcd
 ```
 
 Replace `<dump_file>.vcd` with any of the module names (`regfile`, `pc`, etc). You can use `all` to select all the modules.
+
+## Modules
+
+### leaf modules
+
+| Module      | Inputs                            | Outputs          | Notes                                     |
+| ----------- | --------------------------------- | ---------------- | ----------------------------------------- |
+| adder       | a, b                              | result           |                                           |
+| alu_control | ALUOp, funct3, funct7_5           | ALUCtrl          | separate shifting                         |
+| alu         | operand_a, operand_b, alu_control | alu_result, zero | how would it work with separate shifting? |

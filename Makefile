@@ -15,16 +15,15 @@ VIVADO_SETTINGS ?= /opt/Xilinx/Vivado/$(VIVADO_VERSION)/$(VIVADO_VERSION)/Vivado
 # ------------------------------------------------------------------
 # Module selection logic (comp optional)
 # ------------------------------------------------------------------
+LEAF := $(shell find src/leaf -type f \( -name '*.v' -o -name '*.sv' \) 2>/dev/null | sort)
+GLUE := $(shell find src/glue -type f \( -name '*.v' -o -name '*.sv' \) 2>/dev/null | sort)
+TOPS := $(shell find src/top  -type f \( -name '*.v' -o -name '*.sv' \) 2>/dev/null | sort)
+RTL  := $(LEAF) $(GLUE) $(TOPS)
+
 ifdef comp
-	ifeq ($(comp),cpu)
-	  SRC     := $(shell ls src/*.v)
-	  TB      := tb/cpu_tb.v
-	  MODULE  := cpu
-	else
-	  SRC     := src/$(comp).v
+	  SRC     := $(shell -O globstar -c 'ls src/**/*.v')
 	  TB      := tb/$(comp)_tb.v
 	  MODULE  := $(comp)
-	endif
 else
 	SRC       := $(shell ls src/*.v)
 	ALL_TB    := $(shell ls tb/*_tb.v)
