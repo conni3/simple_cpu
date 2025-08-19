@@ -1,4 +1,5 @@
-`include "include/defines.vh"
+`timescale 1ps / 1ps
+`include "defines.vh"
 
 module control #(
     parameter DATA_WIDTH = 32

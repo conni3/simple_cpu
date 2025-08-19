@@ -1,5 +1,5 @@
 `timescale 1ps / 1ps
-`include "include/defines.vh"
+`include "defines.vh"
 
 module next_pc (
     input wire [`DATA_WIDTH-1:0] current_pc,

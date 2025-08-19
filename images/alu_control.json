@@ -1,0 +1,267 @@
+{
+  "creator": "Yosys 0.33 (git sha1 2584903a060)",
+  "modules": {
+    "alu_control": {
+      "attributes": {
+        "top": "00000000000000000000000000000001",
+        "src": "src/leaf/alu_control.v:4.1-38.10"
+      },
+      "ports": {
+        "ALUOp": {
+          "direction": "input",
+          "bits": [ 2, 3 ]
+        },
+        "funct3": {
+          "direction": "input",
+          "bits": [ 4, 5, 6 ]
+        },
+        "funct7_5": {
+          "direction": "input",
+          "bits": [ 7 ]
+        },
+        "ALUCtrl": {
+          "direction": "output",
+          "bits": [ 8, 9, 10, 11 ]
+        }
+      },
+      "cells": {
+        "$auto$proc_rom.cc:150:do_switch$202": {
+          "hide_name": 1,
+          "type": "$mem_v2",
+          "parameters": {
+            "ABITS": "00000000000000000000000000000100",
+            "INIT": "0000000001110000000000000000000110011000011001010100001100100000",
+            "MEMID": "$auto$proc_rom.cc:150:do_switch$202",
+            "OFFSET": "00000000000000000000000000000000",
+            "RD_ARST_VALUE": "xxxx",
+            "RD_CE_OVER_SRST": "0",
+            "RD_CLK_ENABLE": "0",
+            "RD_CLK_POLARITY": "1",
+            "RD_COLLISION_X_MASK": "0",
+            "RD_INIT_VALUE": "xxxx",
+            "RD_PORTS": "00000000000000000000000000000001",
+            "RD_SRST_VALUE": "xxxx",
+            "RD_TRANSPARENCY_MASK": "0",
+            "RD_WIDE_CONTINUATION": "0",
+            "SIZE": "00000000000000000000000000010000",
+            "WIDTH": "00000000000000000000000000000100",
+            "WR_CLK_ENABLE": "0",
+            "WR_CLK_POLARITY": "0",
+            "WR_PORTS": "00000000000000000000000000000000",
+            "WR_PRIORITY_MASK": "0",
+            "WR_WIDE_CONTINUATION": "0"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "src/leaf/alu_control.v:20.9-34.16"
+          },
+          "port_directions": {
+            "RD_ADDR": "input",
+            "RD_ARST": "input",
+            "RD_CLK": "input",
+            "RD_DATA": "output",
+            "RD_EN": "input",
+            "RD_SRST": "input",
+            "WR_ADDR": "input",
+            "WR_CLK": "input",
+            "WR_DATA": "input",
+            "WR_EN": "input"
+          },
+          "connections": {
+            "RD_ADDR": [ 4, 5, 6, 7 ],
+            "RD_ARST": [ "0" ],
+            "RD_CLK": [ "x" ],
+            "RD_DATA": [ 12, 13, 14, 15 ],
+            "RD_EN": [ "1" ],
+            "RD_SRST": [ "0" ],
+            "WR_ADDR": [ ],
+            "WR_CLK": [ ],
+            "WR_DATA": [ ],
+            "WR_EN": [ ]
+          }
+        },
+        "$procmux$207_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "src/leaf/alu_control.v:0.0-0.0|src/leaf/alu_control.v:15.5-36.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2, 3 ],
+            "B": [ "0", "1" ],
+            "Y": [ 16 ]
+          }
+        },
+        "$procmux$208": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000100",
+            "WIDTH": "00000000000000000000000000000100"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "src/leaf/alu_control.v:0.0-0.0|src/leaf/alu_control.v:15.5-36.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "x", "x", "x", "x" ],
+            "B": [ 12, 13, 14, 15, "0", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0" ],
+            "S": [ 16, 17, 18, 19 ],
+            "Y": [ 8, 9, 10, 11 ]
+          }
+        },
+        "$procmux$210_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "src/leaf/alu_control.v:0.0-0.0|src/leaf/alu_control.v:15.5-36.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2, 3 ],
+            "B": [ "1", "1" ],
+            "Y": [ 17 ]
+          }
+        },
+        "$procmux$211_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "src/leaf/alu_control.v:0.0-0.0|src/leaf/alu_control.v:15.5-36.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2, 3 ],
+            "B": [ "1", "0" ],
+            "Y": [ 18 ]
+          }
+        },
+        "$procmux$212_CMP0": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "src/leaf/alu_control.v:0.0-0.0|src/leaf/alu_control.v:15.5-36.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2, 3 ],
+            "Y": [ 19 ]
+          }
+        }
+      },
+      "netnames": {
+        "$2\\ALUCtrl[3:0]": {
+          "hide_name": 1,
+          "bits": [ 12, 13, 14, 15 ],
+          "attributes": {
+            "src": "src/leaf/alu_control.v:14.3-37.6"
+          }
+        },
+        "$procmux$207_CMP": {
+          "hide_name": 1,
+          "bits": [ 16 ],
+          "attributes": {
+          }
+        },
+        "$procmux$210_CMP": {
+          "hide_name": 1,
+          "bits": [ 17 ],
+          "attributes": {
+          }
+        },
+        "$procmux$211_CMP": {
+          "hide_name": 1,
+          "bits": [ 18 ],
+          "attributes": {
+          }
+        },
+        "$procmux$212_CMP": {
+          "hide_name": 1,
+          "bits": [ 19 ],
+          "attributes": {
+          }
+        },
+        "ALUCtrl": {
+          "hide_name": 0,
+          "bits": [ 8, 9, 10, 11 ],
+          "attributes": {
+            "src": "src/leaf/alu_control.v:8.23-8.30"
+          }
+        },
+        "ALUOp": {
+          "hide_name": 0,
+          "bits": [ 2, 3 ],
+          "attributes": {
+            "src": "src/leaf/alu_control.v:5.23-5.28"
+          }
+        },
+        "funct3": {
+          "hide_name": 0,
+          "bits": [ 4, 5, 6 ],
+          "attributes": {
+            "src": "src/leaf/alu_control.v:6.23-6.29"
+          }
+        },
+        "funct7_5": {
+          "hide_name": 0,
+          "bits": [ 7 ],
+          "attributes": {
+            "src": "src/leaf/alu_control.v:7.23-7.31"
+          }
+        }
+      }
+    }
+  }
+}

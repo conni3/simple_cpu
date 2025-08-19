@@ -1,5 +1,5 @@
 `timescale 1ps / 1ps
-`include "include/defines.vh"
+`include "defines.vh"
 
 module wb_mux_tb;
   // Keep these in sync with wb_mux

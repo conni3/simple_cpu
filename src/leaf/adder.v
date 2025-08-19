@@ -2,7 +2,7 @@
 
 
 module adder #(
-    parameter WIDTH = 32
+    parameter int WIDTH = 32
 ) (
     input  wire [WIDTH-1:0] a,
     input  wire [WIDTH-1:0] b,

@@ -1,3 +1,7 @@
+`timescale 1ps / 1ps
+`include "defines.vh"
+
+
 module branch_comp (
     input  wire [31:0] op1,
     input  wire [31:0] op2,

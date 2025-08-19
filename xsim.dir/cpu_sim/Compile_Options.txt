@@ -1,1 +1,0 @@
--debug "typical" -snapshot "cpu_sim" "work.cpu_tb" 

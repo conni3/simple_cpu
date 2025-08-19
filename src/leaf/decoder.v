@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-`include "include/defines.vh"
+`include "defines.vh"
 
 module decoder #(
     parameter DATA_WIDTH = 32

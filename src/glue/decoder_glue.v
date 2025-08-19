@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
-`include "include/defines.vh"
+`include "defines.vh"
 
 module decoder_glue #(
-    parameter DATA_WIDTH = 32
+    parameter int DATA_WIDTH = 32
 ) (
     input wire [31:0] instr,
 

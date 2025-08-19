@@ -1,3 +1,5 @@
+`timescale 1ps / 1ps
+`include "defines.vh"
 
 module pc (
     input  wire        clk,

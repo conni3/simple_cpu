@@ -1,0 +1,353 @@
+{
+  "creator": "Yosys 0.33 (git sha1 2584903a060)",
+  "modules": {
+    "wb_mux": {
+      "attributes": {
+        "top": "00000000000000000000000000000001",
+        "src": "src/leaf/wb_mux.v:9.1-35.10"
+      },
+      "ports": {
+        "alu_result": {
+          "direction": "input",
+          "bits": [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33 ]
+        },
+        "load_rdata": {
+          "direction": "input",
+          "bits": [ 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65 ]
+        },
+        "pc_plus4": {
+          "direction": "input",
+          "bits": [ 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97 ]
+        },
+        "wb_sel": {
+          "direction": "input",
+          "bits": [ 98, 99 ]
+        },
+        "regwrite_in": {
+          "direction": "input",
+          "bits": [ 100 ]
+        },
+        "kill_wb": {
+          "direction": "input",
+          "bits": [ 101 ]
+        },
+        "rd_in": {
+          "direction": "input",
+          "bits": [ 102, 103, 104, 105, 106 ]
+        },
+        "rd_wdata": {
+          "direction": "output",
+          "bits": [ 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138 ]
+        },
+        "regwrite_out": {
+          "direction": "output",
+          "bits": [ 139 ]
+        },
+        "rd_out": {
+          "direction": "output",
+          "bits": [ 102, 103, 104, 105, 106 ]
+        }
+      },
+      "cells": {
+        "$logic_and$src/leaf/wb_mux.v:32$195": {
+          "hide_name": 1,
+          "type": "$logic_and",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000001",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:32.25-32.48"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 100 ],
+            "B": [ 140 ],
+            "Y": [ 141 ]
+          }
+        },
+        "$logic_and$src/leaf/wb_mux.v:32$197": {
+          "hide_name": 1,
+          "type": "$logic_and",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000001",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:32.25-32.67"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 141 ],
+            "B": [ 142 ],
+            "Y": [ 139 ]
+          }
+        },
+        "$logic_not$src/leaf/wb_mux.v:32$194": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:32.40-32.48"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 101 ],
+            "Y": [ 140 ]
+          }
+        },
+        "$ne$src/leaf/wb_mux.v:32$196": {
+          "hide_name": 1,
+          "type": "$reduce_bool",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000101",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:32.53-32.66"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 102, 103, 104, 105, 106 ],
+            "Y": [ 142 ]
+          }
+        },
+        "$procmux$202": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000011",
+            "WIDTH": "00000000000000000000000000100000"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "parallel_case": "00000000000000000000000000000001",
+            "src": "src/leaf/wb_mux.v:0.0-0.0|src/leaf/wb_mux.v:23.12-28.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
+            "B": [ 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33 ],
+            "S": [ 143, 144, 145 ],
+            "Y": [ 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138 ]
+          }
+        },
+        "$procmux$203_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "parallel_case": "00000000000000000000000000000001",
+            "src": "src/leaf/wb_mux.v:0.0-0.0|src/leaf/wb_mux.v:23.12-28.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 98, 99 ],
+            "B": [ "0", "1" ],
+            "Y": [ 143 ]
+          }
+        },
+        "$procmux$204_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "parallel_case": "00000000000000000000000000000001",
+            "src": "src/leaf/wb_mux.v:0.0-0.0|src/leaf/wb_mux.v:23.12-28.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 98, 99 ],
+            "B": [ "1", "0" ],
+            "Y": [ 144 ]
+          }
+        },
+        "$procmux$205_CMP0": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "parallel_case": "00000000000000000000000000000001",
+            "src": "src/leaf/wb_mux.v:0.0-0.0|src/leaf/wb_mux.v:23.12-28.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 98, 99 ],
+            "Y": [ 145 ]
+          }
+        }
+      },
+      "netnames": {
+        "$logic_and$src/leaf/wb_mux.v:32$195_Y": {
+          "hide_name": 1,
+          "bits": [ 141 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:32.25-32.48"
+          }
+        },
+        "$logic_not$src/leaf/wb_mux.v:32$194_Y": {
+          "hide_name": 1,
+          "bits": [ 140 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:32.40-32.48"
+          }
+        },
+        "$ne$src/leaf/wb_mux.v:32$196_Y": {
+          "hide_name": 1,
+          "bits": [ 142 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:32.53-32.66"
+          }
+        },
+        "$procmux$203_CMP": {
+          "hide_name": 1,
+          "bits": [ 143 ],
+          "attributes": {
+          }
+        },
+        "$procmux$204_CMP": {
+          "hide_name": 1,
+          "bits": [ 144 ],
+          "attributes": {
+          }
+        },
+        "$procmux$205_CMP": {
+          "hide_name": 1,
+          "bits": [ 145 ],
+          "attributes": {
+          }
+        },
+        "alu_result": {
+          "hide_name": 0,
+          "bits": [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:10.26-10.36"
+          }
+        },
+        "kill_wb": {
+          "hide_name": 0,
+          "bits": [ 101 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:15.35-15.42"
+          }
+        },
+        "load_rdata": {
+          "hide_name": 0,
+          "bits": [ 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:11.26-11.36"
+          }
+        },
+        "pc_plus4": {
+          "hide_name": 0,
+          "bits": [ 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:12.26-12.34"
+          }
+        },
+        "rd_in": {
+          "hide_name": 0,
+          "bits": [ 102, 103, 104, 105, 106 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:16.35-16.40"
+          }
+        },
+        "rd_out": {
+          "hide_name": 0,
+          "bits": [ 102, 103, 104, 105, 106 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:19.35-19.41"
+          }
+        },
+        "rd_wdata": {
+          "hide_name": 0,
+          "bits": [ 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:17.26-17.34"
+          }
+        },
+        "regwrite_in": {
+          "hide_name": 0,
+          "bits": [ 100 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:14.35-14.46"
+          }
+        },
+        "regwrite_out": {
+          "hide_name": 0,
+          "bits": [ 139 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:18.35-18.47"
+          }
+        },
+        "wb_sel": {
+          "hide_name": 0,
+          "bits": [ 98, 99 ],
+          "attributes": {
+            "src": "src/leaf/wb_mux.v:13.35-13.41"
+          }
+        }
+      }
+    }
+  }
+}
