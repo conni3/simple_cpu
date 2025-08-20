@@ -18,20 +18,28 @@ module decoder_glue_tb;
       .rd(rd),
       .rs1(rs1),
       .rs2(rs2),
-      .imm(imm),
-      .regWrite(regWrite),
-      .MemRead(MemRead),
-      .MemWrite(MemWrite),
-      .ALUSrc(ALUSrc),
-      .BranchSig(BranchSig),
-      .Jump(Jump),
-      .ALUOp(ALUOp),
-      .ImmSrc(ImmSrc),
+      .imm_out(imm),
+      .reg_write(regWrite),
+      .mem_read(MemRead),
+      .mem_write(MemWrite),
+      .alu_src(ALUSrc),
+      .branch_sig(BranchSig),
+      .jump(Jump),
+      .alu_op(ALUOp),
+      .imm_sel(ImmSrc),
       .wb_sel(wb_sel),
-      .JAL(JAL),
-      .JALR(JALR),
-      .Branch(Branch)
+      .is_jal(JAL),
+      .is_jalr(JALR),
+      .is_branch(Branch),
+      .is_lui(LUI),
+      .is_auipc(AUIPC),
+      .is_alu_reg(ALUreg),
+      .is_alu_imm(ALUimm),
+      .is_load(Load),
+      .is_store(Store),
+      .is_system(SYSTEM)
   );
+
 
   // ---- Local encodings (standard RV32I) ----
   localparam [6:0] OPC_RTYPE = 7'b0110011;
@@ -97,7 +105,7 @@ module decoder_glue_tb;
     chk(regWrite && !ALUSrc && !MemRead && !MemWrite && !BranchSig && !Jump, "R-type controls");
     chk(ALUOp == 2'b10, "R-type ALUOp");
     chk(wb_sel == 2'd0, "R-type wb_sel=ALU");
-    chk(imm == 32'd0, "R-type imm default 0");
+    chk(imm == 32'b0, "R-type imm default 0");
 
     // I-type ALU: addi x6 = x1 + 0x7F
     instr = mk_i(12'h07F, 5'd1, 3'b000, 5'd6, OPC_ITYPE);

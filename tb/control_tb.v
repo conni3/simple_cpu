@@ -14,26 +14,28 @@ module control_tb;
 
   // DUT
   control uut (
-      .instr(instr),
-      .ALUreg(ALUreg),
-      .ALUimm(ALUimm),
-      .Branch(Branch),
-      .JAL(JAL),
-      .JALR(JALR),
-      .LUI(LUI),
-      .AUIPC(AUIPC),
-      .Load(Load),
-      .Store(Store),
-      .SYSTEM(SYSTEM),
-      .MemRead(MemRead),
-      .MemWrite(MemWrite),
-      .MemtoReg(MemtoReg),
-      .ALUSrc(ALUSrc),
-      .BranchSig(BranchSig),
-      .Jump(Jump),
-      .ALUOp(ALUOp),
-      .ImmSrc(ImmSrc)
+      .instr     (instr),
+      .is_alu_reg(ALUreg),
+      .is_alu_imm(ALUimm),
+      .is_branch (Branch),
+      .is_jal    (JAL),
+      .is_jalr   (JALR),
+      .is_lui    (LUI),
+      .is_auipc  (AUIPC),
+      .is_load   (Load),
+      .is_store  (Store),
+      .is_system (SYSTEM),
+
+      .mem_read  (MemRead),
+      .mem_write (MemWrite),
+      .wb_sel    (MemtoReg),
+      .alu_src   (ALUSrc),
+      .branch_sig(BranchSig),
+      .jump      (Jump),
+      .alu_op    (ALUOp),
+      .imm_sel   (ImmSrc)
   );
+
 
   integer failed, passed;
 
@@ -82,7 +84,7 @@ module control_tb;
     // R-type
     reset_inputs();
     ALUreg = 1;
-    #1 assert_control(0, 0, 0, 0, 0, 0, 2'b10, 3'b000, "R-type");
+    #1 assert_control(0, 0, 0, 0, 0, 0, 2'b10, `Imm_NONE, "R-type");
 
     // I-type (ALU imm)
     reset_inputs();

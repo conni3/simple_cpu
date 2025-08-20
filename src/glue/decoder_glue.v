@@ -12,23 +12,30 @@ module decoder_glue #(
     output wire [4:0] rs2,
 
     // immediates
-    output wire [31:0] imm,
+    output wire [31:0] imm_out,
 
     // controls to datapath
-    output wire       regWrite,
-    output wire       MemRead,
-    output wire       MemWrite,
-    output wire       ALUSrc,
-    output wire       BranchSig,
-    output wire       Jump,
-    output wire [1:0] ALUOp,
-    output wire [2:0] ImmSrc,     // optional to expose
-    output wire [1:0] wb_sel,     // -> wb_mux (0:ALU, 1:MEM, 2:PC+4)
+    output wire       reg_write,
+    output wire       mem_read,
+    output wire       mem_write,
+    output wire       alu_src,
+    output wire       branch_sig,
+    output wire       jump,
+    output wire [1:0] alu_op,
+    output wire [2:0] imm_sel,     // optional to expose
+    output wire [1:0] wb_sel,      // -> wb_mux (0:ALU, 1:MEM, 2:PC+4)
 
     // optional: for next_pc/traps/etc.
-    output wire JAL,
-    output wire JALR,
-    output wire Branch
+    output wire is_jal,
+    output wire is_jalr,
+    output wire is_branch,
+    output wire is_lui,
+    output wire is_auipc,
+    output wire is_alu_reg,
+    output wire is_alu_imm,
+    output wire is_load,
+    output wire is_store,
+    output wire is_system
 );
 
   // -------- slicer --------
@@ -37,61 +44,59 @@ module decoder_glue #(
   assign rs2 = instr[24:20];
 
   // -------- coarse decode --------
-  wire ALUreg, ALUimm, LUI, AUIPC, Load, Store, SYSTEM;
-
   decoder #(
       .DATA_WIDTH(DATA_WIDTH)
   ) u_dec (
-      .instr   (instr),
-      .ALUreg  (ALUreg),
-      .regWrite(regWrite),
-      .JAL     (JAL),
-      .JALR    (JALR),
-      .Branch  (Branch),
-      .LUI     (LUI),
-      .AUIPC   (AUIPC),
-      .ALUimm  (ALUimm),
-      .Load    (Load),
-      .Store   (Store),
-      .SYSTEM  (SYSTEM)
+      .instr     (instr),
+      .is_alu_reg(is_alu_reg),
+      .reg_write (reg_write),
+      .is_jal    (is_jal),
+      .is_jalr   (is_jalr),
+      .is_branch (is_branch),
+      .is_lui    (is_lui),
+      .is_auipc  (is_auipc),
+      .is_alu_imm(is_alu_imm),
+      .is_load   (is_load),
+      .is_store  (is_store),
+      .is_system (is_system)
   );
 
   // -------- main control --------
-  wire MemtoReg;
+  wire wb_sel_mem;
   control #(
       .DATA_WIDTH(DATA_WIDTH)
   ) u_ctl (
-      .instr (instr),
-      .ALUreg(ALUreg),
-      .ALUimm(ALUimm),
-      .Branch(Branch),
-      .JAL   (JAL),
-      .JALR  (JALR),
-      .LUI   (LUI),
-      .AUIPC (AUIPC),
-      .Load  (Load),
-      .Store (Store),
-      .SYSTEM(SYSTEM),
+      .instr     (instr),
+      .is_alu_reg(is_alu_reg),
+      .is_alu_imm(is_alu_imm),
+      .is_branch (is_branch),
+      .is_jal    (is_jal),
+      .is_jalr   (is_jalr),
+      .is_lui    (is_lui),
+      .is_auipc  (is_auipc),
+      .is_load   (is_load),
+      .is_store  (is_store),
+      .is_system (is_system),
 
-      .MemRead  (MemRead),
-      .MemWrite (MemWrite),
-      .MemtoReg (MemtoReg),
-      .ALUSrc   (ALUSrc),
-      .BranchSig(BranchSig),
-      .Jump     (Jump),
-      .ALUOp    (ALUOp),
-      .ImmSrc   (ImmSrc)
+      .mem_read  (mem_read),
+      .mem_write (mem_write),
+      .wb_sel    (wb_sel_mem),
+      .alu_src   (alu_src),
+      .branch_sig(branch_sig),
+      .jump      (jump),
+      .alu_op    (alu_op),
+      .imm_sel   (imm_sel)
   );
 
   // -------- immediate gen --------
   imm_gen u_imm (
       .instr  (instr),
-      .imm_sel(ImmSrc),  // uses `Imm_I/S/B/U/J` from defines.vh
-      .imm_out(imm)
+      .imm_sel(imm_sel),  // uses `Imm_I/S/B/U/J` from defines.vh
+      .imm_out(imm_out)
   );
 
   // -------- writeback select (for wb_mux) --------
-  assign wb_sel = (JAL | JALR) ? 2'd2 :  // PC+4
-      (MemtoReg) ? 2'd1 :  // MEM
+  assign wb_sel = (is_jal | is_jalr) ? 2'd2 :  // PC+4
+      (wb_sel_mem) ? 2'd1 :  // MEM
       2'd0;  // ALU
 endmodule

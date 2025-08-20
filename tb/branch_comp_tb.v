@@ -1,3 +1,4 @@
+`timescale 1ps/1ps
 module branch_comp_tb;
   reg signed [31:0] op1;
   reg signed [31:0] op2;
@@ -8,7 +9,7 @@ module branch_comp_tb;
       .op1(op1),
       .op2(op2),
       .funct3(funct3),
-      .branch(branch)
+      .branch_taken(branch)
   );
   integer failed, passed;
 

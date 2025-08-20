@@ -1,34 +1,31 @@
 `timescale 1ps / 1ps
 
-module reg_file (
+module regfile (
     input  wire        clk,
     input  wire        reset,
-    input  wire        regwrite,
-    input  wire [ 4:0] read_reg1,
-    input  wire [ 4:0] read_reg2,
-    input  wire [ 4:0] write_reg,
-    input  wire [31:0] write_data,
-    output wire [31:0] read_data1,
-    output wire [31:0] read_data2
+    input  wire        reg_write,
+    input  wire [ 4:0] rs1,
+    input  wire [ 4:0] rs2,
+    input  wire [ 4:0] rd,
+    input  wire [31:0] rd_wdata,
+    output wire [31:0] rs1_data,
+    output wire [31:0] rs2_data
 );
-
 
   reg [31:0] regs[31:0];
   integer i;
 
-
+  // synchronous reset, write x0 blocked
   always @(posedge clk) begin
     if (reset) begin
-
       for (i = 0; i < 32; i = i + 1) regs[i] <= 32'b0;
-    end else if (regwrite && (write_reg != 5'd0)) begin
-
-      regs[write_reg] <= write_data;
+    end else if (reg_write && (rd != 5'd0)) begin
+      regs[rd] <= rd_wdata;
     end
   end
 
-
-  assign read_data1 = (read_reg1 != 5'd0) ? regs[read_reg1] : 32'b0;
-  assign read_data2 = (read_reg2 != 5'd0) ? regs[read_reg2] : 32'b0;
+  // asynchronous reads, x0 hard-wired to 0
+  assign rs1_data = (rs1 != 5'd0) ? regs[rs1] : 32'b0;
+  assign rs2_data = (rs2 != 5'd0) ? regs[rs2] : 32'b0;
 
 endmodule

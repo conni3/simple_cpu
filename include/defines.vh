@@ -7,6 +7,7 @@
 `define Imm_B 3'b010 
 `define Imm_U 3'b011 
 `define Imm_J 3'b100 
+`define Imm_NONE 3'b111
 
 // ALU Operations
 `define ALU_ADD 4'b0000

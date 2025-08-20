@@ -13,7 +13,7 @@ module instr_mem (
     $readmemb(`MEM_FILE, mem, 0, 2);
   end
 
-  always @(*) begin
+  always @(addr) begin
     instr = mem[addr];
   end
 

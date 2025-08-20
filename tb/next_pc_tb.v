@@ -14,15 +14,16 @@ module next_pc_tb;
 
   // Instantiate DUT
   next_pc dut (
-      .current_pc(current_pc),
-      .imm_data(imm_data),
+      .pc_current(current_pc),
+      .imm_out(imm_data),
       .rs1_data(rs1_data),
       .is_branch(is_branch),
       .is_jal(is_jal),
       .is_jalr(is_jalr),
       .branch_taken(branch_taken),
-      .next_pc(next_pc)
+      .pc_next(next_pc)
   );
+
 
   integer failed, passed;
 
@@ -32,7 +33,7 @@ module next_pc_tb;
     begin
       #1;
       if (next_pc !== expected_value) begin
-        
+
         $display("FAIL: %s  expected=%h got=%h", label, expected_value, next_pc);
         $fatal;
       end else begin

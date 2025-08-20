@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module alu_control_tb;
 
   reg [1:0] ALUOp;
@@ -6,10 +7,10 @@ module alu_control_tb;
   wire [3:0] ALUCtrl;
 
   alu_control uut (
-      .ALUOp(ALUOp),
-      .funct3(funct3),
+      .alu_op  (ALUOp),
+      .funct3  (funct3),
       .funct7_5(funct7_5),
-      .ALUCtrl(ALUCtrl)
+      .alu_ctrl(ALUCtrl)
   );
 
   // ALU Control Signals

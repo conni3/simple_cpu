@@ -15,17 +15,18 @@ module regfile_tb;
   integer passed, failed;
 
   // Instantiate DUT
-  reg_file uut (
-      .clk       (clk),
-      .reset     (reset),
-      .regwrite  (regwrite),
-      .read_reg1 (read_reg1),
-      .read_reg2 (read_reg2),
-      .write_reg (write_reg),
-      .write_data(write_data),
-      .read_data1(read_data1),
-      .read_data2(read_data2)
+  regfile uut (
+      .clk      (clk),
+      .reset    (reset),
+      .reg_write(regwrite),
+      .rs1      (read_reg1),
+      .rs2      (read_reg2),
+      .rd       (write_reg),
+      .rd_wdata (write_data),
+      .rs1_data (read_data1),
+      .rs2_data (read_data2)
   );
+
 
   // Clock generator (10 ns period)
   initial clk = 0;

@@ -14,11 +14,12 @@ module imm_gen (
 
   always @(*) begin
     case (imm_sel)
-      `Imm_I:  imm_out = i_imm;
-      `Imm_S:  imm_out = s_imm;
-      `Imm_B:  imm_out = b_imm;
-      `Imm_U:  imm_out = u_imm;
-      `Imm_J:  imm_out = j_imm;
+      `Imm_I: imm_out = i_imm;
+      `Imm_S: imm_out = s_imm;
+      `Imm_B: imm_out = b_imm;
+      `Imm_U: imm_out = u_imm;
+      `Imm_J: imm_out = j_imm;
+      `Imm_NONE: imm_out = 32'b0;
       default: imm_out = 32'b0;
     endcase
   end

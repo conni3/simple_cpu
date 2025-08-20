@@ -8,10 +8,10 @@ module data_mem_tb;
 
   data_mem uut (
       .clk(clk),
-      .we(we),
+      .mem_write(we),
       .addr(addr),
-      .write_data(write_data),
-      .read_data(read_data)
+      .wdata(write_data),
+      .rdata(read_data)
   );
 
   always #5 clk = ~clk;

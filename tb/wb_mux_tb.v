@@ -6,113 +6,80 @@ module wb_mux_tb;
   localparam [1:0] WB_ALU = 2'd0;
   localparam [1:0] WB_MEM = 2'd1;
   localparam [1:0] WB_PC4 = 2'd2;
-  localparam [1:0] WB_CSR = 2'd3;
 
   // Stimuli
-  reg  [DATA_WIDTH-1:0] alu_result;
-  reg  [DATA_WIDTH-1:0] load_rdata;
-  reg  [DATA_WIDTH-1:0] pc_plus4;
-  reg  [DATA_WIDTH-1:0] csr_rdata;
-  reg  [           1:0] wb_sel;
-  reg                   regwrite_in;
-  reg                   kill_wb;
-  reg  [           4:0] rd_in;
+  reg  [`DATA_WIDTH-1:0] alu_result;
+  reg  [`DATA_WIDTH-1:0] rdata;
+  reg  [`DATA_WIDTH-1:0] pc_plus4;
+  reg  [            1:0] wb_sel;
+  reg                    reg_write_in;
+  reg                    kill_wb;
+  reg  [            4:0] rd_in;
 
-  // DUT (HAS_CSR = 1)
-  wire [DATA_WIDTH-1:0] rd_wdata;
-  wire                  regwrite_out;
-  wire [           4:0] rd_out;
+  // DUT outputs
+  wire [`DATA_WIDTH-1:0] rd_wdata;
+  wire                   reg_write_out;
+  wire [            4:0] rd_out;
 
-  wb_mux #(
-      .HAS_CSR(1)
-  ) dut (
-      .alu_result  (alu_result),
-      .load_rdata  (load_rdata),
-      .pc_plus4    (pc_plus4),
-      .csr_rdata   (csr_rdata),
-      .wb_sel      (wb_sel),
-      .regwrite_in (regwrite_in),
-      .kill_wb     (kill_wb),
-      .rd_in       (rd_in),
-      .rd_wdata    (rd_wdata),
-      .regwrite_out(regwrite_out),
-      .rd_out      (rd_out)
-  );
-
-  // Second DUT to check CSR-disabled behavior
-  wire [DATA_WIDTH-1:0] rd_wdata_nocsr;
-  wire                  regwrite_out_nocsr;
-  wire [           4:0] rd_out_nocsr;
-
-  wb_mux #(
-      .HAS_CSR(0)
-  ) dut_nocsr (
-      .alu_result  (alu_result),
-      .load_rdata  (load_rdata),
-      .pc_plus4    (pc_plus4),
-      .csr_rdata   (csr_rdata),
-      .wb_sel      (wb_sel),
-      .regwrite_in (regwrite_in),
-      .kill_wb     (kill_wb),
-      .rd_in       (rd_in),
-      .rd_wdata    (rd_wdata_nocsr),
-      .regwrite_out(regwrite_out_nocsr),
-      .rd_out      (rd_out_nocsr)
+  // DUT (no parameters)
+  wb_mux dut (
+      .alu_result   (alu_result),
+      .rdata        (rdata),
+      .pc_plus4     (pc_plus4),
+      .wb_sel       (wb_sel),
+      .reg_write_in (reg_write_in),
+      .kill_wb      (kill_wb),
+      .rd_in        (rd_in),
+      .rd_wdata     (rd_wdata),
+      .reg_write_out(reg_write_out),
+      .rd_out       (rd_out)
   );
 
   integer fails;
 
   initial begin
-    fails       = 0;
+    fails        = 0;
 
     // Default stimuli
-    alu_result  = 32'hA1A1_A1A1;
-    load_rdata  = 32'hB2B2_B2B2;
-    pc_plus4    = 32'hC3C3_C3C3;
-    csr_rdata   = 32'hD4D4_D4D4;
-    regwrite_in = 1'b1;
-    kill_wb     = 1'b0;
-    rd_in       = 5'd10;
+    alu_result   = 32'hA1A1_A1A1;
+    rdata        = 32'hB2B2_B2B2;
+    pc_plus4     = 32'hC3C3_C3C3;
+    reg_write_in = 1'b1;
+    kill_wb      = 1'b0;
+    rd_in        = 5'd10;
 
     // 1) ALU select
-    wb_sel      = WB_ALU;
+    wb_sel       = WB_ALU;
     #1;
     check("ALU path data", rd_wdata === alu_result);
-    check("ALU path regwrite", regwrite_out === 1'b1);
+    check("ALU path reg_write", reg_write_out === 1'b1);
     check("ALU rd passthrough", rd_out === rd_in);
 
     // 2) MEM select
     wb_sel = WB_MEM;
     #1;
-    check("MEM path data", rd_wdata === load_rdata);
+    check("MEM path data", rd_wdata === rdata);
 
     // 3) PC+4 select
     wb_sel = WB_PC4;
     #1;
     check("PC+4 path data", rd_wdata === pc_plus4);
 
-
-    // 5) Kill gating
+    // 4) Kill gating
     kill_wb = 1'b1;
     #1;
-    check("Kill gating disables write", regwrite_out === 1'b0);
+    check("Kill gating disables write", reg_write_out === 1'b0);
     kill_wb = 1'b0;
     #1;
 
-    // 6) x0 write blocked
+    // 5) x0 write blocked
     rd_in  = 5'd0;
     wb_sel = WB_ALU;
     #1;
-    check("x0 write blocked", regwrite_out === 1'b0);
+    check("x0 write blocked", reg_write_out === 1'b0);
     rd_in = 5'd31;
     #1;
-    check("x31 write allowed", regwrite_out === 1'b1);
-
-    // 7) CSR path when HAS_CSR=0 should drive zeros
-    wb_sel = WB_CSR;
-    #1;
-    check("CSR path zeros when HAS_CSR=0", rd_wdata_nocsr === {DATA_WIDTH{1'b0}});
-    check("rd passthrough unaffected (nocsr)", rd_out_nocsr === rd_in);
+    check("x31 write allowed", reg_write_out === 1'b1);
 
     if (fails == 0) $display("PASS: all wb_mux tests");
     else $display("FAIL: %0d test(s)", fails);

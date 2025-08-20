@@ -6,7 +6,7 @@ module branch_comp (
     input  wire [31:0] op1,
     input  wire [31:0] op2,
     input  wire [ 2:0] funct3,
-    output reg         branch
+    output reg         branch_taken
 );
 
 
@@ -19,13 +19,13 @@ module branch_comp (
 
   always @(*) begin
     case (funct3)
-      BEQ: branch = (op1 == op2);
-      BNE: branch = (op1 != op2);
-      BLT: branch = ($signed(op1) < $signed(op2));
-      BGE: branch = ($signed(op1) >= $signed(op2));
-      BLTU: branch = (op1 < op2);
-      BGEU: branch = (op1 >= op2);
-      default: branch = 1'b0;
+      BEQ: branch_taken = (op1 == op2);
+      BNE: branch_taken = (op1 != op2);
+      BLT: branch_taken = ($signed(op1) < $signed(op2));
+      BGE: branch_taken = ($signed(op1) >= $signed(op2));
+      BLTU: branch_taken = (op1 < op2);
+      BGEU: branch_taken = (op1 >= op2);
+      default: branch_taken = 1'b0;
     endcase
   end
 

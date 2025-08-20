@@ -9,18 +9,19 @@ module decoder_tb;
   wire ALUreg, regWrite, JAL, JALR, Branch, LUI, AUIPC, ALUimm, Load, Store;
 
   // Instantiate the Unit Under Test (UUT)
-  decoder uut (
+  decoder dut (
       .instr(instr),
-      .ALUreg(ALUreg),
-      .regWrite(regWrite),
-      .JAL(JAL),
-      .JALR(JALR),
-      .Branch(Branch),
-      .LUI(LUI),
-      .AUIPC(AUIPC),
-      .ALUimm(ALUimm),
-      .Load(Load),
-      .Store(Store)
+      .is_alu_reg(ALUreg),
+      .reg_write(regWrite),
+      .is_jal(JAL),
+      .is_jalr(JALR),
+      .is_branch(Branch),
+      .is_lui(LUI),
+      .is_auipc(AUIPC),
+      .is_alu_imm(ALUimm),
+      .is_load(Load),
+      .is_store(Store),
+      .is_system(SYSTEM)
   );
 
   integer failed, passed;

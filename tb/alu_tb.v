@@ -14,11 +14,11 @@ module alu_tb;
 
   // Instantiate the DUT
   alu uut (
-      .operand_a  (operand_a),
-      .operand_b  (operand_b),
-      .alu_control(alu_control),
+      .op_a  (operand_a),
+      .op_b  (operand_b),
+      .alu_ctrl (alu_control),
       .alu_result (alu_result),
-      .zero       (zero)
+      .alu_zero       (zero)
   );
 
   // Task to apply a test vector
