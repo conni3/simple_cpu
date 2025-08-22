@@ -1,3 +1,6 @@
+`timescale 1ps / 1ps
+`include "defines.vh"
+
 module data_mem_tb;
   reg clk;
   reg we;
@@ -9,6 +12,7 @@ module data_mem_tb;
   data_mem uut (
       .clk(clk),
       .mem_write(we),
+      .mem_read(1'b1),  // combinational read
       .addr(addr),
       .wdata(write_data),
       .rdata(read_data)

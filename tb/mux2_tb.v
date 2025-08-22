@@ -1,3 +1,5 @@
+`timescale 1ps / 1ps
+
 module mux2_tb;
   localparam WIDTH = 32;
 

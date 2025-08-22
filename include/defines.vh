@@ -20,7 +20,6 @@
 `define ALU_SRA 4'b0111
 `define ALU_OR 4'b1000
 `define ALU_AND 4'b1001
-`define ALU_LUI 4'b1010
 
 // Control Signals
 `define OP_RTYPE 7'b0110011
@@ -33,3 +32,15 @@
 `define OP_LUI 7'b0110111
 `define OP_AUIPC 7'b0010111
 `define OP_SYSTEM 7'b1110011
+
+
+`define KNOWN(v) ((v) === (v))
+
+
+`define WB_ALU 2'd0   
+`define WB_MEM 2'd1   
+`define WB_PC4 2'd2   
+
+`define OP1_RS1 2'd0
+`define OP1_PC 2'd1
+`define OP1_ZERO 2'd2

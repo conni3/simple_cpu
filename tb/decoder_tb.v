@@ -7,37 +7,37 @@ module decoder_tb;
 
   // Outputs
   wire ALUreg, regWrite, JAL, JALR, Branch, LUI, AUIPC, ALUimm, Load, Store;
+  wire SYSTEM;  // used by DUT connection below
 
   // Instantiate the Unit Under Test (UUT)
   decoder dut (
-      .instr(instr),
+      .instr     (instr),
       .is_alu_reg(ALUreg),
-      .reg_write(regWrite),
-      .is_jal(JAL),
-      .is_jalr(JALR),
-      .is_branch(Branch),
-      .is_lui(LUI),
-      .is_auipc(AUIPC),
+      .reg_write (regWrite),
+      .is_jal    (JAL),
+      .is_jalr   (JALR),
+      .is_branch (Branch),
+      .is_lui    (LUI),
+      .is_auipc  (AUIPC),
       .is_alu_imm(ALUimm),
-      .is_load(Load),
-      .is_store(Store),
-      .is_system(SYSTEM)
+      .is_load   (Load),
+      .is_store  (Store),
+      .is_system (SYSTEM)
   );
 
   integer failed, passed;
 
-
+  // Verilog-2001: replace 'string' with a byte vector and print via %0s
   task check_output;
-    input string test_name;
+    input [8*64-1:0] test_name;  // up to 64 chars
     input [31:0] instr_val;
     input exp_ALUreg, exp_ALUimm, exp_Branch, exp_JAL, exp_JALR;
     input exp_LUI, exp_AUIPC, exp_Load, exp_Store, exp_regWrite;
-
     begin
       instr = instr_val;
       #1;
 
-      $display("Instr = %b, Test = %s", instr, test_name);
+      $display("Instr = %b, Test = %0s", instr, test_name);
 
       if (ALUreg !== exp_ALUreg)
         $display("ASSERTION FAILED: ALUreg   expected %b, got %b", exp_ALUreg, ALUreg);
@@ -58,17 +58,22 @@ module decoder_tb;
       if (regWrite !== exp_regWrite)
         $display("ASSERTION FAILED: regWrite expected %b, got %b", exp_regWrite, regWrite);
 
-      if (ALUreg === exp_ALUreg && ALUimm === exp_ALUimm &&
-        Branch === exp_Branch && JAL === exp_JAL && JALR === exp_JALR &&
-        LUI === exp_LUI && AUIPC === exp_AUIPC && Load === exp_Load &&
-        Store === exp_Store && regWrite === exp_regWrite) begin
+      if (ALUreg   === exp_ALUreg   &&
+          ALUimm   === exp_ALUimm   &&
+          Branch   === exp_Branch   &&
+          JAL      === exp_JAL      &&
+          JALR     === exp_JALR     &&
+          LUI      === exp_LUI      &&
+          AUIPC    === exp_AUIPC    &&
+          Load     === exp_Load     &&
+          Store    === exp_Store    &&
+          regWrite === exp_regWrite) begin
         passed = passed + 1;
-        $display("Test passed: %s", test_name);
+        $display("Test passed: %0s", test_name);
       end else begin
         failed = failed + 1;
-        $display("Test failed: %s", test_name);
+        $display("Test failed: %0s", test_name);
       end
-
     end
   endtask
 
@@ -105,7 +110,7 @@ module decoder_tb;
                  0, 0, 0, 1);
 
     // JAL: jal x3, offset (1101111)
-    check_output("JAL: jal x3, offset", 32'b000000000000000000000_00011_1101111, 0, 0, 0, 1, 0, 0,
+    check_output("JAL: jal x3, offset", 32'b00000000000000000000_00011_1101111, 0, 0, 0, 1, 0, 0,
                  0, 0, 0, 1);
 
     // LUI: lui x3, 1 (0110111)
@@ -117,9 +122,9 @@ module decoder_tb;
                  0, 0, 1);
 
     $display("\nDecoder Testbench Summary:");
-    $display("Total Tests: %d", passed + failed);
-    $display("Passed: %d", passed);
-    $display("Failed: %d", failed);
+    $display("Total Tests: %0d", passed + failed);
+    $display("Passed: %0d", passed);
+    $display("Failed: %0d", failed);
 
     $finish;
   end

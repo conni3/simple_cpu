@@ -9,7 +9,6 @@ module branch_comp (
     output reg         branch_taken
 );
 
-
   localparam BEQ = 3'b000;  // Branch if equal
   localparam BNE = 3'b001;  // Branch if not equal
   localparam BLT = 3'b100;  // Branch if less than (signed)

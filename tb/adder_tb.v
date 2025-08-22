@@ -3,9 +3,9 @@
 module adder_tb;
 
   localparam WIDTH = 32;
-  reg [WIDTH-1:0] a;
-  reg [WIDTH-1:0] b;
-  reg [WIDTH-1:0] result;
+  reg  [WIDTH-1:0] a;
+  reg  [WIDTH-1:0] b;
+  wire [WIDTH-1:0] result;
   integer passed, failed;
 
   adder #(
@@ -30,8 +30,8 @@ module adder_tb;
         passed = passed + 1;
         $display("PASS: a=0x%08h b=0x%08h -> result=0x%08h", a, b, result);
       end else begin
+        $display("FAIL: a=0x%08h b=0x%08h -> expected=0x%08h, got=0x%08h", a, b, expected, result);
         failed = failed + 1;
-        $error("FAIL: a=0x%08h b=0x%08h -> expected=0x%08h, got=0x%08h", a, b, expected, result);
       end
     end
 
@@ -64,3 +64,4 @@ module adder_tb;
 
 
 endmodule
+

@@ -1,11 +1,6 @@
 `timescale 1ps / 1ps
 `include "defines.vh"
 
-// wb_sel encodings
-localparam WB_ALU = 2'd0;
-localparam WB_MEM = 2'd1;
-localparam WB_PC4 = 2'd2;
-
 module wb_mux (
     input wire [`DATA_WIDTH-1:0] alu_result,
     input wire [`DATA_WIDTH-1:0] rdata,         // data from data_mem (already extended)
@@ -19,6 +14,11 @@ module wb_mux (
     output wire                   reg_write_out,  // gated write-enable
     output wire [            4:0] rd_out
 );
+
+  // wb_sel encodings
+  localparam reg [1:0] WB_ALU = 2'd0;
+  localparam reg [1:0] WB_MEM = 2'd1;
+  localparam reg [1:0] WB_PC4 = 2'd2;
 
   always @* begin
     case (wb_sel)

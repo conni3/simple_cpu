@@ -1,0 +1,5 @@
+01000313  // addi x6, x0, 16
+DEADC3B7  // lui  x7, 0xDEADC
+EEF38393  // addi x7, x7, -273  => x7=0xDEADBEEF
+04702023  // sw   x7, 64(x0)    => DMEM[0x40] = x7
+0000006F  // jal  x0, 0         => infinite loop

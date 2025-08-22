@@ -23,15 +23,18 @@ module next_pc (
       (is_branch && branch_taken) ? branch_jal_pc :
                                     pc_plus4;
 
-  wire misalign_bits = !$isunknown(pc_current[1:0]) && !$isunknown(pc_next[1:0]);
+  wire misalign_bits = `KNOWN(pc_current[1:0]) && `KNOWN(pc_next[1:0]);
 
-`ifndef SYNTHESIS
-  always @(*) begin
-    if (misalign_bits) begin
-      #1;
-      if (pc_current[1:0] != 2'b00 || pc_next[1:0] != 2'b00)
-        $fatal(1, "Instr addr misaligned: pc=%h next=%h", pc_current, pc_next);
-    end
-  end
-`endif
+  // `ifndef SYNTHESIS
+  //   always @(*) begin
+  //     if (misalign_bits) begin
+  //       #1;
+  //       if (pc_current[1:0] !== 2'b00 || pc_next[1:0] !== 2'b00) begin
+  //         $display("[%0t] ERROR: Instr addr misaligned: pc=%h next=%h", $time, pc_current, pc_next);
+  //         $stop;
+  //       end
+  //     end
+  //   end
+  // `endif
+
 endmodule

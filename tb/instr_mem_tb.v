@@ -1,3 +1,6 @@
+`timescale 1ps / 1ps
+`include "defines.vh"
+
 module instr_mem_tb;
 
   reg  [10:0] addr;
