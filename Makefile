@@ -5,7 +5,8 @@ export LC_ALL=en_US.UTF-8
 
 VIVADO_VERSION ?= 2025.1
 VIVADO_SETTINGS ?= /opt/Xilinx/Vivado/$(VIVADO_VERSION)/$(VIVADO_VERSION)/Vivado/settings64.sh
-VIVADO_ENV := source $(VIVADO_SETTINGS) >/dev/null 2>&1 || true;
+# No trailing semicolon here (prevents ';;' when concatenated)
+VIVADO_ENV := source "$(VIVADO_SETTINGS)" >/dev/null 2>&1 || true
 
 # ---- RTL file lists (Verilog only) ----
 LEAF := $(shell find src/leaf -type f -name '*.v' 2>/dev/null | sort)
@@ -31,8 +32,8 @@ XSIM_ELAB_FLAGS := -debug typical
 
 OUT_DIR := .build
 VCD_DIR := waves
-$(OUT_DIR): ; @mkdir -p $@
-$(VCD_DIR): ; @mkdir -p $@
+$(OUT_DIR): ; @mkdir -p "$@"
+$(VCD_DIR): ; @mkdir -p "$@"
 
 ifdef comp
   MODULE := $(comp)
@@ -43,49 +44,51 @@ else
   MODULE := all
 endif
 
-.PHONY: help check build compile test run wave vivado vivado-all clean
+.PHONY: all help check build compile test run wave vivado vivado-all clean vivado-check xpr open
 
 all: test
 
 help:
-	@echo "Targets:";
-	@echo "  make check [comp=mod]  - Lint with Icarus (Verilog-2005)";
-	@echo "  make build [comp=mod]  - Compile to .vvp";
-	@echo "  make test  [comp=mod]  - Compile & run with Icarus";
-	@echo "  make wave  comp=mod    - Run & open GTKWave";
-	@echo "  make vivado comp=mod   - Run with Vivado XSIM (Verilog)";
-	@echo "  make vivado-all        - Run all TBs with Vivado XSIM";
-	@echo "  make clean             - Remove outputs";
-	@echo "Variables:";
-	@echo "  comp=mod               - Select a single testbench (e.g., comp=decoder)";
+	@echo "Targets:"
+	@echo "  make check [comp=mod]  - Lint with Icarus (Verilog-2005)"
+	@echo "  make build [comp=mod]  - Compile to .vvp"
+	@echo "  make test  [comp=mod]  - Compile & run with Icarus"
+	@echo "  make wave  comp=mod    - Run & open GTKWave"
+	@echo "  make vivado comp=mod   - Run with Vivado XSIM (Verilog)"
+	@echo "  make vivado-all        - Run all TBs with Vivado XSIM"
+	@echo "  make xpr               - Generate Vivado project via TCL"
+	@echo "  make open              - Open the generated Vivado project"
+	@echo "  make clean             - Remove outputs"
+	@echo "Variables:"
+	@echo "  comp=mod               - Select a single testbench (e.g., comp=decoder)"
 
 ifdef comp
 
 check:
 	@echo "=== Icarus: linting $(MODULE) ==="
-	$(IVERILOG) $(IVFLAGS) -Wall -o /dev/null $(LEAF) $(GLUE) $(TOPS) $(TBFILE)
+	$(IVERILOG) $(IVFLAGS) -Wall -o /dev/null $(LEAF) $(GLUE) $(TOPS) "$(TBFILE)"
 	@echo "=== Lint OK ==="
 
 build compile: $(TARGET)
 
 $(TARGET): $(RTL) $(TBFILE) | $(OUT_DIR)
-	$(IVERILOG) $(IVFLAGS) -s $(MODULE)_tb -o $@ $(LEAF) $(GLUE) $(TOPS) $(TBFILE)
+	$(IVERILOG) $(IVFLAGS) -s $(MODULE)_tb -o "$@" $(LEAF) $(GLUE) $(TOPS) "$(TBFILE)"
 
 test run: build | $(VCD_DIR)
 	@echo "=== Icarus: running $(MODULE) ==="
-	$(VVP) $(TARGET)
-	@test -f dump.vcd && mv -f dump.vcd $(VCD) || true
-	@test -f $(VCD) && echo "=== VCD: $(VCD) ===" || true
+	$(VVP) "$(TARGET)"
+	@test -f dump.vcd && mv -f dump.vcd "$(VCD)" || true
+	@test -f "$(VCD)" && echo "=== VCD: $(VCD) ===" || true
 
 wave: test
 	@echo "=== GTKWave: $(VCD) ==="
-	$(GTK) $(VCD) &
+	$(GTK) "$(VCD)" &
 
 vivado: $(RTL) $(TBFILE)
 	@echo "=== Vivado XSIM: $(MODULE) (Verilog) ==="
-	bash -lc '$(VIVADO_ENV) $(XSVLOG) $(XSIM_VLOG_FLAGS) $(RTL) $(TBFILE)'
-	bash -lc '$(VIVADO_ENV) $(XELAB) $(XSIM_ELAB_FLAGS) -snapshot $(MODULE)_sim work.$(MODULE)_tb'
-	bash -lc '$(VIVADO_ENV) $(XSIM) $(MODULE)_sim --runall'
+	bash -lc '$(VIVADO_ENV); $(XSVLOG) $(XSIM_VLOG_FLAGS) $(RTL) "$(TBFILE)"'
+	bash -lc '$(VIVADO_ENV); $(XELAB) $(XSIM_ELAB_FLAGS) -snapshot $(MODULE)_sim work.$(MODULE)_tb'
+	bash -lc '$(VIVADO_ENV); $(XSIM) $(MODULE)_sim --runall'
 
 else  # =================== ALL MODULES ===================
 
@@ -94,7 +97,7 @@ check:
 	@set -e; for tb in $(ALL_TB); do \
 	  name=$${tb#tb/}; name=$${name%_tb.v}; \
 	  echo "-- $$name"; \
-	  $(IVERILOG) $(IVFLAGS) -Wall -o /dev/null $(LEAF) $(GLUE) $(TOPS) $$tb || exit 1; \
+	  $(IVERILOG) $(IVFLAGS) -Wall -o /dev/null $(LEAF) $(GLUE) $(TOPS) "$$tb" || exit 1; \
 	done
 	@echo "=== Lint OK ==="
 
@@ -104,14 +107,14 @@ VCDS := $(addprefix $(VCD_DIR)/,$(addsuffix .vcd,$(TB_NAMES)))
 build compile: $(OUTS)
 
 $(OUT_DIR)/%.vvp: tb/%_tb.v $(RTL) | $(OUT_DIR)
-	$(IVERILOG) $(IVFLAGS) -s $*_tb -o $@ $(LEAF) $(GLUE) $(TOPS) tb/$*_tb.v
+	$(IVERILOG) $(IVFLAGS) -s $*_tb -o "$@" $(LEAF) $(GLUE) $(TOPS) "tb/$*_tb.v"
 
 test run: build | $(VCD_DIR)
 	@set -e; for f in $(OUTS); do \
 	  name=$${f#$(OUT_DIR)/}; name=$${name%.vvp}; \
 	  echo "==> $$name"; \
-	  $(VVP) $$f; \
-	  if [ -f dump.vcd ]; then mv -f dump.vcd $(VCD_DIR)/$$name.vcd; fi; \
+	  $(VVP) "$$f"; \
+	  if [ -f dump.vcd ]; then mv -f dump.vcd "$(VCD_DIR)/$$name.vcd"; fi; \
 	done
 	@echo "=== All sims complete ==="
 
@@ -122,9 +125,9 @@ vivado-all:
 	@set -e; for tb in $(ALL_TB); do \
 	  name=$${tb#tb/}; name=$${name%_tb.v}; \
 	  echo "=== Vivado XSIM: $$name (Verilog) ==="; \
-	  bash -lc '$(VIVADO_ENV) $(XSVLOG) $(XSIM_VLOG_FLAGS) $(RTL) '$$tb; \
-	  bash -lc '$(VIVADO_ENV) $(XELAB) $(XSIM_ELAB_FLAGS) -snapshot '$$name'_sim work.'$$name'_tb'; \
-	  bash -lc '$(VIVADO_ENV) $(XSIM) '$$name'_sim --runall'; \
+	  bash -lc '$(VIVADO_ENV); $(XSVLOG) $(XSIM_VLOG_FLAGS) $(RTL) '"$$tb"; \
+	  bash -lc '$(VIVADO_ENV); $(XELAB) $(XSIM_ELAB_FLAGS) -snapshot '"$$name"'_sim work.'"$$name"'_tb'; \
+	  bash -lc '$(VIVADO_ENV); $(XSIM) '"$$name"'_sim --runall'; \
 	done
 
 endif
@@ -132,6 +135,38 @@ endif
 clean:
 	@echo "=== Cleaning up ==="
 	rm -rf $(OUT_DIR) $(VCD_DIR) *.vcd *.wdb *.jou *.log *.pb work xsim.dir .Xil simv simv.vcd dump.vcd *.wcfg *.str
+
+PART ?= xc7z010clg400-1
+TOP  ?= cpu_tb
+# Files to feed into Vivado/TCL
+SRC_FILES := $(RTL)
+
+ifdef comp
+  TB_FILES := $(TBFILE)
+  TOP := $(MODULE)_tb   # override default sim top when comp= is used
+else
+  TB_FILES := $(ALL_TB)
+endif
+
+
+
+vivado-check:
+	@bash -lc 'test -f "$(VIVADO_SETTINGS)" || { echo "Missing: $(VIVADO_SETTINGS)"; exit 1; }'
+	@bash -lc '$(VIVADO_ENV); command -v vivado >/dev/null || { echo "vivado not in PATH after sourcing settings"; exit 1; }'
+	@echo "Vivado found."
+	
+xpr: vivado-check $(SRC_FILES) $(TB_FILES)
+	@bash -lc 'set -e; \
+	  $(VIVADO_ENV); \
+	  vivado -mode batch -nojournal -nolog -notrace \
+	    -source scripts/create_project.tcl \
+	    -tclargs "$(PART)" "$(TOP)" \
+	      $(foreach f,$(SRC_FILES),$(abspath $(f))) \
+	      $(foreach f,$(TB_FILES),$(abspath $(f)))'
+
+open: xpr
+	@bash -lc '$(VIVADO_ENV); vivado vivado_proj/simple_cpu.xpr &'
+
 
 # # -------- Yosys / netlistsvg (Verilog only) --------
 # YOSYS       ?= yosys
