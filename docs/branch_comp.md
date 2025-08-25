@@ -8,10 +8,10 @@
 
 | Port name | Direction | Type        | Description |
 | --------- | --------- | ----------- | ----------- |
-| op1       | input     | wire [31:0] |             |
-| op2       | input     | wire [31:0] |             |
-| funct3    | input     | wire [ 2:0] |             |
-| branch    | output    |             |             |
+| op1       | input     | wire [31:0] | First comparison operand |
+| op2       | input     | wire [31:0] | Second comparison operand |
+| funct3    | input     | wire [2:0]  | 3‑bit branch type selector |
+| branch    | output    | wire        | 1‑bit result: high when branch condition met |
 
 ## Constants
 
@@ -27,3 +27,6 @@
 ## Processes
 - unnamed: ( @(*) )
   - **Type:** always
+
+## Behavior
+Compares `op1` and `op2` according to `funct3` (e.g., BEQ, BNE) and asserts `branch` when the selected condition is true.
