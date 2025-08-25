@@ -3,6 +3,9 @@
 
 ## Diagram
 ![Diagram](../images/docs/control.svg "Diagram")
+
+## Schematic
+![Schematic](../images/schematics/control.svg "Schematic")
 ## Generics
 
 | Generic name | Type | Value | Description |

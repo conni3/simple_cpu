@@ -4,6 +4,9 @@
 
 ## Diagram
 ![Diagram](../images/docs/instr_slicer.svg "Diagram")
+
+## Schematic
+![Schematic](../images/schematics/instr_slicer.svg "Schematic")
 ## Ports
 
 | Port name | Direction | Type        | Description |

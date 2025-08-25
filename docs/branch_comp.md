@@ -4,6 +4,9 @@
 
 ## Diagram
 ![Diagram](../images/docs/branch_comp.svg "Diagram")
+
+## Schematic
+![Schematic](../images/schematics/branch_comp.svg "Schematic")
 ## Ports
 
 | Port name | Direction | Type        | Description |

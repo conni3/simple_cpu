@@ -4,6 +4,9 @@
 
 ## Diagram
 ![Diagram](../images/docs/cpu.svg "Diagram")
+
+## Schematic
+![Schematic](../images/schematics/cpu.svg "Schematic")
 ## Generics
 
 | Generic name | Type    | Value               | Description |
