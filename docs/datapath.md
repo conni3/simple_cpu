@@ -3,7 +3,7 @@
 - **File**: datapath.v
 
 ## Diagram
-![Diagram](datapath.svg "Diagram")
+![Diagram](../images/docs/datapath.svg "Diagram")
 ## Generics
 
 | Generic name | Type    | Value               | Description |

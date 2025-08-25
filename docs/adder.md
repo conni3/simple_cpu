@@ -3,7 +3,7 @@
 - **File**: adder.v
 
 ## Diagram
-![Diagram](adder.svg "Diagram")
+![Diagram](../images/docs/adder.svg "Diagram")
 ## Generics
 
 | Generic name | Type | Value | Description |

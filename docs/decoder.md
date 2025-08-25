@@ -3,7 +3,7 @@
 - **File**: decoder.v
 
 ## Diagram
-![Diagram](decoder.svg "Diagram")
+![Diagram](../images/docs/decoder.svg "Diagram")
 ## Generics
 
 | Generic name | Type | Value | Description |

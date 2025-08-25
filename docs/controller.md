@@ -3,7 +3,7 @@
 - **File**: controller.v
 
 ## Diagram
-![Diagram](controller.svg "Diagram")
+![Diagram](../images/docs/controller.svg "Diagram")
 ## Ports
 
 | Port name | Direction | Type        | Description |

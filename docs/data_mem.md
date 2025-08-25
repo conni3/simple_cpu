@@ -3,7 +3,7 @@
 - **File**: data_mem.v
 
 ## Diagram
-![Diagram](data_mem.svg "Diagram")
+![Diagram](../images/docs/data_mem.svg "Diagram")
 ## Ports
 
 | Port name  | Direction | Type        | Description |

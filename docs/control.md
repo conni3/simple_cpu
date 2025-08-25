@@ -2,7 +2,7 @@
 - **File**: control.v
 
 ## Diagram
-![Diagram](control.svg "Diagram")
+![Diagram](../images/docs/control.svg "Diagram")
 ## Generics
 
 | Generic name | Type | Value | Description |

@@ -176,6 +176,7 @@ utilization util: vivado-check $(SRC_FILES)
 	-tclargs "$(PART)" "$(DESIGN_TOP)" "$(abspath include)" \
 	$(foreach f,$(SRC_FILES),$(abspath $(f)))'
 
+
 # # -------- Yosys / netlistsvg (Verilog only) --------
 # YOSYS       ?= yosys
 # JQ          ?= jq

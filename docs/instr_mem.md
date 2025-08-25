@@ -3,7 +3,7 @@
 - **File**: instr_mem.v
 
 ## Diagram
-![Diagram](instr_mem.svg "Diagram")
+![Diagram](../images/docs/instr_mem.svg "Diagram")
 ## Ports
 
 | Port name | Direction | Type        | Description |
