@@ -16,7 +16,7 @@ if { $part eq "" || $top eq "" || $incdir eq "" || [llength $sources] == 0 } {
 set_property include_dirs $incdir [current_fileset]
 read_verilog -sv $sources
 
-# Run synthesis and emit utilization report
-synth_design -top $top -part $part
+# Run project-less out-of-context synthesis and emit utilization report
+synth_design -top $top -part $part -mode out_of_context
 report_utilization -file logs/utilization.rpt
 exit
