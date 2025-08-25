@@ -3,7 +3,7 @@
 - **File**: pc.v
 
 ## Diagram
-![Diagram](pc.svg "Diagram")
+![Diagram](../images/docs/pc.svg "Diagram")
 ## Ports
 
 | Port name  | Direction | Type        | Description |

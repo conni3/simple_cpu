@@ -3,7 +3,7 @@
 - **File**: branch_comp.v
 
 ## Diagram
-![Diagram](branch_comp.svg "Diagram")
+![Diagram](../images/docs/branch_comp.svg "Diagram")
 ## Ports
 
 | Port name | Direction | Type        | Description |

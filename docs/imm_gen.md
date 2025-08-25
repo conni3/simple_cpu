@@ -3,7 +3,7 @@
 - **File**: imm_gen.v
 
 ## Diagram
-![Diagram](imm_gen.svg "Diagram")
+![Diagram](../images/docs/imm_gen.svg "Diagram")
 ## Ports
 
 | Port name | Direction | Type        | Description |

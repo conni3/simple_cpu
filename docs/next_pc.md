@@ -3,7 +3,7 @@
 - **File**: next_pc.v
 
 ## Diagram
-![Diagram](next_pc.svg "Diagram")
+![Diagram](../images/docs/next_pc.svg "Diagram")
 ## Ports
 
 | Port name    | Direction | Type                   | Description |
