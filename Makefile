@@ -44,7 +44,7 @@ else
   MODULE := all
 endif
 
-.PHONY: all help check build compile test run wave vivado vivado-all clean vivado-check xpr open utilization
+.PHONY: all help check build compile test run wave vivado vivado-all clean vivado-check xpr open utilization report
 
 all: test
 
@@ -58,6 +58,7 @@ help:
 	@echo "  make vivado-all        - Run all TBs with Vivado XSIM"
 	@echo "  make xpr               - Generate Vivado project via TCL"
 	@echo "  make utilization       - Synthesize and emit utilization report"
+	@echo "  make report            - Synthesize and emit multiple reports"
 	@echo "  make open              - Open the generated Vivado project"
 	@echo "  make clean             - Remove outputs"
 	@echo "Variables:"
@@ -173,6 +174,14 @@ utilization util: vivado-check $(SRC_FILES)
 	$(VIVADO_ENV); \
 	vivado -mode batch -nojournal -nolog -notrace \
 	-source scripts/utilization.tcl \
+	-tclargs "$(PART)" "$(DESIGN_TOP)" "$(abspath include)" \
+	$(foreach f,$(SRC_FILES),$(abspath $(f)))'
+
+report: vivado-check $(SRC_FILES)
+	@bash -lc 'set -e; \
+	$(VIVADO_ENV); \
+	vivado -mode batch -nojournal -nolog -notrace \
+	-source scripts/reports.tcl \
 	-tclargs "$(PART)" "$(DESIGN_TOP)" "$(abspath include)" \
 	$(foreach f,$(SRC_FILES),$(abspath $(f)))'
 
