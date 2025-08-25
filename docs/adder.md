@@ -8,12 +8,15 @@
 
 | Generic name | Type | Value | Description |
 | ------------ | ---- | ----- | ----------- |
-| WIDTH        | int  | 32    |             |
+| WIDTH        | int  | 32    | Bit-width of inputs and result |
 
 ## Ports
 
 | Port name | Direction | Type             | Description |
 | --------- | --------- | ---------------- | ----------- |
-| a         | input     | wire [WIDTH-1:0] |             |
-| b         | input     | wire [WIDTH-1:0] |             |
-| result    | output    | wire [WIDTH-1:0] |             |
+| a         | input     | wire [WIDTH-1:0] | First addend |
+| b         | input     | wire [WIDTH-1:0] | Second addend |
+| result    | output    | wire [WIDTH-1:0] | Sum of `a` and `b` |
+
+## Behavior
+Adds the two `WIDTH`‑bit operands and drives their `WIDTH`‑bit sum on `result`.
