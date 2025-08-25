@@ -22,6 +22,7 @@
 | --------- | --------- | ---- | ----------- |
 | clk       | input     | wire | System clock |
 | reset     | input     | wire | Asynchronous reset |
+| debug_pc  | output    | wire [31:0] | Current program counter for debug |
 
 ## Signals
 

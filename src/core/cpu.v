@@ -8,7 +8,8 @@ module cpu #(
     parameter         DMEM_FILE  = "src/data_mem.mem"
 ) (
     input wire clk,
-    input wire reset
+    input wire reset,
+    output wire [31:0] debug_pc
 );
 
 
@@ -72,7 +73,8 @@ module cpu #(
       .is_branch(is_branch),
       .is_jal(is_jal),
       .is_jalr(is_jalr),
-      .instr(instr)
+      .instr(instr),
+      .debug_pc(debug_pc)
   );
 
 endmodule

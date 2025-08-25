@@ -11,6 +11,7 @@ module cpu_tb;
   reg clk = 1'b0;
   reg reset = 1'b1;
   integer k;
+  wire [31:0] debug_pc;
 
   cpu #(
       .ADDR_WIDTH(ADDR_WIDTH),
@@ -18,7 +19,8 @@ module cpu_tb;
       .DMEM_FILE (DMEM_FILE)
   ) dut (
       .clk  (clk),
-      .reset(reset)
+      .reset(reset),
+      .debug_pc(debug_pc)
   );
 
   always #5 clk = ~clk;
@@ -32,7 +34,7 @@ module cpu_tb;
 
   always @(posedge clk)
     if (!reset) begin
-      $display("t=%0t PC=%h INSTR=%h", $time, dut.u_datapath.pc_current, dut.u_datapath.instr);
+      $display("t=%0t PC=%h INSTR=%h", $time, debug_pc, dut.u_datapath.instr);
     end
 
   always @(posedge clk) begin
@@ -88,7 +90,7 @@ module cpu_tb;
 
   //       if (dut.u_datapath.instr === 32'h0000_006F) begin
   //         $display("[INFO] Reached END_SENTINEL (jal x0,0) at PC=%h, cycle %0d",
-  //                  dut.u_datapath.pc_current, cycles);
+  //                  debug_pc, cycles);
   //         finished = 1'b1;
   //         disable end_test;
   //       end

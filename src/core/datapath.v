@@ -33,7 +33,8 @@ module datapath #(
     input wire is_jalr,
 
 
-    output wire [31:0] instr
+    output wire [31:0] instr,
+    output wire [31:0] debug_pc
 );
 
 
@@ -79,6 +80,7 @@ module datapath #(
   );
 
   assign pc_plus4 = pc_current + 32'd4;
+  assign debug_pc = pc_current;
 
 
   regfile u_rf (
