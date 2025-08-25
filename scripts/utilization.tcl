@@ -13,7 +13,8 @@ if { $part eq "" || $top eq "" || $incdir eq "" || [llength $sources] == 0 } {
 
 # Read all source files, supplying the include directory so that
 # `\`include` directives resolve correctly
-read_verilog -sv -include $incdir $sources
+set_property include_dirs $incdir [current_fileset]
+read_verilog -sv $sources
 
 # Run synthesis and emit utilization report
 synth_design -top $top -part $part
