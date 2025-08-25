@@ -10,6 +10,7 @@ date: "2025-08-25"
 - Show architecture with controller and datapath blocks
 ![CPU schematic](cpu.svg)
 
+
 ---
 
 # Agenda
@@ -120,4 +121,3 @@ xsim work.cpu_tb          # run
 - Review accomplishments & next steps
 - Point to repository for details
 - Thanks!
-

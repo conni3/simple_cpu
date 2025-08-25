@@ -3,7 +3,7 @@
 - **File**: alu_control.v
 
 ## Diagram
-![Diagram](alu_control.svg "Diagram")
+![Diagram](../images/docs/alu_control.svg "Diagram")
 ## Ports
 
 | Port name | Direction | Type        | Description |

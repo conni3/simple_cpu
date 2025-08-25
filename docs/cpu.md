@@ -3,7 +3,7 @@
 - **File**: cpu.v
 
 ## Diagram
-![Diagram](cpu.svg "Diagram")
+![Diagram](../images/docs/cpu.svg "Diagram")
 ## Generics
 
 | Generic name | Type    | Value               | Description |

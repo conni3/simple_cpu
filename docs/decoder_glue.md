@@ -3,7 +3,7 @@
 - **File**: decoder_glue.v
 
 ## Diagram
-![Diagram](decoder_glue.svg "Diagram")
+![Diagram](../images/docs/decoder_glue.svg "Diagram")
 ## Generics
 
 | Generic name | Type | Value | Description |

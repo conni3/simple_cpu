@@ -3,7 +3,7 @@
 - **File**: instr_slicer.v
 
 ## Diagram
-![Diagram](instr_slicer.svg "Diagram")
+![Diagram](../images/docs/instr_slicer.svg "Diagram")
 ## Ports
 
 | Port name | Direction | Type        | Description |
