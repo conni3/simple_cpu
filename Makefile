@@ -44,7 +44,7 @@ else
   MODULE := all
 endif
 
-.PHONY: all help check build compile test run wave vivado vivado-all clean vivado-check xpr open
+.PHONY: all help check build compile test run wave vivado vivado-all clean vivado-check xpr open utilization
 
 all: test
 
@@ -57,6 +57,7 @@ help:
 	@echo "  make vivado comp=mod   - Run with Vivado XSIM (Verilog)"
 	@echo "  make vivado-all        - Run all TBs with Vivado XSIM"
 	@echo "  make xpr               - Generate Vivado project via TCL"
+	@echo "  make utilization       - Synthesize and emit utilization report"
 	@echo "  make open              - Open the generated Vivado project"
 	@echo "  make clean             - Remove outputs"
 	@echo "Variables:"
@@ -136,8 +137,9 @@ clean:
 	@echo "=== Cleaning up ==="
 	rm -rf $(OUT_DIR) $(VCD_DIR) *.vcd *.wdb *.jou *.log *.pb work xsim.dir .Xil simv simv.vcd dump.vcd *.wcfg *.str
 
-PART ?= xc7z010clg400-1
-TOP  ?= cpu_tb
+PART       ?= xc7z010clg400-1
+TOP        ?= cpu_tb
+DESIGN_TOP ?= cpu
 # Files to feed into Vivado/TCL
 SRC_FILES := $(RTL)
 
@@ -166,6 +168,14 @@ xpr: vivado-check $(SRC_FILES) $(TB_FILES)
 
 open: xpr
 	@bash -lc '$(VIVADO_ENV); vivado vivado_proj/simple_cpu.xpr &'
+
+utilization util: vivado-check $(SRC_FILES)
+	@bash -lc 'set -e; \
+	$(VIVADO_ENV); \
+	vivado -mode batch -nojournal -nolog -notrace \
+	-source scripts/utilization.tcl \
+	-tclargs "$(PART)" "$(DESIGN_TOP)" \
+	$(foreach f,$(SRC_FILES),$(abspath $(f)))'
 
 
 # # -------- Yosys / netlistsvg (Verilog only) --------
