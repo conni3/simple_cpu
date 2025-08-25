@@ -177,43 +177,43 @@ utilization util: vivado-check $(SRC_FILES)
 	$(foreach f,$(SRC_FILES),$(abspath $(f)))'
 
 
-# # -------- Yosys / netlistsvg (Verilog only) --------
-# YOSYS       ?= yosys
-# JQ          ?= jq
-# NETLISTSVG  ?= netlistsvg
-# SCHEM_DIR   ?= images
+# -------- Yosys / netlistsvg (Verilog only) --------
+YOSYS       ?= yosys
+JQ          ?= jq
+NETLISTSVG  ?= netlistsvg
+SCHEM_DIR   ?= images
 
-# YS_RTL ?= $(shell find src -type f -name '*.v' | sort)
-# YS_READ_CMDS = verilog_defaults -add -I include; $(foreach f,$(YS_RTL),read_verilog $(f); )
+YS_RTL ?= $(shell find src -type f -name '*.v' | sort)
+YS_READ_CMDS = verilog_defaults -add -I include; $(foreach f,$(YS_RTL),read_verilog $(f); )
 
-# .PHONY: mods schem schem-top schem-clean
-# $(SCHEM_DIR): ; @mkdir -p $@
+.PHONY: mods schem schem-top schem-clean
+$(SCHEM_DIR): ; @mkdir -p $@
 
-# mods:
-# 	@$(YOSYS) -q -p "$(YS_READ_CMDS); proc; write_json /dev/stdout" \
-# 	| $(JQ) -r '.modules | keys[] | select(startswith("$$")|not)'
+mods:
+	@$(YOSYS) -q -p "$(YS_READ_CMDS); proc; write_json /dev/stdout" \
+	| $(JQ) -r '.modules | keys[] | select(startswith("$$")|not)'
 
-# schem: $(SCHEM_DIR)
-# 	@command -v $(YOSYS) >/dev/null || { echo "yosys not found"; exit 1; }
-# 	@command -v $(JQ)    >/dev/null || { echo "jq not found"; exit 1; }
-# 	@command -v $(NETLISTSVG) >/dev/null || { echo "netlistsvg not found"; exit 1; }
-# 	@mods="$$( $(YOSYS) -q -p '$(YS_READ_CMDS); proc; write_json /dev/stdout' \
-# 	          | $(JQ) -r '.modules | keys[] | select(startswith("$$")|not)' )"; \
-# 	if [ -z "$$mods" ]; then echo "No modules found."; exit 1; fi; \
-# 	echo "== Rendering (per-module JSON) =="; \
-# 	for m in $$mods; do \
-# 	  echo "→ $$m"; \
-# 	  $(YOSYS) -q -p "$(YS_READ_CMDS); hierarchy -check -top $$m; \
-# 	    proc; memory -nomap; opt; opt_clean; write_json $(SCHEM_DIR)/$$m.json"; \
-# 	  $(NETLISTSVG) $(SCHEM_DIR)/$$m.json -o $(SCHEM_DIR)/$$m.svg; \
-# 	done; \
-# 	echo "== Schematics in $(SCHEM_DIR)/ =="
+schem: $(SCHEM_DIR)
+	@command -v $(YOSYS) >/dev/null || { echo "yosys not found"; exit 1; }
+	@command -v $(JQ)    >/dev/null || { echo "jq not found"; exit 1; }
+	@command -v $(NETLISTSVG) >/dev/null || { echo "netlistsvg not found"; exit 1; }
+	@mods="$$( $(YOSYS) -q -p '$(YS_READ_CMDS); proc; write_json /dev/stdout' \
+	          | $(JQ) -r '.modules | keys[] | select(startswith("$$")|not)' )"; \
+	if [ -z "$$mods" ]; then echo "No modules found."; exit 1; fi; \
+	echo "== Rendering (per-module JSON) =="; \
+	for m in $$mods; do \
+	  echo "→ $$m"; \
+	  $(YOSYS) -q -p "$(YS_READ_CMDS); hierarchy -check -top $$m; \
+	    proc; memory -nomap; opt; opt_clean; write_json $(SCHEM_DIR)/$$m.json"; \
+	  $(NETLISTSVG) $(SCHEM_DIR)/$$m.json -o $(SCHEM_DIR)/$$m.svg; \
+	done; \
+	echo "== Schematics in $(SCHEM_DIR)/ =="
 
-# schem-top: $(SCHEM_DIR)
-# 	@[ -n "$(comp)" ] || { echo "Usage: make schem-top comp=<module_name>"; exit 2; }
-# 	@$(YOSYS) -q -p "$(YS_READ_CMDS); hierarchy -check -top $(comp); \
-# 	  proc; memory -nomap; opt; opt_clean; write_json $(SCHEM_DIR)/$(comp).json"
-# 	@$(NETLISTSVG) $(SCHEM_DIR)/$(comp).json -o $(SCHEM_DIR)/$(comp).svg
+schem-top: $(SCHEM_DIR)
+	@[ -n "$(comp)" ] || { echo "Usage: make schem-top comp=<module_name>"; exit 2; }
+	@$(YOSYS) -q -p "$(YS_READ_CMDS); hierarchy -check -top $(comp); \
+	  proc; memory -nomap; opt; opt_clean; write_json $(SCHEM_DIR)/$(comp).json"
+	@$(NETLISTSVG) $(SCHEM_DIR)/$(comp).json -o $(SCHEM_DIR)/$(comp).svg
 
-# schem-clean:
-# 	@rm -f $(SCHEM_DIR)/*.json $(SCHEM_DIR)/*.svg
+schem-clean:
+	@rm -f $(SCHEM_DIR)/*.json $(SCHEM_DIR)/*.svg

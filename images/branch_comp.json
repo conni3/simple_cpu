@@ -4,7 +4,7 @@
     "branch_comp": {
       "attributes": {
         "top": "00000000000000000000000000000001",
-        "src": "src/leaf/branch_comp.v:5.1-32.10"
+        "src": "src/leaf/branch_comp.v:5.1-31.10"
       },
       "ports": {
         "op1": {
@@ -19,13 +19,13 @@
           "direction": "input",
           "bits": [ 66, 67, 68 ]
         },
-        "branch": {
+        "branch_taken": {
           "direction": "output",
           "bits": [ 69 ]
         }
       },
       "cells": {
-        "$eq$src/leaf/branch_comp.v:22$18": {
+        "$eq$src/leaf/branch_comp.v:21$52": {
           "hide_name": 1,
           "type": "$eq",
           "parameters": {
@@ -36,7 +36,7 @@
             "Y_WIDTH": "00000000000000000000000000000001"
           },
           "attributes": {
-            "src": "src/leaf/branch_comp.v:22.22-22.32"
+            "src": "src/leaf/branch_comp.v:21.28-21.38"
           },
           "port_directions": {
             "A": "input",
@@ -49,7 +49,7 @@
             "Y": [ 70 ]
           }
         },
-        "$ge$src/leaf/branch_comp.v:25$21": {
+        "$ge$src/leaf/branch_comp.v:24$55": {
           "hide_name": 1,
           "type": "$ge",
           "parameters": {
@@ -60,7 +60,7 @@
             "Y_WIDTH": "00000000000000000000000000000001"
           },
           "attributes": {
-            "src": "src/leaf/branch_comp.v:25.22-25.50"
+            "src": "src/leaf/branch_comp.v:24.28-24.56"
           },
           "port_directions": {
             "A": "input",
@@ -73,7 +73,7 @@
             "Y": [ 71 ]
           }
         },
-        "$ge$src/leaf/branch_comp.v:27$23": {
+        "$ge$src/leaf/branch_comp.v:26$57": {
           "hide_name": 1,
           "type": "$ge",
           "parameters": {
@@ -84,7 +84,7 @@
             "Y_WIDTH": "00000000000000000000000000000001"
           },
           "attributes": {
-            "src": "src/leaf/branch_comp.v:27.23-27.33"
+            "src": "src/leaf/branch_comp.v:26.29-26.39"
           },
           "port_directions": {
             "A": "input",
@@ -97,7 +97,7 @@
             "Y": [ 72 ]
           }
         },
-        "$lt$src/leaf/branch_comp.v:24$20": {
+        "$lt$src/leaf/branch_comp.v:23$54": {
           "hide_name": 1,
           "type": "$lt",
           "parameters": {
@@ -108,7 +108,7 @@
             "Y_WIDTH": "00000000000000000000000000000001"
           },
           "attributes": {
-            "src": "src/leaf/branch_comp.v:24.22-24.49"
+            "src": "src/leaf/branch_comp.v:23.28-23.55"
           },
           "port_directions": {
             "A": "input",
@@ -121,7 +121,7 @@
             "Y": [ 73 ]
           }
         },
-        "$lt$src/leaf/branch_comp.v:26$22": {
+        "$lt$src/leaf/branch_comp.v:25$56": {
           "hide_name": 1,
           "type": "$lt",
           "parameters": {
@@ -132,7 +132,7 @@
             "Y_WIDTH": "00000000000000000000000000000001"
           },
           "attributes": {
-            "src": "src/leaf/branch_comp.v:26.23-26.32"
+            "src": "src/leaf/branch_comp.v:25.29-25.38"
           },
           "port_directions": {
             "A": "input",
@@ -145,7 +145,7 @@
             "Y": [ 74 ]
           }
         },
-        "$ne$src/leaf/branch_comp.v:23$19": {
+        "$ne$src/leaf/branch_comp.v:22$53": {
           "hide_name": 1,
           "type": "$ne",
           "parameters": {
@@ -156,7 +156,7 @@
             "Y_WIDTH": "00000000000000000000000000000001"
           },
           "attributes": {
-            "src": "src/leaf/branch_comp.v:23.22-23.32"
+            "src": "src/leaf/branch_comp.v:22.28-22.38"
           },
           "port_directions": {
             "A": "input",
@@ -169,7 +169,7 @@
             "Y": [ 75 ]
           }
         },
-        "$procmux$202": {
+        "$procmux$227": {
           "hide_name": 1,
           "type": "$pmux",
           "parameters": {
@@ -178,7 +178,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:21.5-29.12"
+            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:20.5-28.12"
           },
           "port_directions": {
             "A": "input",
@@ -193,7 +193,7 @@
             "Y": [ 69 ]
           }
         },
-        "$procmux$203_CMP0": {
+        "$procmux$228_CMP0": {
           "hide_name": 1,
           "type": "$eq",
           "parameters": {
@@ -205,7 +205,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:21.5-29.12"
+            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:20.5-28.12"
           },
           "port_directions": {
             "A": "input",
@@ -218,7 +218,7 @@
             "Y": [ 76 ]
           }
         },
-        "$procmux$204_CMP0": {
+        "$procmux$229_CMP0": {
           "hide_name": 1,
           "type": "$eq",
           "parameters": {
@@ -230,7 +230,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:21.5-29.12"
+            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:20.5-28.12"
           },
           "port_directions": {
             "A": "input",
@@ -243,7 +243,7 @@
             "Y": [ 77 ]
           }
         },
-        "$procmux$205_CMP0": {
+        "$procmux$230_CMP0": {
           "hide_name": 1,
           "type": "$eq",
           "parameters": {
@@ -255,7 +255,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:21.5-29.12"
+            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:20.5-28.12"
           },
           "port_directions": {
             "A": "input",
@@ -268,7 +268,7 @@
             "Y": [ 78 ]
           }
         },
-        "$procmux$206_CMP0": {
+        "$procmux$231_CMP0": {
           "hide_name": 1,
           "type": "$eq",
           "parameters": {
@@ -280,7 +280,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:21.5-29.12"
+            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:20.5-28.12"
           },
           "port_directions": {
             "A": "input",
@@ -293,7 +293,7 @@
             "Y": [ 79 ]
           }
         },
-        "$procmux$207_CMP0": {
+        "$procmux$232_CMP0": {
           "hide_name": 1,
           "type": "$eq",
           "parameters": {
@@ -305,7 +305,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:21.5-29.12"
+            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:20.5-28.12"
           },
           "port_directions": {
             "A": "input",
@@ -318,7 +318,7 @@
             "Y": [ 80 ]
           }
         },
-        "$procmux$208_CMP0": {
+        "$procmux$233_CMP0": {
           "hide_name": 1,
           "type": "$logic_not",
           "parameters": {
@@ -328,7 +328,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:21.5-29.12"
+            "src": "src/leaf/branch_comp.v:0.0-0.0|src/leaf/branch_comp.v:20.5-28.12"
           },
           "port_directions": {
             "A": "input",
@@ -341,89 +341,89 @@
         }
       },
       "netnames": {
-        "$eq$src/leaf/branch_comp.v:22$18_Y": {
+        "$eq$src/leaf/branch_comp.v:21$52_Y": {
           "hide_name": 1,
           "bits": [ 70 ],
           "attributes": {
-            "src": "src/leaf/branch_comp.v:22.22-22.32"
+            "src": "src/leaf/branch_comp.v:21.28-21.38"
           }
         },
-        "$ge$src/leaf/branch_comp.v:25$21_Y": {
+        "$ge$src/leaf/branch_comp.v:24$55_Y": {
           "hide_name": 1,
           "bits": [ 71 ],
           "attributes": {
-            "src": "src/leaf/branch_comp.v:25.22-25.50"
+            "src": "src/leaf/branch_comp.v:24.28-24.56"
           }
         },
-        "$ge$src/leaf/branch_comp.v:27$23_Y": {
+        "$ge$src/leaf/branch_comp.v:26$57_Y": {
           "hide_name": 1,
           "bits": [ 72 ],
           "attributes": {
-            "src": "src/leaf/branch_comp.v:27.23-27.33"
+            "src": "src/leaf/branch_comp.v:26.29-26.39"
           }
         },
-        "$lt$src/leaf/branch_comp.v:24$20_Y": {
+        "$lt$src/leaf/branch_comp.v:23$54_Y": {
           "hide_name": 1,
           "bits": [ 73 ],
           "attributes": {
-            "src": "src/leaf/branch_comp.v:24.22-24.49"
+            "src": "src/leaf/branch_comp.v:23.28-23.55"
           }
         },
-        "$lt$src/leaf/branch_comp.v:26$22_Y": {
+        "$lt$src/leaf/branch_comp.v:25$56_Y": {
           "hide_name": 1,
           "bits": [ 74 ],
           "attributes": {
-            "src": "src/leaf/branch_comp.v:26.23-26.32"
+            "src": "src/leaf/branch_comp.v:25.29-25.38"
           }
         },
-        "$ne$src/leaf/branch_comp.v:23$19_Y": {
+        "$ne$src/leaf/branch_comp.v:22$53_Y": {
           "hide_name": 1,
           "bits": [ 75 ],
           "attributes": {
-            "src": "src/leaf/branch_comp.v:23.22-23.32"
+            "src": "src/leaf/branch_comp.v:22.28-22.38"
           }
         },
-        "$procmux$203_CMP": {
+        "$procmux$228_CMP": {
           "hide_name": 1,
           "bits": [ 76 ],
           "attributes": {
           }
         },
-        "$procmux$204_CMP": {
+        "$procmux$229_CMP": {
           "hide_name": 1,
           "bits": [ 77 ],
           "attributes": {
           }
         },
-        "$procmux$205_CMP": {
+        "$procmux$230_CMP": {
           "hide_name": 1,
           "bits": [ 78 ],
           "attributes": {
           }
         },
-        "$procmux$206_CMP": {
+        "$procmux$231_CMP": {
           "hide_name": 1,
           "bits": [ 79 ],
           "attributes": {
           }
         },
-        "$procmux$207_CMP": {
+        "$procmux$232_CMP": {
           "hide_name": 1,
           "bits": [ 80 ],
           "attributes": {
           }
         },
-        "$procmux$208_CMP": {
+        "$procmux$233_CMP": {
           "hide_name": 1,
           "bits": [ 81 ],
           "attributes": {
           }
         },
-        "branch": {
+        "branch_taken": {
           "hide_name": 0,
           "bits": [ 69 ],
           "attributes": {
-            "src": "src/leaf/branch_comp.v:9.24-9.30"
+            "src": "src/leaf/branch_comp.v:9.24-9.36"
           }
         },
         "funct3": {

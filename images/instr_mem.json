@@ -3,8 +3,13 @@
   "modules": {
     "instr_mem": {
       "attributes": {
+        "dynports": "00000000000000000000000000000001",
         "top": "00000000000000000000000000000001",
-        "src": "src/leaf/instr_mem.v:5.1-20.10"
+        "src": "src/leaf/instr_mem.v:3.1-21.10"
+      },
+      "parameter_default_values": {
+        "ADDR_WIDTH": "00000000000000000000000000001011",
+        "MEM_FILE": "src/instr_mem.mem"
       },
       "ports": {
         "addr": {
@@ -44,7 +49,7 @@
             "WR_WIDE_CONTINUATION": "0"
           },
           "attributes": {
-            "src": "src/leaf/instr_mem.v:10.14-10.17"
+            "src": "src/leaf/instr_mem.v:11.14-11.17"
           },
           "port_directions": {
             "RD_ADDR": "input",
@@ -77,14 +82,14 @@
           "hide_name": 0,
           "bits": [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
           "attributes": {
-            "src": "src/leaf/instr_mem.v:6.24-6.28"
+            "src": "src/leaf/instr_mem.v:7.34-7.38"
           }
         },
         "instr": {
           "hide_name": 0,
           "bits": [ 13, "1", "0", "0", 14, 15, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
           "attributes": {
-            "src": "src/leaf/instr_mem.v:7.24-7.29"
+            "src": "src/leaf/instr_mem.v:8.34-8.39"
           }
         }
       }

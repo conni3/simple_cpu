@@ -3,19 +3,24 @@
   "modules": {
     "data_mem": {
       "attributes": {
+        "dynports": "00000000000000000000000000000001",
         "top": "00000000000000000000000000000001",
-        "src": "src/leaf/data_mem.v:3.1-21.10"
+        "src": "src/leaf/data_mem.v:3.1-30.10"
+      },
+      "parameter_default_values": {
+        "ADDR_WIDTH": "00000000000000000000000000001011",
+        "MEM_FILE": "src/data_mem.mem"
       },
       "ports": {
         "clk": {
           "direction": "input",
           "bits": [ 2 ]
         },
-        "we": {
+        "mem_write": {
           "direction": "input",
           "bits": [ 3 ]
         },
-        "re": {
+        "mem_read": {
           "direction": "input",
           "bits": [ 4 ]
         },
@@ -23,17 +28,17 @@
           "direction": "input",
           "bits": [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ]
         },
-        "write_data": {
+        "wdata": {
           "direction": "input",
           "bits": [ 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 ]
         },
-        "read_data": {
+        "rdata": {
           "direction": "output",
           "bits": [ 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 ]
         }
       },
       "cells": {
-        "$procmux$202": {
+        "$procmux$227": {
           "hide_name": 1,
           "type": "$mux",
           "parameters": {
@@ -41,7 +46,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/data_mem.v:15.9-15.11|src/leaf/data_mem.v:15.5-17.8"
+            "src": "src/leaf/data_mem.v:21.9-21.18|src/leaf/data_mem.v:21.5-23.8"
           },
           "port_directions": {
             "A": "input",
@@ -56,7 +61,7 @@
             "Y": [ 80 ]
           }
         },
-        "$procmux$205": {
+        "$procmux$230": {
           "hide_name": 1,
           "type": "$mux",
           "parameters": {
@@ -64,7 +69,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/data_mem.v:15.9-15.11|src/leaf/data_mem.v:15.5-17.8"
+            "src": "src/leaf/data_mem.v:21.9-21.18|src/leaf/data_mem.v:21.5-23.8"
           },
           "port_directions": {
             "A": "input",
@@ -79,7 +84,7 @@
             "Y": [ 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112 ]
           }
         },
-        "$procmux$208": {
+        "$procmux$233": {
           "hide_name": 1,
           "type": "$mux",
           "parameters": {
@@ -87,7 +92,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/data_mem.v:15.9-15.11|src/leaf/data_mem.v:15.5-17.8"
+            "src": "src/leaf/data_mem.v:21.9-21.18|src/leaf/data_mem.v:21.5-23.8"
           },
           "port_directions": {
             "A": "input",
@@ -102,6 +107,28 @@
             "Y": [ 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123 ]
           }
         },
+        "$ternary$src/leaf/data_mem.v:27$70": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000100000"
+          },
+          "attributes": {
+            "src": "src/leaf/data_mem.v:27.13-27.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
+            "B": [ 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155 ],
+            "S": [ 4 ],
+            "Y": [ 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 ]
+          }
+        },
         "mem": {
           "hide_name": 0,
           "type": "$mem_v2",
@@ -112,8 +139,8 @@
             "OFFSET": "00000000000000000000000000000000",
             "RD_ARST_VALUE": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
             "RD_CE_OVER_SRST": "0",
-            "RD_CLK_ENABLE": "1",
-            "RD_CLK_POLARITY": "1",
+            "RD_CLK_ENABLE": "0",
+            "RD_CLK_POLARITY": "0",
             "RD_COLLISION_X_MASK": "0",
             "RD_INIT_VALUE": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
             "RD_PORTS": "00000000000000000000000000000001",
@@ -129,7 +156,7 @@
             "WR_WIDE_CONTINUATION": "0"
           },
           "attributes": {
-            "src": "src/leaf/data_mem.v:12.14-12.17"
+            "src": "src/leaf/data_mem.v:15.14-15.17"
           },
           "port_directions": {
             "RD_ADDR": "input",
@@ -146,8 +173,8 @@
           "connections": {
             "RD_ADDR": [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],
             "RD_ARST": [ "0" ],
-            "RD_CLK": [ 2 ],
-            "RD_DATA": [ 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 ],
+            "RD_CLK": [ "x" ],
+            "RD_DATA": [ 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155 ],
             "RD_EN": [ "1" ],
             "RD_SRST": [ "0" ],
             "WR_ADDR": [ 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123 ],
@@ -158,67 +185,74 @@
         }
       },
       "netnames": {
-        "$0$memwr$\\mem$src/leaf/data_mem.v:16$25_ADDR[10:0]$27": {
+        "$0$memwr$\\mem$src/leaf/data_mem.v:22$60_ADDR[10:0]$62": {
           "hide_name": 1,
           "bits": [ 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123 ],
           "attributes": {
-            "src": "src/leaf/data_mem.v:14.3-19.6"
+            "src": "src/leaf/data_mem.v:20.3-24.6"
           }
         },
-        "$0$memwr$\\mem$src/leaf/data_mem.v:16$25_DATA[31:0]$28": {
+        "$0$memwr$\\mem$src/leaf/data_mem.v:22$60_DATA[31:0]$63": {
           "hide_name": 1,
           "bits": [ 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112 ],
           "attributes": {
-            "src": "src/leaf/data_mem.v:14.3-19.6"
+            "src": "src/leaf/data_mem.v:20.3-24.6"
           }
         },
-        "$0$memwr$\\mem$src/leaf/data_mem.v:16$25_EN[31:0]$29": {
+        "$0$memwr$\\mem$src/leaf/data_mem.v:22$60_EN[31:0]$64": {
           "hide_name": 1,
           "bits": [ 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80 ],
           "attributes": {
-            "src": "src/leaf/data_mem.v:14.3-19.6"
+            "src": "src/leaf/data_mem.v:20.3-24.6"
+          }
+        },
+        "$memrd$\\mem$src/leaf/data_mem.v:27$69_DATA": {
+          "hide_name": 1,
+          "bits": [ 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155 ],
+          "attributes": {
+            "src": "src/leaf/data_mem.v:27.24-27.27"
           }
         },
         "addr": {
           "hide_name": 0,
           "bits": [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],
           "attributes": {
-            "src": "src/leaf/data_mem.v:7.24-7.28"
+            "src": "src/leaf/data_mem.v:10.34-10.38"
           }
         },
         "clk": {
           "hide_name": 0,
           "bits": [ 2 ],
           "attributes": {
-            "src": "src/leaf/data_mem.v:4.24-4.27"
+            "src": "src/leaf/data_mem.v:7.34-7.37"
           }
         },
-        "re": {
+        "mem_read": {
           "hide_name": 0,
           "bits": [ 4 ],
           "attributes": {
-            "src": "src/leaf/data_mem.v:6.24-6.26"
+            "src": "src/leaf/data_mem.v:9.34-9.42"
           }
         },
-        "read_data": {
-          "hide_name": 0,
-          "bits": [ 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 ],
-          "attributes": {
-            "src": "src/leaf/data_mem.v:9.24-9.33"
-          }
-        },
-        "we": {
+        "mem_write": {
           "hide_name": 0,
           "bits": [ 3 ],
           "attributes": {
-            "src": "src/leaf/data_mem.v:5.24-5.26"
+            "src": "src/leaf/data_mem.v:8.34-8.43"
           }
         },
-        "write_data": {
+        "rdata": {
+          "hide_name": 0,
+          "bits": [ 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 ],
+          "attributes": {
+            "src": "src/leaf/data_mem.v:12.34-12.39"
+          }
+        },
+        "wdata": {
           "hide_name": 0,
           "bits": [ 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 ],
           "attributes": {
-            "src": "src/leaf/data_mem.v:8.24-8.34"
+            "src": "src/leaf/data_mem.v:11.34-11.39"
           }
         }
       }

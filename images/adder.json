@@ -25,7 +25,7 @@
         }
       },
       "cells": {
-        "$add$src/leaf/adder.v:13$1": {
+        "$add$src/leaf/adder.v:13$33": {
           "hide_name": 1,
           "type": "$add",
           "parameters": {

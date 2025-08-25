@@ -4,7 +4,7 @@
     "imm_gen": {
       "attributes": {
         "top": "00000000000000000000000000000001",
-        "src": "src/leaf/imm_gen.v:4.1-25.10"
+        "src": "src/leaf/imm_gen.v:4.1-26.10"
       },
       "ports": {
         "instr": {
@@ -21,7 +21,7 @@
         }
       },
       "cells": {
-        "$procmux$202": {
+        "$procmux$228": {
           "hide_name": 1,
           "type": "$pmux",
           "parameters": {
@@ -30,7 +30,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/imm_gen.v:0.0-0.0|src/leaf/imm_gen.v:16.5-23.12"
+            "src": "src/leaf/imm_gen.v:0.0-0.0|src/leaf/imm_gen.v:16.5-24.12"
           },
           "port_directions": {
             "A": "input",
@@ -45,7 +45,7 @@
             "Y": [ 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68 ]
           }
         },
-        "$procmux$203_CMP0": {
+        "$procmux$229_CMP0": {
           "hide_name": 1,
           "type": "$eq",
           "parameters": {
@@ -57,7 +57,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/imm_gen.v:0.0-0.0|src/leaf/imm_gen.v:16.5-23.12"
+            "src": "src/leaf/imm_gen.v:0.0-0.0|src/leaf/imm_gen.v:16.5-24.12"
           },
           "port_directions": {
             "A": "input",
@@ -70,7 +70,7 @@
             "Y": [ 69 ]
           }
         },
-        "$procmux$204_CMP0": {
+        "$procmux$230_CMP0": {
           "hide_name": 1,
           "type": "$eq",
           "parameters": {
@@ -82,7 +82,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/imm_gen.v:0.0-0.0|src/leaf/imm_gen.v:16.5-23.12"
+            "src": "src/leaf/imm_gen.v:0.0-0.0|src/leaf/imm_gen.v:16.5-24.12"
           },
           "port_directions": {
             "A": "input",
@@ -95,7 +95,7 @@
             "Y": [ 70 ]
           }
         },
-        "$procmux$205_CMP0": {
+        "$procmux$231_CMP0": {
           "hide_name": 1,
           "type": "$eq",
           "parameters": {
@@ -107,7 +107,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/imm_gen.v:0.0-0.0|src/leaf/imm_gen.v:16.5-23.12"
+            "src": "src/leaf/imm_gen.v:0.0-0.0|src/leaf/imm_gen.v:16.5-24.12"
           },
           "port_directions": {
             "A": "input",
@@ -120,7 +120,7 @@
             "Y": [ 71 ]
           }
         },
-        "$procmux$206_CMP0": {
+        "$procmux$232_CMP0": {
           "hide_name": 1,
           "type": "$eq",
           "parameters": {
@@ -132,7 +132,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/imm_gen.v:0.0-0.0|src/leaf/imm_gen.v:16.5-23.12"
+            "src": "src/leaf/imm_gen.v:0.0-0.0|src/leaf/imm_gen.v:16.5-24.12"
           },
           "port_directions": {
             "A": "input",
@@ -145,7 +145,7 @@
             "Y": [ 72 ]
           }
         },
-        "$procmux$207_CMP0": {
+        "$procmux$233_CMP0": {
           "hide_name": 1,
           "type": "$logic_not",
           "parameters": {
@@ -155,7 +155,7 @@
           },
           "attributes": {
             "full_case": "00000000000000000000000000000001",
-            "src": "src/leaf/imm_gen.v:0.0-0.0|src/leaf/imm_gen.v:16.5-23.12"
+            "src": "src/leaf/imm_gen.v:0.0-0.0|src/leaf/imm_gen.v:16.5-24.12"
           },
           "port_directions": {
             "A": "input",
@@ -168,31 +168,31 @@
         }
       },
       "netnames": {
-        "$procmux$203_CMP": {
+        "$procmux$229_CMP": {
           "hide_name": 1,
           "bits": [ 69 ],
           "attributes": {
           }
         },
-        "$procmux$204_CMP": {
+        "$procmux$230_CMP": {
           "hide_name": 1,
           "bits": [ 70 ],
           "attributes": {
           }
         },
-        "$procmux$205_CMP": {
+        "$procmux$231_CMP": {
           "hide_name": 1,
           "bits": [ 71 ],
           "attributes": {
           }
         },
-        "$procmux$206_CMP": {
+        "$procmux$232_CMP": {
           "hide_name": 1,
           "bits": [ 72 ],
           "attributes": {
           }
         },
-        "$procmux$207_CMP": {
+        "$procmux$233_CMP": {
           "hide_name": 1,
           "bits": [ 73 ],
           "attributes": {

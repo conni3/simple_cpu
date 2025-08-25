@@ -29,7 +29,7 @@
         }
       },
       "cells": {
-        "$ternary$src/leaf/mux2.v:11$57": {
+        "$ternary$src/leaf/mux2.v:11$95": {
           "hide_name": 1,
           "type": "$mux",
           "parameters": {
