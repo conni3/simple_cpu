@@ -85,7 +85,7 @@ wave: test
 	@echo "=== GTKWave: $(VCD) ==="
 	$(GTK) "$(VCD)" &
 
-vivado: $(RTL) $(TBFILE)
+	vivado: $(RTL) $(TBFILE)
 	@echo "=== Vivado XSIM: $(MODULE) (Verilog) ==="
 	bash -lc '$(VIVADO_ENV); $(XSVLOG) $(XSIM_VLOG_FLAGS) $(RTL) "$(TBFILE)"'
 	bash -lc '$(VIVADO_ENV); $(XELAB) $(XSIM_ELAB_FLAGS) -snapshot $(MODULE)_sim work.$(MODULE)_tb'
@@ -122,7 +122,7 @@ test run: build | $(VCD_DIR)
 wave:
 	@echo "Open a VCD with: gtkwave waves/<tb_name>.vcd"
 
-vivado-all:
+	vivado-all:
 	@set -e; for tb in $(ALL_TB); do \
 	  name=$${tb#tb/}; name=$${name%_tb.v}; \
 	  echo "=== Vivado XSIM: $$name (Verilog) ==="; \
@@ -150,21 +150,20 @@ else
   TB_FILES := $(ALL_TB)
 endif
 
-
-
+# ensure Vivado is available before running other tasks
 vivado-check:
 	@bash -lc 'test -f "$(VIVADO_SETTINGS)" || { echo "Missing: $(VIVADO_SETTINGS)"; exit 1; }'
 	@bash -lc '$(VIVADO_ENV); command -v vivado >/dev/null || { echo "vivado not in PATH after sourcing settings"; exit 1; }'
 	@echo "Vivado found."
-	
+
 xpr: vivado-check $(SRC_FILES) $(TB_FILES)
 	@bash -lc 'set -e; \
-	  $(VIVADO_ENV); \
-	  vivado -mode batch -nojournal -nolog -notrace \
-	    -source scripts/create_project.tcl \
-	    -tclargs "$(PART)" "$(TOP)" \
-	      $(foreach f,$(SRC_FILES),$(abspath $(f))) \
-	      $(foreach f,$(TB_FILES),$(abspath $(f)))'
+	$(VIVADO_ENV); \
+	vivado -mode batch -nojournal -nolog -notrace \
+	-source scripts/create_project.tcl \
+	-tclargs "$(PART)" "$(TOP)" \
+	  $(foreach f,$(SRC_FILES),$(abspath $(f))) \
+	  $(foreach f,$(TB_FILES),$(abspath $(f)))'
 
 open: xpr
 	@bash -lc '$(VIVADO_ENV); vivado vivado_proj/simple_cpu.xpr &'
@@ -174,7 +173,7 @@ utilization util: vivado-check $(SRC_FILES)
 	$(VIVADO_ENV); \
 	vivado -mode batch -nojournal -nolog -notrace \
 	-source scripts/utilization.tcl \
-	-tclargs "$(PART)" "$(DESIGN_TOP)" \
+	-tclargs "$(PART)" "$(DESIGN_TOP)" "$(abspath include)" \
 	$(foreach f,$(SRC_FILES),$(abspath $(f)))'
 
 
