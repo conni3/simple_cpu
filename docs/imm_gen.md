@@ -4,6 +4,9 @@
 
 ## Diagram
 ![Diagram](../images/docs/imm_gen.svg "Diagram")
+
+## Schematic
+![Schematic](../images/schematics/imm_gen.svg "Schematic")
 ## Ports
 
 | Port name | Direction | Type        | Description |

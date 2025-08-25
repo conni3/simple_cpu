@@ -4,6 +4,9 @@
 
 ## Diagram
 ![Diagram](../images/docs/datapath.svg "Diagram")
+
+## Schematic
+![Schematic](../images/schematics/datapath.svg "Schematic")
 ## Generics
 
 | Generic name | Type    | Value               | Description |

@@ -4,6 +4,9 @@
 
 ## Diagram
 ![Diagram](../images/docs/wb_mux.svg "Diagram")
+
+## Schematic
+![Schematic](../images/schematics/wb_mux.svg "Schematic")
 ## Ports
 
 | Port name    | Direction | Type                   | Description |

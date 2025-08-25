@@ -4,6 +4,9 @@
 
 ## Diagram
 ![Diagram](../images/docs/controller.svg "Diagram")
+
+## Schematic
+![Schematic](../images/schematics/controller.svg "Schematic")
 ## Ports
 
 | Port name | Direction | Type        | Description |

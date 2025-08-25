@@ -4,6 +4,9 @@
 
 ## Diagram
 ![Diagram](../images/docs/adder.svg "Diagram")
+
+## Schematic
+![Schematic](../images/schematics/adder.svg "Schematic")
 ## Generics
 
 | Generic name | Type | Value | Description |
