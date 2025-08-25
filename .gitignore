@@ -1,5 +1,6 @@
 *.jou
 *.tcl
+!scripts/*.tcl
 *.log
 xsim.dir/
 logs/
