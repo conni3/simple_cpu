@@ -4,94 +4,120 @@ author: "Your Name"
 date: "2025-08-25"
 ---
 
-# Overview
+# Project Overview
 
-- 32-bit RISC-V CPU core
-- Quick orientation for new maintainers
-- Demonstrate simulation flow & architecture
+- 32-bit RV32I single-cycle CPU core
+- Show architecture with controller and datapath blocks
+![CPU schematic](cpu.svg)
+
 
 ---
 
 # Agenda
 
-1. Context
-2. Repository Tour
-3. Vivado Simulation
-4. Controller & Datapath
-5. Results & Handover Tips
-6. Recording Workflow
-7. Wrap-Up
+1. Project context
+2. Repository layout
+3. Build & test commands
+4. Vivado simulation demo
+5. Controller & datapath tour
+6. Handover checklist
+7. Recording tips
+8. Wrap-Up
 
 ---
 
-# Context
+# Project Context
 
-- Goal: simple RV32I CPU, single-cycle control
-- Key components: controller FSM + datapath blocks
-- Toolchain: Icarus, GTKWave, optional Vivado XSIM
+- Goal: teaching-oriented single-cycle CPU
+- Toolchain: Icarus/GTKWave or Vivado xsim
+- Include a screenshot of README intro
 
----
-
-# Repository Tour (VS Code)
-
-- `README.md` : build & test commands
-- `src/`      : RTL modules (`leaf`, `glue`, `top`)
-- `tb/`       : testbenches (`<name>_tb.v`)
-- `docs/`     : module docs & schematics (`images/`)
-- `Makefile`  : automation for lint, build, run, schem
+![README snippet](images/snap_readme.png)
 
 ---
 
-# Vivado Simulation – Top CPU
+# Repository Layout
 
-- Compile: `make vivado comp=cpu`
-- Run **xsim** and open waveforms
-- Show:
+- `src/` : RTL modules
+- `tb/` : testbenches
+- `docs/` : module docs and schematics
+- `Makefile` : build/sim automation
+- Snapshot to capture: VS Code tree
+
+![VS Code tree](images/snap_repo_tree.png)
+
+---
+
+# Build & Test
+
+```bash
+make           # run all Icarus tests
+make schem     # regenerate SVG schematics
+```
+
+- Include terminal screenshot of successful `make`
+
+![make output](images/snap_make.png)
+
+---
+
+# Vivado Simulation
+
+```bash
+make vivado comp=cpu      # elaborate
+xsim work.cpu_tb          # run
+```
+
+- Demonstrate waveform with:
   - Program counter
   - Register file writes
-  - Memory interface signals
-- Test program: ADD, SUB, LOAD, STORE, BRANCH
+  - Memory bus
+- Snapshot to include: xsim waveform
+
+![xsim wave](images/snap_wave_pc.png)
 
 ---
 
-# Controller & Datapath
+# Controller FSM
 
-- **Controller FSM**
-  - Decodes instruction, asserts control signals
-  - States: fetch → decode → execute → memory → writeback
-- **Datapath**
-  - ALU, register file, memory, muxes
-  - Control signals drive multiplexers & next PC
-- Use schematic: `images/cpu.svg`
+- Finite-state machine drives control signals
+- Show fetch → decode → execute → mem → writeback
+
+![Controller schematic](controller.svg)
 
 ---
 
-# Results & Handover Tips
+# Datapath
 
-- Run all tests: `make` (Icarus) or `make vivado-all`
-- Generate schematics: `make schem` or `make schem-top comp=cpu`
-- Known limits: single-cycle, no hazard handling
-- Note TODOs & next steps in `docs/handover.md`
+- ALU, register file, memory, multiplexers
+- Highlight control signal paths
+
+![Datapath schematic](datapath.svg)
 
 ---
 
-# Recording Workflow
+# Handover Checklist
 
-1. **Prepare**
-   - Pre-run tests, arrange waveforms
-   - Open slides & code in advance
-2. **Record**
-   - Use OBS or similar
-   - Start with slides → VS Code → Vivado
-3. **Narrate**
-   - Explain commands, waveforms, schematic
-4. **Keep** under 10 minutes
+- All tests pass
+- Schematics regenerated
+- TODOs noted in `docs/handover.md`
+- Record demo video and store script
+
+---
+
+# Recording Tips
+
+1. Start with slides, then VS Code, then Vivado
+2. Pre-arrange waveforms and code windows
+3. Keep narration < 10 minutes
+- Optional snapshot: OBS layout
+
+![OBS setup](images/snap_obs.png)
 
 ---
 
 # Wrap-Up
 
-- Reiterate project goals & status
-- Point to repo and docs for follow-up
-- Thank the viewer
-
+- Review accomplishments & next steps
+- Point to repository for details
+- Thanks!
