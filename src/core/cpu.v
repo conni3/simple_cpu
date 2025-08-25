@@ -9,11 +9,14 @@ module cpu #(
 ) (
     input wire clk,
     input wire reset,
-    output wire [31:0] debug_pc
+    output wire [31:0] debug_pc,
+    output wire [31:0] debug_instr,
+    output wire [31:0] debug_alu
 );
 
 
-  wire [31:0] instr;
+  (* KEEP = "true" *) wire [31:0] instr;
+  (* KEEP = "true" *) wire [31:0] debug_alu_int;
   wire [ 6:0] opcode;
   wire [4:0] rd, rs1, rs2;
   wire [ 2:0] funct3;
@@ -25,7 +28,7 @@ module cpu #(
   wire [1:0] op1_sel, wb_sel;
   wire is_branch, is_jal, is_jalr;
 
-  controller u_controller (
+  (* DONT_TOUCH = "true" *) controller u_controller (
       .instr(instr),
       .opcode(opcode),
       .rd(rd),
@@ -47,7 +50,7 @@ module cpu #(
       .is_jalr(is_jalr)
   );
 
-  datapath #(
+  (* DONT_TOUCH = "true" *) datapath #(
       .DATA_WIDTH(DATA_WIDTH),
       .ADDR_WIDTH(ADDR_WIDTH),
       .IMEM_FILE (IMEM_FILE),
@@ -74,7 +77,11 @@ module cpu #(
       .is_jal(is_jal),
       .is_jalr(is_jalr),
       .instr(instr),
-      .debug_pc(debug_pc)
+      .debug_pc(debug_pc),
+      .debug_alu(debug_alu_int)
   );
+
+  assign debug_instr = instr;
+  assign debug_alu   = debug_alu_int;
 
 endmodule

@@ -34,7 +34,8 @@ module datapath #(
 
 
     output wire [31:0] instr,
-    output wire [31:0] debug_pc
+    output wire [31:0] debug_pc,
+    output wire [31:0] debug_alu
 );
 
 
@@ -83,7 +84,7 @@ module datapath #(
   assign debug_pc = pc_current;
 
 
-  regfile u_rf (
+  (* DONT_TOUCH = "true" *) regfile u_rf (
       .clk      (clk),
       .reset    (reset),
       .rs1      (rs1),
@@ -101,7 +102,7 @@ module datapath #(
   assign op_b = (alu_src) ? imm_out : rs2_data;
 
 
-  alu u_alu (
+  (* DONT_TOUCH = "true" *) alu u_alu (
       .op_a      (op_a),
       .op_b      (op_b),
       .alu_ctrl  (alu_ctrl),
@@ -110,7 +111,7 @@ module datapath #(
   );
 
 
-  instr_mem #(
+  (* DONT_TOUCH = "true" *) instr_mem #(
       .ADDR_WIDTH(ADDR_WIDTH),
       .MEM_FILE  (IMEM_FILE)
   ) u_imem (
@@ -119,7 +120,7 @@ module datapath #(
   );
 
 
-  data_mem #(
+  (* DONT_TOUCH = "true" *) data_mem #(
       .ADDR_WIDTH(ADDR_WIDTH),
       .MEM_FILE  (DMEM_FILE)
   ) u_dmem (
@@ -137,5 +138,7 @@ module datapath #(
       (wb_sel == `WB_MEM) ? rdata      :
       (wb_sel == `WB_PC4) ? pc_plus4   :
                             32'b0;
+
+  assign debug_alu = alu_result;
 
 endmodule
