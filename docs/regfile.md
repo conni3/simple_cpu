@@ -3,7 +3,7 @@
 - **File**: regfile.v
 
 ## Diagram
-![Diagram](reg_file.svg "Diagram")
+![Diagram](../images/docs/reg_file.svg "Diagram")
 ## Ports
 
 | Port name  | Direction | Type        | Description |

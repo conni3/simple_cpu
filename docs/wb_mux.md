@@ -3,7 +3,7 @@
 - **File**: wb_mux.v
 
 ## Diagram
-![Diagram](wb_mux.svg "Diagram")
+![Diagram](../images/docs/wb_mux.svg "Diagram")
 ## Ports
 
 | Port name    | Direction | Type                   | Description |
