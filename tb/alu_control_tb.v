@@ -7,15 +7,12 @@ module alu_control_tb;
   reg        funct7_5;
   wire [3:0] ALUCtrl;
 
-  // DUT
   alu_control uut (
       .alu_op  (ALUOp),
       .funct3  (funct3),
       .funct7_5(funct7_5),
       .alu_ctrl(ALUCtrl)
   );
-
-  // ALU Control Signals
   localparam [3:0] ALU_ADD = 4'b0000;
   localparam [3:0] ALU_SUB = 4'b0001;
   localparam [3:0] ALU_SLL = 4'b0010;
@@ -29,7 +26,6 @@ module alu_control_tb;
 
   integer failed, passed;
 
-  // Verilog-2001 "string" via packed bytes (max 32 chars)
   task check_output;
     input [3:0] expected;
     input [3:0] actual;
@@ -46,7 +42,6 @@ module alu_control_tb;
   endtask
 
   initial begin
-    // dump waveform
     $dumpfile("dump.vcd");
     $dumpvars(0, alu_control_tb);
 
@@ -54,8 +49,6 @@ module alu_control_tb;
     failed = 0;
 
     $display("\n--- ALU Control Testbench Start ---\n");
-
-    // ===== Baseline sanity =====
 
     // Test case 1: ALUOp = 00 (ADD) - generic add path
     ALUOp = 2'b00;
