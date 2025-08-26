@@ -160,108 +160,132 @@ Ripple-carry adder for summing operands.
 
 ![adder](../images/docs/adder.svg)
 ![adder schematic](../images/schematics/adder.svg)
+![adder waveform](../images/waveforms/adder.png)
 
 ### alu
 Performs arithmetic and logic operations and sets a zero flag.
 
 ![alu](../images/docs/alu.svg)
 ![alu schematic](../images/schematics/alu.svg)
+![alu waveform](../images/waveforms/alu.png)
 
 ### alu_control
 Decodes ALUOp and funct fields into a specific ALU control code.
 
 ![alu_control](../images/docs/alu_control.svg)
 ![alu_control schematic](../images/schematics/alu_control.svg)
+![alu_control waveform](../images/waveforms/alu_control.png)
 
 ### branch_comp
 Compares operands and determines branch decisions.
 
 ![branch_comp](../images/docs/branch_comp.svg)
 ![branch_comp schematic](../images/schematics/branch_comp.svg)
+![branch_comp waveform](../images/waveforms/branch_comp.png)
 
 ### control
 Top-level control logic driving datapath and memory sequencing.
 
 ![control](../images/docs/control.svg)
 ![control schematic](../images/schematics/control.svg)
+![control waveform 1](../images/waveforms/control_1.png)
+![control waveform 2](../images/waveforms/control_2.png)
+![control waveform 3](../images/waveforms/control_3.png)
+![control waveform 4](../images/waveforms/control_4.png)
 
 ### controller
 Finite state machine orchestrating overall CPU execution.
 
 ![controller](../images/docs/controller.svg)
 ![controller schematic](../images/schematics/controller.svg)
+![controller waveform](../images/waveforms/controller.png)
 
 ### cpu
 Top-level CPU wrapper combining controller and datapath modules.
 
 ![cpu](../images/docs/cpu.svg)
 ![cpu schematic](../images/schematics/cpu.svg)
+![cpu waveform](../images/waveforms/cpu.png)
 
 ### data_mem
 Data memory providing load and store access.
 
 ![data_mem](../images/docs/data_mem.svg)
 ![data_mem schematic](../images/schematics/data_mem.svg)
+![data_mem waveform](../images/waveforms/data_mem.png)
 
 ### datapath
 Wires registers, ALU, memories, and multiplexers together.
 
 ![datapath](../images/docs/datapath.svg)
 ![datapath schematic](../images/schematics/datapath.svg)
+![datapath waveform 1](../images/waveforms/datapath_1.png)
+![datapath waveform 2](../images/waveforms/datapath_2.png)
+![datapath waveform 3](../images/waveforms/datapath_3.png)
 
 ### decoder
 Extracts instruction fields and produces basic control signals.
 
 ![decoder](../images/docs/decoder.svg)
 ![decoder schematic](../images/schematics/decoder.svg)
+![decoder waveform 1](../images/waveforms/decoder_1.png)
+![decoder waveform 2](../images/waveforms/decoder_2.png)
 
 ### decoder_glue
 Auxiliary logic supporting decoder outputs.
 
 ![decoder_glue](../images/docs/decoder_glue.svg)
 ![decoder_glue schematic](../images/schematics/decoder_glue.svg)
+![decoder_glue waveform](../images/waveforms/decoder_glue.png)
 
 ### imm_gen
 Generates immediate values from instruction fields.
 
 ![imm_gen](../images/docs/imm_gen.svg)
 ![imm_gen schematic](../images/schematics/imm_gen.svg)
+![imm_gen waveform](../images/waveforms/imm_gen.png)
 
 ### instr_mem
 Instruction memory storage for program code.
 
 ![instr_mem](../images/docs/instr_mem.svg)
 ![instr_mem schematic](../images/schematics/instr_mem.svg)
+![instr_mem waveform](../images/waveforms/instr_mem.png)
 
 ### instr_slicer
 Splits the instruction into its constituent fields.
 
 ![instr_slicer](../images/docs/instr_slicer.svg)
 ![instr_slicer schematic](../images/schematics/instr_slicer.svg)
+![instr_slicer waveform](../images/waveforms/instr_slicer.png)
 
 ### next_pc
 Computes the next program counter value based on branch logic.
 
 ![next_pc](../images/docs/next_pc.svg)
 ![next_pc schematic](../images/schematics/next_pc.svg)
+![next_pc waveform](../images/waveforms/next_pc.png)
 
 ### pc
 Program counter register holding the current instruction address.
 
 ![pc](../images/docs/pc.svg)
 ![pc schematic](../images/schematics/pc.svg)
+![pc waveform](../images/waveforms/pc.png)
 
 ### reg_file
 Register file supporting two reads and one write each cycle.
 
 ![reg_file](../images/docs/reg_file.svg)
 ![reg_file schematic](../images/schematics/reg_file.svg)
+![reg_file waveform](../images/waveforms/regfile.png)
 
 ### wb_mux
 Selects the data source for register write-back.
 
 ![wb_mux](../images/docs/wb_mux.svg)
 ![wb_mux schematic](../images/schematics/wb_mux.svg)
+![wb_mux waveform](../images/waveforms/wb_mux.png)
 
 ## 21. References
 
