@@ -3,7 +3,7 @@
 module cpu_tb;
   localparam integer MAX_CYCLES = 20;
   localparam integer ADDR_WIDTH = 11;
-  localparam IMEM_FILE = "./tests/prog.mem";
+  localparam IMEM_FILE = "./tests/r_alu.mem";
   localparam [31:0] END_SENTINEL = 32'h0000_006F;
   parameter [31:0] STATUS_ADDR = 32'h0000_0000;
   localparam [31:0] STATUS_PASS = 32'hC0DE_CAFE;
