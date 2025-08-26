@@ -19,6 +19,6 @@ _start:
     sltu x13, x2, x1     # 1
 
     # PASS
-    li   t0, PASS_DATA
-    sw   t0, PASS_ADDR(x0)
+    li   t0, STATUS_PASS
+    sw   t0, STATUS_ADDR(x0)
 1:  jal  x0, 0            # END_SENTINEL (your TB also appends one)

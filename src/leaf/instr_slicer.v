@@ -20,7 +20,6 @@ module instr_slicer (
   assign rs2    = instr[24:20];
   assign funct7 = instr[31:25];
 
-  // Convenience
   assign shamt  = instr[24:20];
   assign csr    = instr[31:20];
 endmodule

@@ -5,15 +5,50 @@ I extend my heartfelt thanks to my supervisors and mentors for their guidance an
 I am equally grateful to the host organization for providing the resources and supportive environment that made this work possible.
 Additional appreciation goes to colleagues, collaborators, and the institutions that offered technical assistance and shared tools that contributed to the success of this project.
 
+## Abstract
+This report documents the design and simulation of a modular, single-cycle RISC-V CPU core. It outlines project objectives, tools and environment, methodology, verification strategies, and key results achieved.
+
+## Table of Contents
+
+1. Introduction ............................................. 1
+2. Objectives ............................................... 1
+3. Tools & Environment ...................................... 2
+4. Methodology .............................................. 2
+5. Simulation & Debug Process ............................... 2
+6. Validation ............................................... 2
+7. Comparison & Benchmarking ............................... 3
+8. Limitations .............................................. 3
+9. Learning Outcomes ........................................ 3
+10. Personal Reflections .................................... 4
+11. Reflection (Internship Specific) ........................ 4
+12. System Architecture ..................................... 4
+13. Implementation Highlights .............................. 5
+14. Testing & Verification ................................. 5
+15. Challenges & Mitigations ............................... 6
+16. Results ................................................ 6
+17. Future Work ............................................ 6
+18. Conclusion ............................................. 6
+19. Appendices ............................................. 6
+20. Vivado Reports ......................................... 7
+21. Appendix: Module Overview .............................. 7
+22. References ............................................ 14
+
 ## 1. Introduction
 This project implements a modular, single-cycle RISC-V CPU core written in Verilog. The repository includes reusable building blocks, control logic, a streamlined Makefile-driven flow, and testbenches for simulation.
 
-> **Figure 1:** _Overall CPU Block Diagram_  
+> **Figure 1:** _Overall CPU Block Diagram_
 > ![CPU Block Diagram Placeholder](path/to/overall_cpu_block_diagram.png)
 
-## 2. Objectives  
-- Develop a fully functional single-cycle CPU that executes a subset of the RISC-V ISA.  
-- Provide self-contained Verilog modules for instruction decoding, control, execution, memory access, and write-back.  
+### Role and Contributions
+
+As a hardware design intern on the Simple CPU project:
+
+- **Daily tasks**: implementing Verilog modules, writing testbenches, running simulations, reviewing waveforms, and refining the Makefile workflow.
+- **Key contributions**: developed the ALU and branch comparator blocks, integrated schematic generation into the build flow, and improved testbench coverage.
+
+## 2. Objectives
+- Develop a fully functional single-cycle CPU that executes a subset of the RISC-V ISA.
+- Provide self-contained Verilog modules for instruction decoding, control, execution, memory access, and write-back.
 - Automate linting, simulation, waveform generation, and schematic rendering using a unified `make` workflow that includes both Icarus Verilog and Vivado flows.
 
 ## 3. Tools & Environment  
