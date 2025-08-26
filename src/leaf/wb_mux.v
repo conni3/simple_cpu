@@ -15,7 +15,6 @@ module wb_mux (
     output wire [            4:0] rd_out
 );
 
-  // wb_sel encodings
   localparam reg [1:0] WB_ALU = 2'd0;
   localparam reg [1:0] WB_MEM = 2'd1;
   localparam reg [1:0] WB_PC4 = 2'd2;
