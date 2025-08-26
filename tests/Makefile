@@ -2,11 +2,11 @@ RISCV ?= riscv64-unknown-elf
 CC    := $(RISCV)-gcc
 OBJC  := $(RISCV)-objcopy
 
-PASS_ADDR ?= 0x20
-PASS_DATA ?= 0xC0DECAFE
+STATUS_ADDR ?= 0x0
+STATUS_PASS ?= 0xC0DECAFE
 
 CFLAGS := -march=rv32i -mabi=ilp32 -nostdlib -nostartfiles -Wl,-Tcommon.ld -static \
-          -DPASS_ADDR=$(PASS_ADDR) -DPASS_DATA=$(PASS_DATA)
+          -DSTATUS_ADDR=$(STATUS_ADDR) -DSTATUS_PASS=$(STATUS_PASS)
 ASM    := r_alu.S i_alu.S branches.S jumps.S mem_rw.S x0_guard.S
 
 # rule: .S -> .elf -> .mem (32b words)
