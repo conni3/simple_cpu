@@ -74,6 +74,15 @@ Compared the design with PicoRV32:
 - **Resource usage**: higher LUT/FF count due to single-cycle simplicity.
 - **Latency**: single cycle per instruction vs. PicoRV32’s multi-cycle approach.
 
+Key Vivado metrics for the synthesized core:
+
+| Metric | Value | Source |
+| --- | --- | --- |
+| Slice LUTs | 2,439 | `logs/utilization.rpt` |
+| Slice Registers | 1,056 | `logs/utilization.rpt` |
+| Max clock frequency | Not reported (no timing constraints) | `logs/timing_summary.rpt` |
+| Total on-chip power | 3.618 W (dynamic 3.453 W, static 0.165 W) | `logs/power.rpt` |
+
 ## 8. Limitations
 
 - Single-cycle architecture constrains maximum clock frequency.
