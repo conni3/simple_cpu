@@ -37,17 +37,14 @@ This project implements a modular, single-cycle RISC-V CPU core written in Veril
 
 ## 5. Simulation & Debug Process
 
-Typical workflow when issues surfaced:
+Typical workflow when issues surfaced began by recreating the failure with `make` to run both Icarus and Vivado simulations, then inspecting waveforms in GTKWave or XSIM to compare expected versus observed behavior. Iterative passes then:
 
-1. **Recreate the failure** using `make` to run both Icarus and Vivado simulations.
-2. **Inspect waveforms** in GTKWave or XSIM to compare expected vs. observed behavior.
-3. **Iterate** from leaf modules to the integrated datapath and finally the full CPU.
+- created and tested glue modules,
+- handled design-choice incompatibilities,
+- refactored leaf modules for consistency, and
+- rewrote testbenches after refactors.
 
-Examples:
-- Instruction memory failed to load in XSIM due to a relative-path mismatch.
-- Undefined opcodes produced unexpected toggling on control signals.
-
-Waveform snapshots (expected vs. observed) were annotated to document each fix.
+Waveform snapshots (expected vs. observed) were annotated to document each fix, and the cycle repeated from leaf modules to the integrated datapath and finally the full CPU.
 
 ## 6. Validation
 
