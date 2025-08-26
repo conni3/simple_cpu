@@ -31,12 +31,19 @@ This report documents the design and simulation of a modular, single-cycle RISC-
 ## 1. Introduction
 This project implements a modular, single-cycle RISC-V CPU core written in Verilog. The repository includes reusable building blocks, control logic, a streamlined Makefile-driven flow, and testbenches for simulation.
 
-> **Figure 1:** _Overall CPU Block Diagram_  
+> **Figure 1:** _Overall CPU Block Diagram_
 > ![CPU Block Diagram Placeholder](path/to/overall_cpu_block_diagram.png)
 
-## 2. Objectives  
-- Develop a fully functional single-cycle CPU that executes a subset of the RISC-V ISA.  
-- Provide self-contained Verilog modules for instruction decoding, control, execution, memory access, and write-back.  
+### Role and Contributions
+
+As a hardware design intern on the Simple CPU project:
+
+- **Daily tasks**: implementing Verilog modules, writing testbenches, running simulations, reviewing waveforms, and refining the Makefile workflow.
+- **Key contributions**: developed the ALU and branch comparator blocks, integrated schematic generation into the build flow, and improved testbench coverage.
+
+## 2. Objectives
+- Develop a fully functional single-cycle CPU that executes a subset of the RISC-V ISA.
+- Provide self-contained Verilog modules for instruction decoding, control, execution, memory access, and write-back.
 - Automate linting, simulation, waveform generation, and schematic rendering using a unified `make` workflow that includes both Icarus Verilog and Vivado flows.
 
 ## 3. Tools & Environment  
