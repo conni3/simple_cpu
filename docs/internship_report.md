@@ -88,9 +88,9 @@ Key Vivado metrics for the synthesized core:
 
 ## 9. Learning Outcomes
 
-- Mastered Vivado TCL scripting and Makefile automation.
-- Gained experience in modular RTL design and waveform‑based debugging.
-- Developed a deeper understanding of datapath/control separation.
+- Mastered Vivado TCL scripting and Makefile automation. Early scripts created wiring mismatches when module ports were ordered incorrectly, but refining the TCL flow to auto-derive connections resolved the issue.
+- Gained experience in modular RTL design and waveform‑based debugging. A misuse of `funct7_5` led to incorrect shift operations; tracing the waveform exposed the bug and adjusting the decoder fixed it.
+- Developed a deeper understanding of datapath/control separation. Consolidating ALU functionality blurred control boundaries at first, yet reorganizing the case structure restored clarity and decoupled the units.
 
 ## 10. Reflection (Internship Specific)
 
