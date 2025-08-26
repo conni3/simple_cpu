@@ -11,7 +11,7 @@ module cpu_tb;
   reg clk = 1'b0;
   reg reset = 1'b1;
   integer k;
-  real cpi;  
+  real cpi;
   wire [31:0] debug_pc;
 
   cpu #(
@@ -57,8 +57,8 @@ module cpu_tb;
 
   initial begin
     #1;
-    $display("[SANITY] imem[0]=%h dmem[%0d]=%h", dut.u_datapath.u_imem.mem[0],
-             STATUS_ADDR>>2, dut.u_datapath.u_dmem.mem[STATUS_ADDR>>2]);
+    $display("[SANITY] imem[0]=%h dmem[%0d]=%h", dut.u_datapath.u_imem.mem[0], STATUS_ADDR >> 2,
+             dut.u_datapath.u_dmem.mem[STATUS_ADDR>>2]);
   end
 
   initial begin
@@ -95,14 +95,13 @@ module cpu_tb;
           disable end_test;
         end
       end
-      $display("[TIMEOUT] No END_SENTINEL by %0d cycles.", MAX_CYCLES);
+      $display("[TIMEOUT]", MAX_CYCLES);
     end
 
-      if (status_ok) $display("[PASS] Program signaled PASS.");
-      else $display("[FAIL] STATUS_ADDR never had STATUS_PASS.");
+    if (status_ok) $display("[PASS] Program signaled PASS.");
+    else $display("[FAIL] STATUS_ADDR never had STATUS_PASS.");
 
-    for (k = 0; k < 17; k = k + 1)
-      $display("DMEM[%0d] = %h", k, dut.u_datapath.u_dmem.mem[k]);
+    // for (k = 0; k < 17; k = k + 1) $display("DMEM[%0d] = %h", k, dut.u_datapath.u_dmem.mem[k]);
 
     $finish;
   end
