@@ -1,0 +1,472 @@
+==> adder
+VCD info: dumpfile dump.vcd opened for output.
+
+--- ADDER Testbench Start ---
+
+PASS: a=0x00000001 b=0x00000001 -> result=0x00000002
+PASS: a=0xffffffff b=0x00000001 -> result=0x00000000
+PASS: a=0x7fffffff b=0x00000001 -> result=0x80000000
+PASS: a=0x80000000 b=0xffffffff -> result=0x7fffffff
+
+--- ADDER Testbench End ---
+
+Total Passed:           4, Total Failed:           0
+tb/adder_tb.v:61: $finish called at 8000 (1ps)
+==> alu_control
+VCD info: dumpfile dump.vcd opened for output.
+
+--- ALU Control Testbench Start ---
+
+          Test 1: ALUOp00 -> ADD passed: got 0000
+          Test 2: ALUOp01 -> SUB passed: got 0001
+ Test 3: Op10 f3=000 f7=0 -> ADD passed: got 0000
+ Test 4: Op10 f3=000 f7=1 -> SUB passed: got 0001
+                     Test 5: SLL passed: got 0010
+                     Test 6: SLT passed: got 0011
+                    Test 7: SLTU passed: got 0100
+                     Test 8: XOR passed: got 0101
+                     Test 9: SRL passed: got 0110
+                    Test 10: SRA passed: got 0111
+                     Test 11: OR passed: got 1000
+                    Test 12: AND passed: got 1001
+                    Test 13: LUI passed: got 0000
+        Test 14: ADDI (ALUOp=00) passed: got 0000
+                   Test 15: ANDI passed: got 1001
+                    Test 16: ORI passed: got 1000
+                   Test 17: XORI passed: got 0101
+                   Test 18: SLTI passed: got 0011
+                  Test 19: SLTIU passed: got 0100
+                   Test 20: SLLI passed: got 0010
+                   Test 21: SRLI passed: got 0110
+                   Test 22: SRAI passed: got 0111
+
+--- ALU Control Testbench End ---
+
+Total Tests Passed: 22
+Total Tests Failed: 0
+tb/alu_control_tb.v:218: $finish called at 22000 (1ps)
+==> alu
+VCD info: dumpfile dump.vcd opened for output.
+Starting ALU testbench...
+PASS:  ctrl=0000, a=        15, b=        10 =>         25
+PASS:  ctrl=0001, a=        15, b=        10 =>          5
+PASS:  ctrl=0010, a=         1, b=         4 =>         16
+PASS:  ctrl=0011, a=4294967295, b=         1 =>          1
+PASS:  ctrl=0100, a=         1, b=         2 =>          1
+PASS:  ctrl=0101, a=4042322160, b= 252645135 => 4294967295
+PASS:  ctrl=0110, a=2147483648, b=        31 =>          1
+PASS:  ctrl=0111, a=2147483648, b=        31 => 4294967295
+PASS:  ctrl=1000, a= 305419896, b=2271560481 => 2541049721
+PASS:  ctrl=1001, a=4294901760, b=  16776960 =>   16711680
+PASS: Zero flag asserted
+ALU testbench complete.
+Total PASS: 11
+Total FAIL: 0
+tb/alu_tb.v:89: $finish called at 110000 (1ps)
+==> branch_comp
+VCD info: dumpfile dump.vcd opened for output.
+
+--- Branch Comparator Testbench Start ---
+
+BEQ passed: got 1
+BEQ (Negative) passed: got 0
+BNE passed: got 1
+BNE (Negative) passed: got 0
+BLT passed: got 1
+BLT (Negative) passed: got 0
+BGE passed: got 1
+BGE (Negative) passed: got 0
+BLTU passed: got 1
+BLTU (Negative) passed: got 0
+BGEU passed: got 1
+BGEU (Negative) passed: got 0
+No Branch (Default) passed: got 0
+
+--- Branch Comparator Testbench End ---
+
+Total Tests: 13, Passed: 13, Failed: 0
+tb/branch_comp_tb.v:128: $finish called at 13 (1ps)
+==> controller
+VCD info: dumpfile dump.vcd opened for output.
+
+================ TEST SUMMARY ================
+  Total checks : 65
+  Passed       : 65
+  Failed       : 0
+  Pass rate    : 100%
+  RESULT       : ALL TESTS PASSED
+==============================================
+
+tb/controller_tb.v:325: $finish called at 16000 (1ps)
+==> control
+Starting control unit tests...
+VCD info: dumpfile dump.vcd opened for output.
+PASS [R-type: decode by funct3/funct7 (op1=RS1)]
+PASS [ADDI: alu_op=00, ALUSrc=1, op1=RS1, WB_ALU]
+PASS [ANDI: decode path, op1=RS1, WB_ALU]
+PASS [ORI: decode path, op1=RS1, WB_ALU]
+PASS [XORI: decode path, op1=RS1, WB_ALU]
+PASS [SLTI: decode path, op1=RS1, WB_ALU]
+PASS [SLTIU: decode path, op1=RS1, WB_ALU]
+PASS [SLLI: decode path, op1=RS1, WB_ALU]
+PASS [SRLI: decode path, op1=RS1, WB_ALU]
+PASS [SRAI: decode path, op1=RS1, WB_ALU]
+PASS [LOAD (LW): mem_read=1, ALUSrc=1, op1=RS1, WB_MEM]
+PASS [STORE (SW): mem_write=1, ALUSrc=1, op1=RS1, WB_ALU]
+PASS [BRANCH (BEQ): alu_op=01, branch_sig=1, op1=RS1, WB_ALU]
+PASS [JAL: ALUSrc=1, jump=1, op1=PC, WB_PC4]
+PASS [JALR: ALUSrc=1, jump=1, op1=RS1, WB_PC4]
+PASS [LUI: ALUSrc=1, op1=ZERO, imm=U, WB_ALU]
+PASS [AUIPC: ALUSrc=1, op1=PC, imm=U, WB_ALU]
+
+Summary:
+  Total: 17   Passed: 17   Failed: 0
+tb/control_tb.v:302: $finish called at 17000 (1ps)
+==> cpu
+WARNING: src/leaf/instr_mem.v:14: $readmemh(./tests/prog.mem): Not enough words in the file for the requested range [0:2047].
+WARNING: src/leaf/data_mem.v:17: $readmemh(src/data_mem.mem): Not enough words in the file for the requested range [0:2047].
+VCD info: dumpfile dump.vcd opened for output.
+[SANITY] imem[0]=01000313 dmem[16]=xxxxxxxx
+t=55000 PC=00000000 INSTR=01000313
+t=65000 PC=00000004 INSTR=deadc3b7
+[PASS-1] x6 == 0x00000010 at cycle 1
+t=75000 PC=00000008 INSTR=eef38393
+STORE @85000: addr=010 wdata=deadbeef
+t=85000 PC=0000000c INSTR=04702023
+[PASS-2] DMEM[0x40] == 0xDEADBEEF at cycle 4
+[INFO] Reached END_SENTINEL (jal x0,0) at PC=00000010, cycle 4
+t=95000 PC=00000010 INSTR=0000006f
+[PASS] All checks satisfied.
+DMEM[0] = xxxxxxxx
+DMEM[1] = xxxxxxxx
+DMEM[2] = xxxxxxxx
+DMEM[3] = xxxxxxxx
+DMEM[4] = xxxxxxxx
+DMEM[5] = xxxxxxxx
+DMEM[6] = xxxxxxxx
+DMEM[7] = xxxxxxxx
+DMEM[8] = xxxxxxxx
+DMEM[9] = xxxxxxxx
+DMEM[10] = xxxxxxxx
+DMEM[11] = xxxxxxxx
+DMEM[12] = xxxxxxxx
+DMEM[13] = xxxxxxxx
+DMEM[14] = xxxxxxxx
+DMEM[15] = xxxxxxxx
+DMEM[16] = deadbeef
+tb/cpu_tb.v:104: $finish called at 95000 (1ps)
+==> data_mem
+WARNING: src/leaf/data_mem.v:17: $readmemh(src/data_mem.mem): Not enough words in the file for the requested range [0:2047].
+VCD info: dumpfile dump.vcd opened for output.
+Test passed: Read data is deadbeef
+tb/data_mem_tb.v:49: $finish called at 20 (1ps)
+==> datapath
+WARNING: src/leaf/instr_mem.v:14: $readmemh(src/instr_mem.mem): Not enough words in the file for the requested range [0:2047].
+WARNING: src/leaf/data_mem.v:17: $readmemh(src/data_mem.mem): Not enough words in the file for the requested range [0:2047].
+VCD info: dumpfile dump.vcd opened for output.
+PASS: x5 = 123 via ALU/WB_ALU  t=46
+PASS: DMEM[0x10] = 123 after store  t=66
+PASS: x6 = 123 via load/WB_MEM  t=86
+PASS: ALU ADDI: x7 = 130  t=116
+PASS: ALU SUB: x8 = 7  t=136
+PASS: ALU ANDI: x9 = 11  t=156
+PASS: ALU SLLI: x10 = 492  t=176
+PASS: ALU SRLI: x11 = 246  t=196
+PASS: Prep: x12 = -128  t=216
+PASS: ALU SRAI: x13 = 0xFFFF_FFE0  t=236
+PASS: PC advanced by two cycles of +4  t=256
+PASS: ken: PC jumped by imm (+ one +4)  t=276
+PASS: C advanced by +8 over two cycles  t=296
+PASS: JAL: x1 <= PC+4  t=316
+PASS: JAL: PC jumped by imm (+ one +4)  t=316
+PASS: JALR: rd <= PC+4  t=336
+PASS: LR: PC = (rs1+imm)&~1 (+ one +4)  t=336
+RESULT: passed=17 failed=0
+ALL TESTS PASSED.
+tb/datapath_tb.v:421: $finish called at 336 (1ps)
+==> decoder_glue
+Start decoder_glue tests...
+VCD info: dumpfile dump.vcd opened for output.
+All decoder_glue tests passed.
+tb/decoder_glue_tb.v:292: $finish called at 17000 (1ps)
+==> decoder
+VCD info: dumpfile dump.vcd opened for output.
+Starting Decoder Testbench with Assertions
+
+Instr = 00000000001000001000000110110011, Test = R-type: add x3, x1, x2
+Test passed: R-type: add x3, x1, x2
+Instr = 00000000010100001000000110010011, Test = I-type: addi x3, x1, 5
+Test passed: I-type: addi x3, x1, 5
+Instr = 00000000010000001010000110000011, Test = Load: lw x3, 4(x1)
+Test passed: Load: lw x3, 4(x1)
+Instr = 00000000001100001010001000100011, Test = Store: sw x3, 4(x1)
+Test passed: Store: sw x3, 4(x1)
+Instr = 00000000001100001000000101100011, Test = Branch: beq x1, x3, offset
+Test passed: Branch: beq x1, x3, offset
+Instr = 00000000010000001000000111100111, Test = JALR: jalr x3, 4(x1)
+Test passed: JALR: jalr x3, 4(x1)
+Instr = 00000000000000000000000111101111, Test = JAL: jal x3, offset
+Test passed: JAL: jal x3, offset
+Instr = 00000000000000000001000110110111, Test = LUI: lui x3, 1
+Test passed: LUI: lui x3, 1
+Instr = 00000000000000000001000110010111, Test = AUIPC: auipc x3, 1
+Test passed: AUIPC: auipc x3, 1
+
+Decoder Testbench Summary:
+Total Tests: 9
+Passed: 9
+Failed: 0
+tb/decoder_tb.v:129: $finish called at 9000 (1ps)
+==> imm_gen
+VCD info: dumpfile dump.vcd opened for output.
+
+--- IMMGEN Enhanced Testbench Start ---
+
+PASS: sel=000 instr=0x7ff00000 -> imm_out=0x000007ff
+PASS: sel=000 instr=0x80000000 -> imm_out=0xfffff800
+PASS: sel=000 instr=0x12300000 -> imm_out=0x00000123
+PASS: sel=001 instr=0x0000a223 -> imm_out=0x00000004
+PASS: sel=001 instr=0xfe002423 -> imm_out=0xffffffe8
+PASS: sel=010 instr=0x04000063 -> imm_out=0x00000040
+PASS: sel=010 instr=0xfe0000e3 -> imm_out=0xffffffe0
+PASS: sel=011 instr=0x12345000 -> imm_out=0x12345000
+PASS: sel=011 instr=0xfffff000 -> imm_out=0xfffff000
+PASS: sel=100 instr=0x004000ef -> imm_out=0x00000004
+PASS: sel=100 instr=0x801ff06f -> imm_out=0xfffff800
+
+--- IMMGEN Test Results ---
+Passed: 11, Failed: 0
+All tests passed!
+
+tb/imm_gen_tb.v:82: $finish called at 22000 (1ps)
+==> instr_mem
+WARNING: src/leaf/instr_mem.v:14: $readmemh(src/instr_mem.mem): Not enough words in the file for the requested range [0:2047].
+VCD info: dumpfile dump.vcd opened for output.
+Test passed: Instruction at address 000 is 00000013
+Test passed: Instruction at address 001 is 00000023
+Test passed: Instruction at address 002 is 00000012
+tb/instr_mem_tb.v:49: $finish called at 30 (1ps)
+==> instr_slicer
+VCD info: dumpfile dump.vcd opened for output.
+All instr_slicer assertions PASSED.
+tb/instr_slicer_tb.v:169: $finish called at 210000 (1ps)
+==> mux2
+VCD info: dumpfile dump.vcd opened for output.
+tb/mux2_tb.v:35: $finish called at 200 (1ps)
+==> mux4
+VCD info: dumpfile dump.vcd opened for output.
+Test failed for sel = 2'b00: y = 00000002
+Test failed for sel = 2'b01: y = 00000003
+Test failed for sel = 2'b10: y = 00000004
+Test failed for sel = 2'b11: y = 00000001
+tb/mux4_tb.v:76: $finish called at 500 (1ps)
+==> next_pc
+VCD info: dumpfile dump.vcd opened for output.
+PASS:                                                             pc+4 -> 00001004
+PASS:                                                     branch taken -> 00001020
+PASS:                                                              JAL -> 00001040
+PASS:                                                     JALR aligned -> 00002008
+PASS:                                                 branch not taken -> 00001004
+PASS:                                         priority JAL over branch -> 00001008
+PASS:                                                    priority JALR -> 00003004
+All tests passed.
+tb/next_pc_tb.v:118: $finish called at 7000 (1ps)
+==> pc
+VCD info: dumpfile dump.vcd opened for output.
+Time	 reset next_pc    current_pc
+0ns	   1    00000000    00000000
+10ns	   0    00000000    00000000
+20ns	   0    00000004    00000000
+25ns	   0    00000004    00000004
+30ns	   0    00000008    00000004
+35ns	   0    00000008    00000008
+40ns	   0    000000a0    00000008
+45ns	   0    000000a0    000000a0
+tb/pc_tb.v:55: $finish called at 60000 (1ps)
+==> regfile
+VCD info: dumpfile dump.vcd opened for output.
+
+===== Extended Register File Testbench =====
+
+-- After reset (all regs should be 0) --
+PASS : time=14000 READ1[0]=0x00000000
+PASS : time=14000 READ2[1]=0x00000000
+PASS : time=15000 READ1[2]=0x00000000
+PASS : time=15000 READ2[3]=0x00000000
+PASS : time=16000 READ1[4]=0x00000000
+PASS : time=16000 READ2[5]=0x00000000
+PASS : time=17000 READ1[6]=0x00000000
+PASS : time=17000 READ2[7]=0x00000000
+PASS : time=18000 READ1[8]=0x00000000
+PASS : time=18000 READ2[9]=0x00000000
+PASS : time=19000 READ1[10]=0x00000000
+PASS : time=19000 READ2[11]=0x00000000
+PASS : time=20000 READ1[12]=0x00000000
+PASS : time=20000 READ2[13]=0x00000000
+PASS : time=21000 READ1[14]=0x00000000
+PASS : time=21000 READ2[15]=0x00000000
+PASS : time=22000 READ1[16]=0x00000000
+PASS : time=22000 READ2[17]=0x00000000
+PASS : time=23000 READ1[18]=0x00000000
+PASS : time=23000 READ2[19]=0x00000000
+PASS : time=24000 READ1[20]=0x00000000
+PASS : time=24000 READ2[21]=0x00000000
+PASS : time=25000 READ1[22]=0x00000000
+PASS : time=25000 READ2[23]=0x00000000
+PASS : time=26000 READ1[24]=0x00000000
+PASS : time=26000 READ2[25]=0x00000000
+PASS : time=27000 READ1[26]=0x00000000
+PASS : time=27000 READ2[27]=0x00000000
+PASS : time=28000 READ1[28]=0x00000000
+PASS : time=28000 READ2[29]=0x00000000
+PASS : time=29000 READ1[30]=0x00000000
+PASS : time=29000 READ2[31]=0x00000000
+
+-- Attempt write to x0 (should remain 0) --
+PASS : time=36000 READ1[0]=0x00000000
+PASS : time=36000 READ2[1]=0x00000000
+
+-- Write/read pattern to x1..x31 --
+PASS : time=46000 READ1[1]=0x11111111
+PASS : time=46000 READ2[0]=0x00000000
+PASS : time=56000 READ1[2]=0x22222222
+PASS : time=56000 READ2[0]=0x00000000
+PASS : time=66000 READ1[3]=0x33333333
+PASS : time=66000 READ2[0]=0x00000000
+PASS : time=76000 READ1[4]=0x44444444
+PASS : time=76000 READ2[0]=0x00000000
+PASS : time=86000 READ1[5]=0x55555555
+PASS : time=86000 READ2[0]=0x00000000
+PASS : time=96000 READ1[6]=0x66666666
+PASS : time=96000 READ2[0]=0x00000000
+PASS : time=106000 READ1[7]=0x77777777
+PASS : time=106000 READ2[0]=0x00000000
+PASS : time=116000 READ1[8]=0x88888888
+PASS : time=116000 READ2[0]=0x00000000
+PASS : time=126000 READ1[9]=0x99999999
+PASS : time=126000 READ2[0]=0x00000000
+PASS : time=136000 READ1[10]=0xaaaaaaaa
+PASS : time=136000 READ2[0]=0x00000000
+PASS : time=146000 READ1[11]=0xbbbbbbbb
+PASS : time=146000 READ2[0]=0x00000000
+PASS : time=156000 READ1[12]=0xcccccccc
+PASS : time=156000 READ2[0]=0x00000000
+PASS : time=166000 READ1[13]=0xdddddddd
+PASS : time=166000 READ2[0]=0x00000000
+PASS : time=176000 READ1[14]=0xeeeeeeee
+PASS : time=176000 READ2[0]=0x00000000
+PASS : time=186000 READ1[15]=0xffffffff
+PASS : time=186000 READ2[0]=0x00000000
+PASS : time=196000 READ1[16]=0x11111110
+PASS : time=196000 READ2[0]=0x00000000
+PASS : time=206000 READ1[17]=0x22222221
+PASS : time=206000 READ2[0]=0x00000000
+PASS : time=216000 READ1[18]=0x33333332
+PASS : time=216000 READ2[0]=0x00000000
+PASS : time=226000 READ1[19]=0x44444443
+PASS : time=226000 READ2[0]=0x00000000
+PASS : time=236000 READ1[20]=0x55555554
+PASS : time=236000 READ2[0]=0x00000000
+PASS : time=246000 READ1[21]=0x66666665
+PASS : time=246000 READ2[0]=0x00000000
+PASS : time=256000 READ1[22]=0x77777776
+PASS : time=256000 READ2[0]=0x00000000
+PASS : time=266000 READ1[23]=0x88888887
+PASS : time=266000 READ2[0]=0x00000000
+PASS : time=276000 READ1[24]=0x99999998
+PASS : time=276000 READ2[0]=0x00000000
+PASS : time=286000 READ1[25]=0xaaaaaaa9
+PASS : time=286000 READ2[0]=0x00000000
+PASS : time=296000 READ1[26]=0xbbbbbbba
+PASS : time=296000 READ2[0]=0x00000000
+PASS : time=306000 READ1[27]=0xcccccccb
+PASS : time=306000 READ2[0]=0x00000000
+PASS : time=316000 READ1[28]=0xdddddddc
+PASS : time=316000 READ2[0]=0x00000000
+PASS : time=326000 READ1[29]=0xeeeeeeed
+PASS : time=326000 READ2[0]=0x00000000
+PASS : time=336000 READ1[30]=0xfffffffe
+PASS : time=336000 READ2[0]=0x00000000
+PASS : time=346000 READ1[31]=0x1111110f
+PASS : time=346000 READ2[0]=0x00000000
+
+-- Back‐to‐back writes to x5 and x10 --
+PASS : time=366000 READ1[5]=0xaaaa0000
+PASS : time=366000 READ2[10]=0x5555ffff
+
+-- Randomized writes & reads --
+PASS : time=376000 READ1[18]=0x40895e81
+PASS : time=376000 READ2[0]=0x00000000
+PASS : time=386000 READ1[6]=0x86b97b0d
+PASS : time=386000 READ2[24]=0x99999998
+PASS : time=396000 READ1[6]=0x09375212
+PASS : time=396000 READ2[16]=0x11111110
+PASS : time=406000 READ1[16]=0xbb23f176
+PASS : time=406000 READ2[19]=0x44444443
+PASS : time=416000 READ1[30]=0xc62df78c
+PASS : time=416000 READ2[31]=0x1111110f
+PASS : time=426000 READ1[12]=0x62f784c5
+PASS : time=426000 READ2[10]=0x5555ffff
+PASS : time=436000 READ1[30]=0x3bd27277
+PASS : time=436000 READ2[1]=0x11111111
+PASS : time=446000 READ1[24]=0xf93069f2
+PASS : time=446000 READ2[12]=0x62f784c5
+PASS : time=456000 READ1[14]=0x62ca4ec5
+PASS : time=456000 READ2[21]=0x66666665
+PASS : time=466000 READ1[11]=0x16ab582d
+PASS : time=466000 READ2[6]=0x09375212
+PASS : time=476000 READ1[6]=0x8573870a
+PASS : time=476000 READ2[8]=0x88888888
+PASS : time=486000 READ1[18]=0xd57845aa
+PASS : time=486000 READ2[9]=0x99999999
+PASS : time=496000 READ1[9]=0x0983b813
+PASS : time=496000 READ2[0]=0x00000000
+PASS : time=506000 READ1[5]=0xb59fdd6b
+PASS : time=506000 READ2[13]=0xdddddddd
+PASS : time=516000 READ1[0]=0x00000000
+PASS : time=516000 READ2[10]=0x5555ffff
+PASS : time=526000 READ1[17]=0x67c572cf
+PASS : time=526000 READ2[18]=0xd57845aa
+PASS : time=536000 READ1[16]=0x65730aca
+PASS : time=536000 READ2[3]=0x33333333
+PASS : time=546000 READ1[31]=0xc52e618a
+PASS : time=546000 READ2[20]=0x55555554
+PASS : time=556000 READ1[13]=0xbc20f378
+PASS : time=556000 READ2[8]=0x88888888
+PASS : time=566000 READ1[30]=0xdb0265b6
+PASS : time=566000 READ2[28]=0xdddddddc
+
+-- Assert reset again (all should clear) --
+PASS : time=577000 READ1[0]=0x00000000
+PASS : time=577000 READ2[8]=0x88888888
+PASS : time=578000 READ1[1]=0x11111111
+PASS : time=578000 READ2[9]=0x0983b813
+PASS : time=579000 READ1[2]=0x22222222
+PASS : time=579000 READ2[10]=0x5555ffff
+PASS : time=580000 READ1[3]=0x33333333
+PASS : time=580000 READ2[11]=0x16ab582d
+PASS : time=581000 READ1[4]=0x44444444
+PASS : time=581000 READ2[12]=0x62f784c5
+PASS : time=582000 READ1[5]=0xb59fdd6b
+PASS : time=582000 READ2[13]=0xbc20f378
+PASS : time=583000 READ1[6]=0x8573870a
+PASS : time=583000 READ2[14]=0x62ca4ec5
+PASS : time=584000 READ1[7]=0x77777777
+PASS : time=584000 READ2[15]=0xffffffff
+
+===== Test Complete =====
+
+tb/regfile_tb.v:141: $finish called at 594000 (1ps)
+==> wb_mux
+VCD info: dumpfile dump.vcd opened for output.
+PASS: ALU path data
+PASS: ALU path reg_write
+PASS: ALU rd passthrough
+PASS: MEM path data
+PASS: PC+4 path data
+PASS: Kill gating disables write
+PASS: x0 write blocked
+PASS: x31 write allowed
+PASS: all wb_mux tests
+tb/wb_mux_tb.v:73: $finish called at 7 (1ps)
+=== All sims complete ===
