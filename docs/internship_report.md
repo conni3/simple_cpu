@@ -1,5 +1,10 @@
 # RISC-V CPU Design and Simulation – Internship Report
 
+## Acknowledgments
+I extend my heartfelt thanks to my supervisors and mentors for their guidance and encouragement throughout this internship.
+I am equally grateful to the host organization for providing the resources and supportive environment that made this work possible.
+Additional appreciation goes to colleagues, collaborators, and the institutions that offered technical assistance and shared tools that contributed to the success of this project.
+
 ## Abstract
 This report documents the design and simulation of a modular, single-cycle RISC-V CPU core. It outlines project objectives, tools and environment, methodology, verification strategies, and key results achieved.
 
