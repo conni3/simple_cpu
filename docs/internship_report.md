@@ -163,6 +163,21 @@ This project delivers a clean, modular foundation for RISC-V CPU exploration. Th
 - **Vivado Reports**: synthesis, utilization, timing summaries.
 - **Repository Tree**: top-level project structure for quick orientation.
 
+### Repository Tree
+
+```text
+src/
+tb/
+logs/
+docs/
+images/
+include/
+scripts/
+tests/
+vivado_proj/
+waves/
+```
+
 ## 19. Vivado Reports
 The `logs/` directory contains Vivado-generated synthesis, timing, power, and rule-check reports for the `cpu` design. Key highlights include:
 
