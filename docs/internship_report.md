@@ -106,10 +106,13 @@ Key Vivado metrics for the synthesized core:
 | Layer | Description |
 |-------|-------------|
 | **Top-Level CPU** | Integrates the controller and datapath, wiring instruction fields, control signals, and memory interfaces |
-| **Controller** | Extracts opcode, registers, immediates, and derives control signals via `decoder_glue` and `alu_control` |
+| **Controller** | Extracts opcode, registers, and immediates, delegating to `decoder_glue` and `alu_control` |
+| **decoder_glue** | Combines `decoder`, `control`, and `imm_gen` outputs into unified control signals |
 | **Datapath** | Coordinates instruction fetch, register file access, ALU operations, branch logic, memory access, and write-back selection |
 | **Next PC Unit** | Chooses sequential PC or branch/jump targets, aligning JALR addresses and verifying alignment |
 | **Leaf Modules** | ALU supports arithmetic, logical, and shift operations with zero detection; branch comparator evaluates conditional jumps |
+
+The controller passes decoded instruction fields to `decoder_glue`, which fuses control and immediate data before signaling the leaf modules.
 
 > **Figure 3:** _Controller–Datapath Interaction_
 > ![Controller–Datapath Interaction Placeholder](path/to/controller_datapath_interaction.png)
