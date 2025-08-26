@@ -165,6 +165,123 @@ This report is based on static inspection; dynamic behavior and performance were
 
 
 ## 20. Appendix: Module Overview
+### Core Modules
+
+#### cpu
+**Purpose.** Top-level wrapper that wires together controller and datapath and exposes debug probes.
+
+**Key ports.**
+- Inputs: `clk`, `reset`
+- Debug outputs: `debug_pc`, `debug_instr`, `debug_alu`
+- Parameters: data/addr widths and optional instruction/data memory file paths
+
+**Behavior.** Passes the instruction to the controller, routes control signals/decoded fields/immmediate to the datapath, and taps PC/instruction/ALU result for observability. No extra logic beyond wiring and parameter passing.
+
+#### controller
+**Purpose.** Decode the incoming instruction into datapath controls and an ALU operation code.
+
+**Inputs.** `instr[31:0]`
+
+**Outputs.**
+- Register decode fields: `opcode`, `rd`, `funct3`, `rs1`, `rs2`, `funct7`, `csr`
+- Controls: `reg_write`, `mem_read`, `mem_write`, `alu_src`, `op1_sel[1:0]`, `wb_sel[1:0]`
+- ALU: `alu_ctrl[3:0]`
+- Flow hints: `is_branch`, `is_jal`, `is_jalr`
+- Immediate: `imm_out[31:0]`
+
+**Implementation notes.**
+- Performs field slicing directly—no external `instr_slicer` is instantiated.
+- Internally instantiates `decoder_glue` (which itself includes `decoder`, `control`, and `imm_gen`) and then `alu_control`.
+- There is no `op2_sel`; the second ALU operand is chosen solely via the single‑bit `alu_src`.
+
+#### datapath
+**Purpose.** Execute the instruction using register file, ALU, memories, and PC logic.
+
+**Inputs.** Control signals, register indices, immediate, ALU control, and flow flags from controller; plus `clk` and `reset`.
+
+**Key components.**
+- `branch_comp` and `next_pc` compute branch/jump targets.
+- `pc` holds the current PC; `instr_mem` and `data_mem` are word‑addressed.
+- Register file feeds operands; `alu_src` picks between `rs2` and immediate for operand B; `op1_sel` chooses RS1 or PC for operand A.
+- Write‑back is performed with a simple ternary assignment; no `wb_mux` module or `kill_wb` gating is present in this integrated datapath.
+- Debug outputs mirror the current PC and ALU result.
+
+**Memory behavior.**
+- Addresses use `pc_current[ADDR_WIDTH+1:2]` and `alu_result[ADDR_WIDTH+1:2]`, implying word alignment.
+- Loads and stores operate on full 32‑bit words only; there is no byte/half-word extraction or sign/zero extension logic.
+
+### Glue Modules
+
+#### decoder_glue
+**Purpose.** Consolidates instruction classification, main control, and immediate generation.
+
+**Outputs.**
+- Controls for datapath: `reg_write`, `mem_read`, `mem_write`, `alu_src`, `op1_sel`, `wb_sel`, `alu_op`, `imm_sel`
+- Flow flags: `is_jal`, `is_jalr`, `is_branch`
+- Instruction class flags: `is_lui`, `is_auipc`, `is_alu_reg`, `is_alu_imm`, `is_load`, `is_store`, `is_system`
+- Immediate value: `imm_out`
+
+**Notes.** No `op2_sel`; main control provides `branch_sig`/`jump` internally, but the top-level uses only `is_*` flags.
+
+#### next_pc
+**Purpose.** Determine `pc_next` from `pc_current`, `imm_out`, register values, and branch/jump decisions.
+
+**Behavior.**
+```verilog
+pc_next =  is_jalr ? { (rs1 + imm)[31:1], 1'b0 } :
+           is_jal  ? pc_current + imm :
+           (is_branch && branch_taken) ? pc_current + imm :
+                                        pc_current + 4;
+```
+Bit 0 is cleared for JALR targets. Commented simulation code exists for misalignment checks.
+
+### Leaf Modules
+
+#### adder
+Parameterizable combinational adder: `result = a + b`.
+
+#### alu
+Implements RV32I operations (ADD/SUB, shifts, logical ops, SLT/SLTU). Outputs `alu_zero` when the result is zero.
+
+#### alu_control
+Converts `{alu_op, funct3, funct7[5]}` into a 4‑bit `alu_ctrl`, distinguishing shift directions and ADD vs SUB.
+
+#### branch_comp
+Evaluates BEQ/BNE/BLT/BGE/BLTU/BGEU using signed or unsigned comparisons as required.
+
+#### control
+Sets default control lines, then overrides them based on instruction‑class flags:
+
+- Outputs: `mem_read`, `mem_write`, `alu_src`, `branch_sig`, `jump`, `alu_op`, `imm_sel`, `wb_sel`, `op1_sel`
+- Does not output `reg_write`; that comes from `decoder`.
+- No `op2_sel` or `kill_wb` handling.
+
+#### data_mem
+Word‑wide synchronous write, combinational read RAM. Uses `$readmemh`. No byte strobes or load sign‑extension logic.
+
+#### decoder
+Coarsely classifies the opcode into instruction types (`is_alu_reg`, `is_branch`, etc.) and sets the `reg_write` seed.
+
+#### imm_gen
+Produces sign‑extended immediates for I/S/B/U/J formats via `imm_sel`.
+
+#### instr_mem
+Combinational ROM indexed by word address; initialized from a hex file.
+
+#### instr_slicer
+Extracts instruction fields (`opcode`, `rd`, `funct3`, `rs1`, `rs2`, `funct7`, `shamt`, `csr`). Provided as a utility but not used in controller.
+
+#### mux2 / mux4
+Generic parameterized multiplexers for two or four inputs, respectively.
+
+#### pc
+Program counter register with asynchronous reset and synchronous update.
+
+#### regfile
+32×32‑bit register file. Asynchronous reads, synchronous writes, and x0 write blocking. No `kill_wb` port.
+
+#### wb_mux
+Selects between ALU result, memory data, or `pc_plus4` and gates writes to avoid x0 and to honor `kill_wb`. (Present as a standalone module but not instantiated in the current datapath.)
 
 ### adder
 Ripple-carry adder for summing operands.
