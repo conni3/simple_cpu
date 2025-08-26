@@ -1,5 +1,6 @@
     .section .text
     .globl _start
+#include "PASS_INC.S"
 _start:
     # Write pattern to four words @ 0x100..0x10C, then sum to x10
     lui  x1, %hi(0x00000100)
@@ -24,7 +25,6 @@ _start:
     add  x10, x10, x9     # x10 = 10
 
     # PASS
-    lui  x14, %hi(0xC0DECAFE)
-    addi x14, x14, %lo(0xC0DECAFE)
-    sw   x14, 0x20(x0)
+    li   t0, PASS_DATA
+    sw   t0, PASS_ADDR(x0)
 1:  jal  x0, 0

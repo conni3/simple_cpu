@@ -1,5 +1,6 @@
     .section .text
     .globl _start
+#include "PASS_INC.S"
 _start:
     addi x0, x0, 123     # should have no effect
     addi x1, x0, 0       # expect x1=0
@@ -10,7 +11,6 @@ _start:
     addi x0, x0, 1
 
 1:  # PASS
-    lui  x14, %hi(0xC0DECAFE)
-    addi x14, x14, %lo(0xC0DECAFE)
-    sw   x14, 0x20(x0)
+    li   t0, PASS_DATA
+    sw   t0, PASS_ADDR(x0)
 1:  jal  x0, 0

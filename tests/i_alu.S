@@ -1,5 +1,6 @@
     .section .text
     .globl _start
+#include "PASS_INC.S"
 _start:
     addi x1, x0, 5
     addi x2, x1, -3      # 2
@@ -14,7 +15,6 @@ _start:
     sltiu x11, x8, 1     # x8 is 0xFFFFFF80; 0xFFFFFF80 < 1 (unsigned)? no => 0
 
     # PASS
-    lui  x14, %hi(0xC0DECAFE)
-    addi x14, x14, %lo(0xC0DECAFE)
-    sw   x14, 0x20(x0)
+    li   t0, PASS_DATA
+    sw   t0, PASS_ADDR(x0)
 1:  jal  x0, 0
