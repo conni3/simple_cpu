@@ -49,6 +49,7 @@ module cpu_tb;
   end
 
   integer cycles;
+  integer instr_count = 0;
   reg reg_ok, mem_ok, finished;
   initial begin
     #1;
@@ -73,6 +74,7 @@ module cpu_tb;
     begin : end_test
       for (cycles = 0; cycles < MAX_CYCLES; cycles = cycles + 1) begin
         @(posedge clk);
+        if (!reset) instr_count = instr_count + 1;
 
         if (!reg_ok && (dut.u_datapath.u_rf.regs[6] === 32'h0000_0010)) begin
           $display("[PASS-1] x6 == 0x00000010 at cycle %0d", cycles);
@@ -86,6 +88,10 @@ module cpu_tb;
 
         if (dut.u_datapath.instr === 32'h0000_006F) begin
           $display("[INFO] Reached END_SENTINEL (jal x0,0) at PC=%h, cycle %0d", debug_pc, cycles);
+          real cpi;
+          cpi = cycles;
+          cpi = cpi / instr_count;
+          $display("[PERF] CPI=%0f", cpi);
           finished = 1'b1;
           disable end_test;
         end
