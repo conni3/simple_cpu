@@ -193,7 +193,7 @@ long-duration behavior still need evaluation.
 - Debug outputs: `debug_pc`, `debug_instr`, `debug_alu`
 - Parameters: data/addr widths and optional instruction/data memory file paths
 
-**Behavior.** Passes the instruction to the controller, routes control signals/decoded fields/immmediate to the datapath, and taps PC/instruction/ALU result for observability. No extra logic beyond wiring and parameter passing.
+**Behavior.** Passes the instruction to the controller, routes control signals/decoded fields/immediate to the datapath, and taps PC/instruction/ALU result for observability. No extra logic beyond wiring and parameter passing.
 
 #### controller
 **Purpose.** Decode the incoming instruction into datapath controls and an ALU operation code.
