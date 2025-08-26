@@ -61,8 +61,20 @@ The repository provides a complete, simulation-ready RISC-V core with comprehens
 - Expand instruction coverage (e.g., system instructions, multiplication/division).  
 - Integrate a cache or memory hierarchy for realistic performance evaluation.
 
-## 10. Conclusion  
+## 10. Conclusion
 This project delivers a clean, modular foundation for RISC-V CPU exploration. The codebase’s structure, documentation, and automated tooling—now including mandatory Vivado flows—make it suitable for both educational purposes and further research or development.
+
+## Vivado Reports
+The `logs/` directory contains Vivado-generated synthesis, timing, power, and rule-check reports for the `cpu` design. Key highlights include:
+
+- Clock reports show the top-level `clk` is unconstrained, leaving 2,080 endpoints without timing analysis.
+- A design rule check warns about a missing PS7 block (`ZPS7-1`).
+- Methodology analysis flags 1,000 non-clocked sequential cells and extensive use of distributed RAM.
+- Power analysis estimates total on-chip power of 3.618 W with the program counter consuming the largest share.
+- Timing summary lists thousands of unconstrained internal endpoints and undefined I/O delays.
+- Utilization reports 2,439 slice LUTs and 1,056 slice registers in use.
+
+These reports guide next steps such as adding clock constraints, resolving DRC warnings, and optimizing resource usage.
 
 ---
 
