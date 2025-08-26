@@ -152,10 +152,10 @@ long-duration behavior still need evaluation.
 The repository provides a complete, simulation-ready RISC-V core with comprehensive testbenches and an extensible build system. The modular design facilitates future enhancements, experimentation, and instructional use.
 
 ## 16. Future Work
-- Introduce pipelining to improve throughput.  
-- Add hazard detection and forwarding.  
-- Expand instruction coverage (e.g., system instructions, multiplication/division).  
-- Integrate a cache or memory hierarchy for realistic performance evaluation.
+- I plan to introduce pipelining to improve throughput. Debugging `wb_sel` wiring made me realize how a single-cycle datapath hides timing issues, and formal checks will be easier with staged logic.
+- I will add hazard detection and forwarding. When undefined opcodes toggled control signals unexpectedly, I saw that proper hazard handling would have isolated the bug faster.
+- I aim to expand instruction coverage (e.g., system instructions, multiplication/division). The instruction-alignment checks in `next_pc` saved me from misaligned jumps, so wider support needs equally rigorous validation.
+- I want to integrate a cache or memory hierarchy for realistic performance evaluation. The relative-path fiasco that broke instruction memory loading reminded me how fragile my flat memory model is.
 
 ## 17. Conclusion
 This project delivers a clean, modular foundation for RISC-V CPU exploration. The codebase’s structure, documentation, and automated tooling—now including mandatory Vivado flows—make it suitable for both educational purposes and further research or development.
