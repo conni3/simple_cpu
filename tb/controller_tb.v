@@ -171,9 +171,12 @@ module controller_tb;
   // ----------------------------
   integer percent;
   initial begin
-    pass_cnt = 0;
-    fail_cnt = 0;
+    pass_cnt  = 0;
+    fail_cnt  = 0;
     total_cnt = 0;
+
+    $dumpfile("dump.vcd");
+    $dumpvars(0, controller_tb);
 
     // 1) ADD
     instr = rtype(7'b0000000, 5'd2, 5'd1, 3'b000, 5'd3, `OP_RTYPE);

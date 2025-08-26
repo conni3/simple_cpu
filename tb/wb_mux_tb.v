@@ -37,7 +37,10 @@ module wb_mux_tb;
     kill_wb      = 1'b0;
     rd_in        = 5'd10;
 
-    wb_sel       = WB_ALU;
+    $dumpfile("dump.vcd");
+    $dumpvars(0, wb_mux_tb);
+
+    wb_sel = WB_ALU;
     #1;
     check("ALU path data", rd_wdata === alu_result);
     check("ALU path reg_write", reg_write_out === 1'b1);

@@ -130,6 +130,9 @@ module decoder_glue_tb;
   initial begin
     $display("Start decoder_glue tests...");
 
+    $dumpfile("dump.vcd");
+    $dumpvars(0, decoder_glue_tb);
+
     // R-type: add x5 = x1 + x2
     instr = mk_r(7'b0000000, 5'd2, 5'd1, 3'b000, 5'd5);
     settle();
