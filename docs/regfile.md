@@ -1,12 +1,12 @@
 
-# Entity: reg_file 
+# Entity: regfile
 - **File**: regfile.v
 
 ## Diagram
-![Diagram](../images/docs/reg_file.svg "Diagram")
+![Diagram](../images/docs/regfile.svg "Diagram")
 
 ## Schematic
-![Schematic](../images/schematics/reg_file.svg "Schematic")
+![Schematic](../images/schematics/regfile.svg "Schematic")
 ## Ports
 
 | Port name  | Direction | Type        | Description |

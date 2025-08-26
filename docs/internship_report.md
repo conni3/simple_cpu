@@ -37,17 +37,14 @@ This project implements a modular, single-cycle RISC-V CPU core written in Veril
 
 ## 5. Simulation & Debug Process
 
-Typical workflow when issues surfaced:
+Typical workflow when issues surfaced began by recreating the failure with `make` to run both Icarus and Vivado simulations, then inspecting waveforms in GTKWave or XSIM to compare expected versus observed behavior. Iterative passes then:
 
-1. **Recreate the failure** using `make` to run both Icarus and Vivado simulations.
-2. **Inspect waveforms** in GTKWave or XSIM to compare expected vs. observed behavior.
-3. **Iterate** from leaf modules to the integrated datapath and finally the full CPU.
+- created and tested glue modules,
+- handled design-choice incompatibilities,
+- refactored leaf modules for consistency, and
+- rewrote testbenches after refactors.
 
-Examples:
-- Instruction memory failed to load in XSIM due to a relative-path mismatch.
-- Undefined opcodes produced unexpected toggling on control signals.
-
-Waveform snapshots (expected vs. observed) were annotated to document each fix.
+Waveform snapshots (expected vs. observed) were annotated to document each fix, and the cycle repeated from leaf modules to the integrated datapath and finally the full CPU.
 
 ## 6. Validation
 
@@ -91,9 +88,9 @@ Key Vivado metrics for the synthesized core:
 
 ## 9. Learning Outcomes
 
-- Mastered Vivado TCL scripting and Makefile automation.
-- Gained experience in modular RTL design and waveform‑based debugging.
-- Developed a deeper understanding of datapath/control separation.
+- Mastered Vivado TCL scripting and Makefile automation. Early scripts created wiring mismatches when module ports were ordered incorrectly, but refining the TCL flow to auto-derive connections resolved the issue.
+- Gained experience in modular RTL design and waveform‑based debugging. A misuse of `funct7_5` led to incorrect shift operations; tracing the waveform exposed the bug and adjusting the decoder fixed it.
+- Developed a deeper understanding of datapath/control separation. Consolidating ALU functionality blurred control boundaries at first, yet reorganizing the case structure restored clarity and decoupled the units.
 
 ## 10. Personal Reflections
 
@@ -114,10 +111,13 @@ Some challenges linger, particularly around deep timing analysis and hardware va
 | Layer | Description |
 |-------|-------------|
 | **Top-Level CPU** | Integrates the controller and datapath, wiring instruction fields, control signals, and memory interfaces |
-| **Controller** | Extracts opcode, registers, immediates, and derives control signals via `decoder_glue` and `alu_control` |
+| **Controller** | Extracts opcode, registers, and immediates, delegating to `decoder_glue` and `alu_control` |
+| **decoder_glue** | Combines `decoder`, `control`, and `imm_gen` outputs into unified control signals |
 | **Datapath** | Coordinates instruction fetch, register file access, ALU operations, branch logic, memory access, and write-back selection |
 | **Next PC Unit** | Chooses sequential PC or branch/jump targets, aligning JALR addresses and verifying alignment |
 | **Leaf Modules** | ALU supports arithmetic, logical, and shift operations with zero detection; branch comparator evaluates conditional jumps |
+
+The controller passes decoded instruction fields to `decoder_glue`, which fuses control and immediate data before signaling the leaf modules.
 
 > **Figure 3:** _Controller–Datapath Interaction_
 > ![Controller–Datapath Interaction Placeholder](path/to/controller_datapath_interaction.png)
@@ -134,7 +134,20 @@ A complete inventory of modules and their interfaces is documented for quick ref
 - Running `make` performs lint, build, simulation, waveform dumping, **and Vivado simulation** for all testbenches.
 - Schematic rendering (`make schem`) visualizes module structure, aiding design reviews.
 
-Recent Vivado reports provide a snapshot of the current design health. The DRC log flags a `ZPS7-1` warning indicating the PS7 block is required for the target device【F:logs/drc.rpt†L31-L38】. Timing checks reveal 2,080 register/latch pins without clocks, 11,328 unconstrained internal endpoints, and missing delay specs on one input and 35 outputs【F:logs/timing_summary.rpt†L52-L57】. Power analysis estimates 3.618 W total power with 3.453 W dynamic and 0.165 W static consumption【F:logs/power.rpt†L32-L41】, while utilization reports 2,439 slice LUTs (13.86 %) and 1,056 registers (3.00 %) in use【F:logs/utilization.rpt†L34-L40】. No formal coverage metrics are captured; testing remains limited to the RV32I subset exercised by existing programs.
+Recent Vivado reports provide a snapshot of the current design health. A DRC warning indicates the PS7 block is required for the target device. Timing analysis notes 2,080 register/latch pins without clocks, 11,328 unconstrained internal endpoints, and missing delay specifications on one input and 35 outputs. Power is estimated at 3.618 W (3.453 W dynamic and 0.165 W static), and resource utilization reaches 2,439 slice LUTs (13.86 %) and 1,056 registers (3.00 %). No formal coverage metrics are captured; testing remains limited to the RV32I subset exercised by existing programs. See the appendices or `logs/` folder for full report details.
+
+
+### Simulation Testing
+Testing was performed on a local workstation using Icarus Verilog, with
+spot checks run in Vivado's XSIM to ensure compatibility with the AMD
+toolflow. Module-level testbenches executed successfully and waveforms
+were reviewed for key components. Hardware FPGA runs were not possible
+due to limited board access and internship time, so full-system
+integration tests remain outstanding.
+
+### Testing Notes
+Results reflect these simulation-only tests; hardware performance and
+long-duration behavior still need evaluation.
 
 > **Figure 4:** _Waveform Example_
 > ![Waveform Placeholder](path/to/waveform_example.png)
@@ -175,8 +188,6 @@ The `logs/` directory contains Vivado-generated synthesis, timing, power, and ru
 
 These reports guide next steps such as adding clock constraints, resolving DRC warnings, and optimizing resource usage.
 
----
-
 ### Testing
 Testing was performed on a local workstation using Icarus Verilog, with
 spot checks run in Vivado's XSIM to ensure compatibility with the AMD
@@ -191,6 +202,22 @@ long-duration behavior still need evaluation.
 
 
 ## 21. Appendix: Module Overview
+
+### Repository Tree
+
+```text
+src/
+tb/
+logs/
+docs/
+images/
+include/
+scripts/
+tests/
+vivado_proj/
+waves/
+```
+
 ### Core Modules
 
 #### cpu
@@ -201,7 +228,7 @@ long-duration behavior still need evaluation.
 - Debug outputs: `debug_pc`, `debug_instr`, `debug_alu`
 - Parameters: data/addr widths and optional instruction/data memory file paths
 
-**Behavior.** Passes the instruction to the controller, routes control signals/decoded fields/immmediate to the datapath, and taps PC/instruction/ALU result for observability. No extra logic beyond wiring and parameter passing.
+**Behavior.** Passes the instruction to the controller, routes control signals/decoded fields/immediate to the datapath, and taps PC/instruction/ALU result for observability. No extra logic beyond wiring and parameter passing.
 
 #### controller
 **Purpose.** Decode the incoming instruction into datapath controls and an ALU operation code.
@@ -473,12 +500,12 @@ Program counter register holding the current instruction address.
 
 **Waveform explanation:** The PC register samples `next_pc` on rising clock edges and resets to zero. The waveform shows reset, sequential increments by 4, and a branch target load, all occurring synchronously on clock edges.
 
-### reg_file
+### regfile
 Register file supporting two reads and one write each cycle.
 
-![reg_file](../images/docs/reg_file.svg)
-![reg_file schematic](../images/schematics/reg_file.svg)
-![reg_file waveform](../images/waveforms/regfile.png)
+![regfile](../images/docs/regfile.svg)
+![regfile schematic](../images/schematics/regfile.svg)
+![regfile waveform](../images/waveforms/regfile.png)
 
 **Waveform explanation:** The register file has synchronous writes and asynchronous reads. The waveform highlights reset clearing all registers, writes occurring on clock edges, reads reflecting values immediately, and attempts to write x0 being ignored.
 
