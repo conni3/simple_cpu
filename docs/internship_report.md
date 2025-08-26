@@ -72,3 +72,114 @@ No tests were executed in this read-only review environment.
 ### Notes
 This report is based on static inspection; dynamic behavior and performance were not validated.
 
+
+## Appendix: Module Overview
+
+### adder
+Ripple-carry adder for summing operands.
+
+![adder](../images/docs/adder.svg)
+![adder schematic](../images/schematics/adder.svg)
+
+### alu
+Performs arithmetic and logic operations and sets a zero flag.
+
+![alu](../images/docs/alu.svg)
+![alu schematic](../images/schematics/alu.svg)
+
+### alu_control
+Decodes ALUOp and funct fields into a specific ALU control code.
+
+![alu_control](../images/docs/alu_control.svg)
+![alu_control schematic](../images/schematics/alu_control.svg)
+
+### branch_comp
+Compares operands and determines branch decisions.
+
+![branch_comp](../images/docs/branch_comp.svg)
+![branch_comp schematic](../images/schematics/branch_comp.svg)
+
+### control
+Top-level control logic driving datapath and memory sequencing.
+
+![control](../images/docs/control.svg)
+![control schematic](../images/schematics/control.svg)
+
+### controller
+Finite state machine orchestrating overall CPU execution.
+
+![controller](../images/docs/controller.svg)
+![controller schematic](../images/schematics/controller.svg)
+
+### cpu
+Top-level CPU wrapper combining controller and datapath modules.
+
+![cpu](../images/docs/cpu.svg)
+![cpu schematic](../images/schematics/cpu.svg)
+
+### data_mem
+Data memory providing load and store access.
+
+![data_mem](../images/docs/data_mem.svg)
+![data_mem schematic](../images/schematics/data_mem.svg)
+
+### datapath
+Wires registers, ALU, memories, and multiplexers together.
+
+![datapath](../images/docs/datapath.svg)
+![datapath schematic](../images/schematics/datapath.svg)
+
+### decoder
+Extracts instruction fields and produces basic control signals.
+
+![decoder](../images/docs/decoder.svg)
+![decoder schematic](../images/schematics/decoder.svg)
+
+### decoder_glue
+Auxiliary logic supporting decoder outputs.
+
+![decoder_glue](../images/docs/decoder_glue.svg)
+![decoder_glue schematic](../images/schematics/decoder_glue.svg)
+
+### imm_gen
+Generates immediate values from instruction fields.
+
+![imm_gen](../images/docs/imm_gen.svg)
+![imm_gen schematic](../images/schematics/imm_gen.svg)
+
+### instr_mem
+Instruction memory storage for program code.
+
+![instr_mem](../images/docs/instr_mem.svg)
+![instr_mem schematic](../images/schematics/instr_mem.svg)
+
+### instr_slicer
+Splits the instruction into its constituent fields.
+
+![instr_slicer](../images/docs/instr_slicer.svg)
+![instr_slicer schematic](../images/schematics/instr_slicer.svg)
+
+### next_pc
+Computes the next program counter value based on branch logic.
+
+![next_pc](../images/docs/next_pc.svg)
+![next_pc schematic](../images/schematics/next_pc.svg)
+
+### pc
+Program counter register holding the current instruction address.
+
+![pc](../images/docs/pc.svg)
+![pc schematic](../images/schematics/pc.svg)
+
+### reg_file
+Register file supporting two reads and one write each cycle.
+
+![reg_file](../images/docs/reg_file.svg)
+![reg_file schematic](../images/schematics/reg_file.svg)
+
+### wb_mux
+Selects the data source for register write-back.
+
+![wb_mux](../images/docs/wb_mux.svg)
+![wb_mux schematic](../images/schematics/wb_mux.svg)
+
