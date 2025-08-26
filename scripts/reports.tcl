@@ -19,13 +19,13 @@ read_verilog -sv $sources
 synth_design -top $top -part $part -mode out_of_context
 
 # Emit reports
-report_synthesis -file logs/synth.rpt
+# report_synth -file logs/synth.rpt 
 report_timing_summary   -file logs/timing_summary.rpt
 report_clock_networks   -file logs/clock_networks.rpt
 report_clock_interaction -file logs/clock_interaction.rpt
 report_methodology      -file logs/methodology.rpt
 report_drc              -file logs/drc.rpt
-report_noise            -file logs/noise.rpt
+# report_noise            -file logs/noise.rpt
 report_utilization      -file logs/utilization.rpt
 report_power            -file logs/power.rpt
 

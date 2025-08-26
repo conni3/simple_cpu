@@ -1,0 +1,67 @@
+$date
+	Tue Aug 26 13:29:42 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module mux4_tb $end
+$var wire 32 ! y [31:0] $end
+$var reg 32 " a [31:0] $end
+$var reg 32 # b [31:0] $end
+$var reg 32 $ c [31:0] $end
+$var reg 32 % d [31:0] $end
+$var reg 2 & sel [1:0] $end
+$scope module uut $end
+$var wire 32 ' a [31:0] $end
+$var wire 32 ( b [31:0] $end
+$var wire 32 ) c [31:0] $end
+$var wire 32 * d [31:0] $end
+$var wire 2 + sel [1:0] $end
+$var wire 32 , y [31:0] $end
+$var parameter 32 - WIDTH $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b100000 -
+$end
+#0
+$dumpvars
+b1 ,
+b0 +
+b100 *
+b11 )
+b10 (
+b1 '
+b0 &
+b100 %
+b11 $
+b10 #
+b1 "
+b1 !
+$end
+#100
+b10 !
+b10 ,
+b1 &
+b1 +
+#200
+b11 !
+b11 ,
+b10 &
+b10 +
+#300
+b100 !
+b100 ,
+b11 &
+b11 +
+#400
+b1 !
+b1 ,
+b0 &
+b0 +
+#500

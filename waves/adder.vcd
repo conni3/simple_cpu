@@ -1,0 +1,77 @@
+$date
+	Tue Aug 26 13:29:42 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module adder_tb $end
+$var wire 32 ! result [31:0] $end
+$var parameter 32 " WIDTH $end
+$var reg 32 # a [31:0] $end
+$var reg 32 $ b [31:0] $end
+$var integer 32 % failed [31:0] $end
+$var integer 32 & passed [31:0] $end
+$scope module uut $end
+$var wire 32 ' a [31:0] $end
+$var wire 32 ( b [31:0] $end
+$var wire 32 ) result [31:0] $end
+$var parameter 32 * WIDTH $end
+$upscope $end
+$scope task check $end
+$var reg 32 + expected [31:0] $end
+$var reg 32 , test_a [31:0] $end
+$var reg 32 - test_b [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b100000 *
+b100000 "
+$end
+#0
+$dumpvars
+b1 -
+b1 ,
+b10 +
+b10 )
+b1 (
+b1 '
+b0 &
+b0 %
+b1 $
+b1 #
+b10 !
+$end
+#2000
+b0 !
+b0 )
+b11111111111111111111111111111111 #
+b11111111111111111111111111111111 '
+b0 +
+b11111111111111111111111111111111 ,
+b1 &
+#4000
+b10000000000000000000000000000000 !
+b10000000000000000000000000000000 )
+b1111111111111111111111111111111 #
+b1111111111111111111111111111111 '
+b10000000000000000000000000000000 +
+b1111111111111111111111111111111 ,
+b10 &
+#6000
+b11111111111111111111111111111111 $
+b11111111111111111111111111111111 (
+b1111111111111111111111111111111 !
+b1111111111111111111111111111111 )
+b10000000000000000000000000000000 #
+b10000000000000000000000000000000 '
+b1111111111111111111111111111111 +
+b11111111111111111111111111111111 -
+b10000000000000000000000000000000 ,
+b11 &
+#8000
+b100 &

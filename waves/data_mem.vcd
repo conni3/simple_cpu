@@ -1,0 +1,55 @@
+$date
+	Tue Aug 26 13:29:42 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module data_mem_tb $end
+$var wire 32 ! read_data [31:0] $end
+$var reg 11 " addr [10:0] $end
+$var reg 1 # clk $end
+$var reg 1 $ we $end
+$var reg 32 % write_data [31:0] $end
+$scope module uut $end
+$var wire 11 & addr [10:0] $end
+$var wire 1 # clk $end
+$var wire 1 ' mem_read $end
+$var wire 1 $ mem_write $end
+$var wire 32 ( wdata [31:0] $end
+$var parameter 32 ) ADDR_WIDTH $end
+$var parameter 128 * MEM_FILE $end
+$var reg 32 + rdata [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b1110011011100100110001100101111011001000110000101110100011000010101111101101101011001010110110100101110011011010110010101101101 *
+b1011 )
+$end
+#0
+$dumpvars
+bx +
+b11011110101011011011111011101111 (
+1'
+b1 &
+b11011110101011011011111011101111 %
+1$
+0#
+b1 "
+bx !
+$end
+#5
+b11011110101011011011111011101111 !
+b11011110101011011011111011101111 +
+1#
+#10
+0#
+0$
+#15
+1#
+#20
+0#

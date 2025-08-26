@@ -1,6 +1,7 @@
 *.jou
 *.tcl
 !scripts/*.tcl
+!waves/*.vcd
 *.log
 xsim.dir/
 *.wcfg
