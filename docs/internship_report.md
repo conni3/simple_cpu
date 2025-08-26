@@ -162,12 +162,26 @@ Ripple-carry adder for summing operands.
 ![adder schematic](../images/schematics/adder.svg)
 ![adder waveform](../images/waveforms/adder.png)
 
+**Waveform explanation:** The waveform shows a purely combinational 32‑bit add. Each test bench vector asserts `a`, `b`, and waits 2 ns for `result` to settle before comparison. The trace confirms:
+- `1 + 1 → 2`
+- `0xFFFFFFFF + 1 → 0` (wraparound)
+- `0x7FFFFFFF + 1 → 0x80000000` (overflow into sign bit)
+- `0x80000000 + 0xFFFFFFFF → 0x7FFFFFFF` (two’s‑complement behavior)
+Because the DUT has no state, the output changes immediately when inputs change; the waveform aligns exactly with these checks.
+
 ### alu
 Performs arithmetic and logic operations and sets a zero flag.
 
 ![alu](../images/docs/alu.svg)
 ![alu schematic](../images/schematics/alu.svg)
 ![alu waveform](../images/waveforms/alu.png)
+
+**Waveform explanation:** Stimuli sweep all RV32I ALU ops by driving operands, a 4‑bit control code, and sampling after 10 ns. Examples:
+- `ctrl=0000` – addition: `15+10=25`
+- `ctrl=0001` – subtraction: `15−10=5`
+- Shift, compare, and boolean ops likewise match expected constants.
+- A final subtraction of equal numbers asserts the `zero` flag.
+Waveform transitions mirror these cases, verifying correct combinational behavior and flag generation.
 
 ### alu_control
 Decodes ALUOp and funct fields into a specific ALU control code.
@@ -176,12 +190,20 @@ Decodes ALUOp and funct fields into a specific ALU control code.
 ![alu_control schematic](../images/schematics/alu_control.svg)
 ![alu_control waveform](../images/waveforms/alu_control.png)
 
+**Waveform explanation:** The test bench enumerates ALUOp/funct3/funct7 combinations and checks the 4‑bit control output one cycle later. The waveform steps through:
+- Baseline cases (`ALUOp=00`→ADD, `ALUOp=01`→SUB).
+- R‑type and I‑type mappings for every RV32I function (SLL, SLT, XOR, etc.).
+- Immediate shift variants (SLLI/SRLI/SRAI) and logical immediates (ANDI/ORI/XORI).
+The traces show `ALUCtrl` switching to the expected code for each stimulus, confirming the decoder’s truth table.
+
 ### branch_comp
 Compares operands and determines branch decisions.
 
 ![branch_comp](../images/docs/branch_comp.svg)
 ![branch_comp schematic](../images/schematics/branch_comp.svg)
 ![branch_comp waveform](../images/waveforms/branch_comp.png)
+
+**Waveform explanation:** The branch comparator waveform looks inverted because each test assigns operands, waits `#1` time unit, and then checks the output. As soon as the check finishes, the next test overwrites `op1`, `op2`, and `funct3` without a delay. In the VCD, `branch` reflects the new inputs immediately while the `expected` variable still holds the previous value, making them appear opposite. The textual test results are still correct because the comparison happens after the intended delay. Inserting a register or extra delay before reassigning inputs would keep the waveform aligned with the logical check.
 
 ### control
 Top-level control logic driving datapath and memory sequencing.
@@ -193,12 +215,16 @@ Top-level control logic driving datapath and memory sequencing.
 ![control waveform 3](../images/waveforms/control_3.png)
 ![control waveform 4](../images/waveforms/control_4.png)
 
+**Waveform explanation:** The control unit receives instruction bits plus one‑hot class flags and outputs memory, ALU, and write‑back controls. Test sequences encode each instruction type and verify the resulting signals via `expect_ctrl`. The segments show R‑type, I‑type, load/store, branch, and jump cases toggling `alu_op`, `ALUSrc`, memory enables, and `wb_sel` exactly as expected.
+
 ### controller
 Finite state machine orchestrating overall CPU execution.
 
 ![controller](../images/docs/controller.svg)
 ![controller schematic](../images/schematics/controller.svg)
 ![controller waveform](../images/waveforms/controller.png)
+
+**Waveform explanation:** `controller_tb` drives full instructions through the top‑level controller, which slices fields, generates immediates, and sets control signals. The waveform demonstrates proper field decoding, ALU control selection, register write enables, and memory signals for representative instructions.
 
 ### cpu
 Top-level CPU wrapper combining controller and datapath modules.
@@ -207,12 +233,16 @@ Top-level CPU wrapper combining controller and datapath modules.
 ![cpu schematic](../images/schematics/cpu.svg)
 ![cpu waveform](../images/waveforms/cpu.png)
 
+**Waveform explanation:** The CPU test loads `tests/prog.mem`, releases reset, and runs until a `jal x0,0` sentinel. The waveform shows x6 receiving `0x10` from an ADDI, x7 being loaded and adjusted, a store of `0xDEADBEEF` to address `0x40`, and finally the self‑looping JAL that halts the program.
+
 ### data_mem
 Data memory providing load and store access.
 
 ![data_mem](../images/docs/data_mem.svg)
 ![data_mem schematic](../images/schematics/data_mem.svg)
 ![data_mem waveform](../images/waveforms/data_mem.png)
+
+**Waveform explanation:** The combinational read is visible as `rdata` drives `0xDEADBEEF` in the same cycle that `addr=1` and `mem_read=1` assert. Because `mem_write` stays low, no write occurs even though `wdata` holds `0xDEADBEEF`. The output remains stable while the address and read enable are unchanged, confirming asynchronous read and synchronous write behavior.
 
 ### datapath
 Wires registers, ALU, memories, and multiplexers together.
@@ -223,6 +253,8 @@ Wires registers, ALU, memories, and multiplexers together.
 ![datapath waveform 2](../images/waveforms/datapath_2.png)
 ![datapath waveform 3](../images/waveforms/datapath_3.png)
 
+**Waveform explanation:** Three snapshots capture incremental tests. First, `rd=5` with `imm_out=123` and `ALUSrc=1` writes `x5=123`. Next, enabling `mem_write` with `rs2=x5` stores `123` to data memory address `0x10`. Finally, branch and jump cases show BEQ updating the PC by `imm+4`, BNE falling through, and JAL/JALR writing `rd` with `PC+4` while redirecting control flow. These traces confirm coordination among ALU, register file, memories, and PC logic.
+
 ### decoder
 Extracts instruction fields and produces basic control signals.
 
@@ -231,12 +263,16 @@ Extracts instruction fields and produces basic control signals.
 ![decoder waveform 1](../images/waveforms/decoder_1.png)
 ![decoder waveform 2](../images/waveforms/decoder_2.png)
 
+**Waveform explanation:** The decoder waveform shows one‑hot instruction class outputs reacting to opcode changes. The test bench applies R‑type, I‑type, load/store, branch, jump, and U‑type encodings and checks each flag after 1 ns. Each change in `instr` produces the expected class signals and `regWrite` flag.
+
 ### decoder_glue
 Auxiliary logic supporting decoder outputs.
 
 ![decoder_glue](../images/docs/decoder_glue.svg)
 ![decoder_glue schematic](../images/schematics/decoder_glue.svg)
 ![decoder_glue waveform](../images/waveforms/decoder_glue.png)
+
+**Waveform explanation:** `decoder_glue` combines field slicing, immediate generation, and control decode. The testbench builds instructions with helper functions and checks outputs after a 1 ns settle. The waveform confirms correct extraction of `rd`, `rs1`, `rs2`, proper immediate sign extension, and aligned control signals such as `regWrite`, `ALUSrc`, `MemRead`, `MemWrite`, and `wb_sel`.
 
 ### imm_gen
 Generates immediate values from instruction fields.
@@ -245,12 +281,16 @@ Generates immediate values from instruction fields.
 ![imm_gen schematic](../images/schematics/imm_gen.svg)
 ![imm_gen waveform](../images/waveforms/imm_gen.png)
 
+**Waveform explanation:** The testbench exercises all five RISC‑V formats. The waveform shows correct sign extension and shifting—for example, an I‑type yields `0x000007FF`, an S‑type negative offset becomes `0xFFFFFFE8`, a B‑type `0x04000063` turns into `0x00000040` after shifting, and U/J‑types pass upper/immediate fields unchanged.
+
 ### instr_mem
 Instruction memory storage for program code.
 
 ![instr_mem](../images/docs/instr_mem.svg)
 ![instr_mem schematic](../images/schematics/instr_mem.svg)
 ![instr_mem waveform](../images/waveforms/instr_mem.png)
+
+**Waveform explanation:** The instruction memory provides combinational reads. As `addr` steps through 0–2, `instr` updates immediately without a clock, matching the expected words and confirming asynchronous read behavior.
 
 ### instr_slicer
 Splits the instruction into its constituent fields.
@@ -259,12 +299,16 @@ Splits the instruction into its constituent fields.
 ![instr_slicer schematic](../images/schematics/instr_slicer.svg)
 ![instr_slicer waveform](../images/waveforms/instr_slicer.png)
 
+**Waveform explanation:** The slicer extracts opcode, register indices, funct3/7, shamt, and CSR fields directly from `instr`. For each pattern, the testbench asserts equality after 1 ns. The waveform verifies that every slice matches the source bits, covering CSR fields, edge patterns, and random instructions.
+
 ### next_pc
 Computes the next program counter value based on branch logic.
 
 ![next_pc](../images/docs/next_pc.svg)
 ![next_pc schematic](../images/schematics/next_pc.svg)
 ![next_pc waveform](../images/waveforms/next_pc.png)
+
+**Waveform explanation:** The combinational block selects `pc+4` by default, a branch target when `branch_taken` asserts, JAL targets with priority over branches, and JALR with alignment masking taking top priority. The waveform confirms each case and demonstrates that JAL overrides branch, while JALR overrides both.
 
 ### pc
 Program counter register holding the current instruction address.
@@ -273,6 +317,8 @@ Program counter register holding the current instruction address.
 ![pc schematic](../images/schematics/pc.svg)
 ![pc waveform](../images/waveforms/pc.png)
 
+**Waveform explanation:** The PC register samples `next_pc` on rising clock edges and resets to zero. The waveform shows reset, sequential increments by 4, and a branch target load, all occurring synchronously on clock edges.
+
 ### reg_file
 Register file supporting two reads and one write each cycle.
 
@@ -280,12 +326,16 @@ Register file supporting two reads and one write each cycle.
 ![reg_file schematic](../images/schematics/reg_file.svg)
 ![reg_file waveform](../images/waveforms/regfile.png)
 
+**Waveform explanation:** The register file has synchronous writes and asynchronous reads. The waveform highlights reset clearing all registers, writes occurring on clock edges, reads reflecting values immediately, and attempts to write x0 being ignored.
+
 ### wb_mux
 Selects the data source for register write-back.
 
 ![wb_mux](../images/docs/wb_mux.svg)
 ![wb_mux schematic](../images/schematics/wb_mux.svg)
 ![wb_mux waveform](../images/waveforms/wb_mux.png)
+
+**Waveform explanation:** The write‑back multiplexer resolves register write requests, honoring kill gating and x0 suppression. When `kill_wb=1`, `reg_write_out` is forced low and `rd_out` goes to zero. If the destination is x0, writes are also suppressed. These combinational decisions ensure cancelled instructions and writes to x0 never update the register file.
 
 ## 21. References
 
