@@ -169,10 +169,16 @@ These reports guide next steps such as adding clock constraints, resolving DRC w
 ---
 
 ### Testing
-No tests were executed in this read-only review environment.
+Testing was performed on a local workstation using Icarus Verilog, with
+spot checks run in Vivado's XSIM to ensure compatibility with the AMD
+toolflow. Module-level testbenches executed successfully and waveforms
+were reviewed for key components. Hardware FPGA runs were not possible
+due to limited board access and internship time, so full-system
+integration tests remain outstanding.
 
 ### Notes
-This report is based on static inspection; dynamic behavior and performance were not validated.
+Results reflect these simulation-only tests; hardware performance and
+long-duration behavior still need evaluation.
 
 
 ## 20. Appendix: Module Overview
