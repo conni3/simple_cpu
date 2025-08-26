@@ -201,7 +201,7 @@ Results reflect these simulation-only tests; hardware performance and
 long-duration behavior still need evaluation.
 
 
-## 21. Appendix: Module Overview
+## 21. Appendix: Module Overview A
 
 ### Repository Tree
 
@@ -335,6 +335,8 @@ Program counter register with asynchronous reset and synchronous update.
 
 #### wb_mux
 Selects between ALU result, memory data, or `pc_plus4` and gates writes to avoid x0 and to honor `kill_wb`. (Present as a standalone module but not instantiated in the current datapath.)
+
+## 22. Appendix: Module Overview B
 
 ### adder
 Ripple-carry adder for summing operands.
@@ -518,7 +520,7 @@ Selects the data source for register write-back.
 
 **Waveform explanation:** The write‑back multiplexer resolves register write requests, honoring kill gating and x0 suppression. When `kill_wb=1`, `reg_write_out` is forced low and `rd_out` goes to zero. If the destination is x0, writes are also suppressed. These combinational decisions ensure cancelled instructions and writes to x0 never update the register file.
 
-## 22. References
+## 23. References
 
 1. *RISC‑V ISA Specification, Volume I*  
 2. *Icarus Verilog* and *GTKWave* documentation  
