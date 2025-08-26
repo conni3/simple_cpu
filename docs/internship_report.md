@@ -157,6 +157,29 @@ were reviewed for key components. Hardware FPGA runs were not possible
 due to limited board access and internship time, so full-system
 integration tests remain outstanding.
 
+### Testing and ISA Coverage
+
+| Module | Tests (what instructions) | Expected behavior | Total number of tests |
+| --- | --- | --- | --- |
+| adder | Basic additions incl. overflow and negative operands | Sum equals arithmetic result | 4 |
+| alu_control | ALUOp decoding for R-type, I-type, shift, logical, LUI, ADDI/ANDI/ORI/XORI/SLTI/SLTIU/SLLI/SRLI/SRAI | Generates correct ALU control codes | 22 |
+| alu | ADD, SUB, logical (AND/OR/XOR), shifts, comparisons, zero flag | Outputs correct value and flags for each operation | 11 |
+| branch_comp | BEQ/BNE/BLT/BGE/BLTU/BGEU and default case | Branch-taken signal matches comparison | 13 |
+| controller | State-machine checks across instruction flow | All controller checks pass | 65 |
+| control | R-type, ADDI, ANDI, ORI, XORI, SLTI, SLTIU, SLLI, SRLI, SRAI, LW, SW, BEQ, JAL, JALR, LUI, AUIPC | Correct control signals for each instruction | 17 |
+| cpu | Small program using ADDI, store, END sentinel | Registers and memory reflect program semantics | 2 |
+| data_mem | Read from initialized memory word | Returned data equals `deadbeef` | 1 |
+| datapath | ALU ops, store/load, immediate ops, shifts, branches, jumps | Pipeline updates registers/memory/PC correctly | 17 |
+| decoder_glue | Glue logic interface scenarios | All glue assertions satisfied | N/A (not reported) |
+| decoder | add, addi, lw, sw, beq, jalr, jal, lui, auipc | Fields decoded correctly | 9 |
+| imm_gen | Immediate extraction for I/S/B/U/J formats and bounds | Correct signed/unsigned immediates | 11 |
+| instr_mem | Reads at addresses 0–2 | Returned words match expected program | 3 |
+| instr_slicer | R/I/S/B/U/J/CSR patterns + 200 random instructions | Field slices match encoding (~1682 assertions) | 210 cases |
+| next_pc | pc+4, branch taken/not, JAL, JALR, priority cases | PC updates to correct next address | 7 |
+| pc | Reset, two sequential +4 steps, branch to 0xA0 | PC reflects reset/increment/jump | 4 |
+| regfile | Reset, sequential writes, back-to-back writes, randomized accesses, re-reset | Reads match writes, x0 constant | 154 |
+| wb_mux | ALU, MEM, PC+4 paths; kill gating; x0/x31 writes | Selected data routed; gating works | 8 |
+
 ### Testing Notes
 Results reflect these simulation-only tests; hardware performance and
 long-duration behavior still need evaluation.
