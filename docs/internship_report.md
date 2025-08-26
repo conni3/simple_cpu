@@ -1,6 +1,11 @@
 # RISC-V CPU Design and Simulation – Internship Report
 
-## 1. Introduction  
+## Acknowledgments
+I extend my heartfelt thanks to my supervisors and mentors for their guidance and encouragement throughout this internship.
+I am equally grateful to the host organization for providing the resources and supportive environment that made this work possible.
+Additional appreciation goes to colleagues, collaborators, and the institutions that offered technical assistance and shared tools that contributed to the success of this project.
+
+## 1. Introduction
 This project implements a modular, single-cycle RISC-V CPU core written in Verilog. The repository includes reusable building blocks, control logic, a streamlined Makefile-driven flow, and testbenches for simulation.
 
 > **Figure 1:** _Overall CPU Block Diagram_  
