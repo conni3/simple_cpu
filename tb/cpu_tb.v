@@ -1,4 +1,3 @@
-
 `timescale 1ns / 1ps
 
 module cpu_tb;
@@ -10,6 +9,7 @@ module cpu_tb;
   reg clk = 1'b0;
   reg reset = 1'b1;
   integer k;
+  real cpi;  
   wire [31:0] debug_pc;
 
   cpu #(
@@ -23,7 +23,8 @@ module cpu_tb;
 
   always #5 clk = ~clk;
 
-  task run_cycles(input integer n);
+  task run_cycles;
+    input integer n;
     integer i;
     begin
       for (i = 0; i < n; i = i + 1) @(posedge clk);
@@ -49,20 +50,20 @@ module cpu_tb;
   end
 
   integer cycles;
-  integer instr_count = 0;
+  integer instr_count;
   reg reg_ok, mem_ok, finished;
+
   initial begin
     #1;
     $display("[SANITY] imem[0]=%h dmem[16]=%h", dut.u_datapath.u_imem.mem[0],
              dut.u_datapath.u_dmem.mem[16]);
   end
 
-
-
   initial begin
-    reg_ok   = 1'b0;
-    mem_ok   = 1'b0;
-    finished = 1'b0;
+    reg_ok     = 1'b0;
+    mem_ok     = 1'b0;
+    finished   = 1'b0;
+    instr_count= 0;
 
     $dumpfile("dump.vcd");
     $dumpvars(0, cpu_tb);
@@ -86,12 +87,14 @@ module cpu_tb;
           mem_ok = 1'b1;
         end
 
-        if (dut.u_datapath.instr === 32'h0000_006F) begin
+        if (dut.u_datapath.instr === END_SENTINEL) begin
           $display("[INFO] Reached END_SENTINEL (jal x0,0) at PC=%h, cycle %0d", debug_pc, cycles);
-          real cpi;
-          cpi = cycles;
-          cpi = cpi / instr_count;
-          $display("[PERF] CPI=%0f", cpi);
+          if (instr_count != 0) begin
+            cpi = (cycles * 1.0) / instr_count;
+            $display("[PERF] CPI=%0f", cpi);
+          end else begin
+            $display("[PERF] CPI=undefined (instr_count=0)");
+          end
           finished = 1'b1;
           disable end_test;
         end
@@ -99,16 +102,16 @@ module cpu_tb;
       $display("[TIMEOUT] No END_SENTINEL by %0d cycles.", MAX_CYCLES);
     end
 
-
     if (reg_ok && mem_ok) $display("[PASS] All checks satisfied.");
     else begin
       if (!reg_ok) $display("[FAIL] x6 never reached 0x00000010.");
       if (!mem_ok) $display("[FAIL] DMEM[0x40] never became 0xDEADBEEF.");
     end
 
-    for (k = 0; k < 17; k = k + 1) $display("DMEM[%0d] = %h", k, dut.u_datapath.u_dmem.mem[k]);
-    $finish;
+    for (k = 0; k < 17; k = k + 1)
+      $display("DMEM[%0d] = %h", k, dut.u_datapath.u_dmem.mem[k]);
 
+    $finish;
   end
 
 endmodule
