@@ -82,8 +82,8 @@ module cpu_tb;
           reg_ok = 1'b1;
         end
 
-        if (!mem_ok && (dut.u_datapath.u_dmem.mem[8] === 32'h000C_08EB)) begin
-          $display("[PASS-2] DMEM[0x20] == 0x000C08EB at cycle %0d", cycles);
+        if (!mem_ok && (dut.u_datapath.u_dmem.mem[8] === 32'hC0DE_CAFE)) begin
+          $display("[PASS-2] DMEM[0x20] == 0xC0DECAFE at cycle %0d", cycles);
           mem_ok = 1'b1;
         end
 
@@ -105,7 +105,7 @@ module cpu_tb;
       if (reg_ok && mem_ok) $display("[PASS] All checks satisfied.");
       else begin
         if (!reg_ok) $display("[FAIL] x6 never reached 0x00000010.");
-        if (!mem_ok) $display("[FAIL] DMEM[0x20] never became 0x000C08EB.");
+        if (!mem_ok) $display("[FAIL] DMEM[0x20] never became 0xC0DECAFE.");
       end
 
     for (k = 0; k < 17; k = k + 1)
