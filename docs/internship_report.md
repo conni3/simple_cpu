@@ -125,7 +125,9 @@ A complete inventory of modules and their interfaces is documented for quick ref
 - Each module has an associated testbench (`tb/<module>_tb.v`), automatically discovered by the Makefile.  
 - Running `make` performs lint, build, simulation, waveform dumping, **and Vivado simulation** for all testbenches.
 - Schematic rendering (`make schem`) visualizes module structure, aiding design reviews.
-Recent Vivado reports provide a snapshot of the current design health. The DRC log flags a `ZPS7-1` warning indicating the PS7 block is required for the target device【F:logs/drc.rpt†L31-L38】. Timing checks reveal 2,080 register/latch pins without clocks, 11,328 unconstrained internal endpoints, and missing delay specs on one input and 35 outputs【F:logs/timing_summary.rpt†L52-L57】. Power analysis estimates 3.618 W total power with 3.453 W dynamic and 0.165 W static consumption【F:logs/power.rpt†L32-L41】, while utilization reports 2,439 slice LUTs (13.86 %) and 1,056 registers (3.00 %) in use【F:logs/utilization.rpt†L34-L40】. No formal coverage metrics are captured; testing remains limited to the RV32I subset exercised by existing programs.
+
+Recent Vivado reports provide a snapshot of the current design health. A DRC warning indicates the PS7 block is required for the target device. Timing analysis notes 2,080 register/latch pins without clocks, 11,328 unconstrained internal endpoints, and missing delay specifications on one input and 35 outputs. Power is estimated at 3.618 W (3.453 W dynamic and 0.165 W static), and resource utilization reaches 2,439 slice LUTs (13.86 %) and 1,056 registers (3.00 %). No formal coverage metrics are captured; testing remains limited to the RV32I subset exercised by existing programs. See the appendices or `logs/` folder for full report details.
+
 
 ### Simulation Testing
 Testing was performed on a local workstation using Icarus Verilog, with
