@@ -119,8 +119,20 @@ Some challenges linger, particularly around deep timing analysis and hardware va
 
 The controller passes decoded instruction fields to `decoder_glue`, which fuses control and immediate data before signaling the leaf modules.
 
-> **Figure 3:** _Controller–Datapath Interaction_
-> ![Controller–Datapath Interaction Placeholder](path/to/controller_datapath_interaction.png)
+> **Figure 3:** _CPU Top-Level_
+> ![CPU Top-Level](../images/vivado_elaborated_design/cpu.png)
+
+> **Figure 4:** _Controller_
+> ![Controller](../images/vivado_elaborated_design/controller.png)
+
+> **Figure 5:** _Decoder Glue_
+> ![Decoder Glue](../images/vivado_elaborated_design/decoder_glue.png)
+
+> **Figure 6:** _Datapath_
+> ![Datapath](../images/vivado_elaborated_design/datapath.png)
+
+> **Figure 7:** _Next PC Unit_
+> ![Next PC Unit](../images/vivado_elaborated_design/next_pc.png)
 
 A complete inventory of modules and their interfaces is documented for quick reference.
 
@@ -149,7 +161,7 @@ integration tests remain outstanding.
 Results reflect these simulation-only tests; hardware performance and
 long-duration behavior still need evaluation.
 
-> **Figure 4:** _Waveform Example_
+> **Figure 8:** _Waveform Example_
 > ![Waveform Placeholder](path/to/waveform_example.png)
 
 ## 15. Challenges & Mitigations
