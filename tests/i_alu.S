@@ -15,6 +15,6 @@ _start:
     sltiu x11, x8, 1     # x8 is 0xFFFFFF80; 0xFFFFFF80 < 1 (unsigned)? no => 0
 
     # PASS
-    li   t0, PASS_DATA
-    sw   t0, PASS_ADDR(x0)
+    li   t0, STATUS_PASS
+    sw   t0, STATUS_ADDR(x0)
 1:  jal  x0, 0

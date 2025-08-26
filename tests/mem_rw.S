@@ -25,6 +25,6 @@ _start:
     add  x10, x10, x9     # x10 = 10
 
     # PASS
-    li   t0, PASS_DATA
-    sw   t0, PASS_ADDR(x0)
+    li   t0, STATUS_PASS
+    sw   t0, STATUS_ADDR(x0)
 1:  jal  x0, 0

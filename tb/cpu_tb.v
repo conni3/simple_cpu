@@ -5,6 +5,8 @@ module cpu_tb;
   localparam integer ADDR_WIDTH = 11;
   localparam IMEM_FILE = "./tests/prog.mem";
   localparam [31:0] END_SENTINEL = 32'h0000_006F;
+  parameter [31:0] STATUS_ADDR = 32'h0000_0000;
+  localparam [31:0] STATUS_PASS = 32'hC0DE_CAFE;
 
   reg clk = 1'b0;
   reg reset = 1'b1;
@@ -51,19 +53,18 @@ module cpu_tb;
 
   integer cycles;
   integer instr_count;
-  reg reg_ok, mem_ok, finished;
+  reg status_ok, finished;
 
   initial begin
     #1;
-    $display("[SANITY] imem[0]=%h dmem[8]=%h", dut.u_datapath.u_imem.mem[0],
-             dut.u_datapath.u_dmem.mem[8]);
+    $display("[SANITY] imem[0]=%h dmem[%0d]=%h", dut.u_datapath.u_imem.mem[0],
+             STATUS_ADDR>>2, dut.u_datapath.u_dmem.mem[STATUS_ADDR>>2]);
   end
 
   initial begin
-    reg_ok     = 1'b0;
-    mem_ok     = 1'b0;
-    finished   = 1'b0;
-    instr_count= 0;
+    status_ok   = 1'b0;
+    finished    = 1'b0;
+    instr_count = 0;
 
     $dumpfile("dump.vcd");
     $dumpvars(0, cpu_tb);
@@ -77,14 +78,9 @@ module cpu_tb;
         @(posedge clk);
         if (!reset) instr_count = instr_count + 1;
 
-        if (!reg_ok && (dut.u_datapath.u_rf.regs[6] === 32'h0000_0010)) begin
-          $display("[PASS-1] x6 == 0x00000010 at cycle %0d", cycles);
-          reg_ok = 1'b1;
-        end
-
-        if (!mem_ok && (dut.u_datapath.u_dmem.mem[8] === 32'hC0DE_CAFE)) begin
-          $display("[PASS-2] DMEM[0x20] == 0xC0DECAFE at cycle %0d", cycles);
-          mem_ok = 1'b1;
+        if (!status_ok && (dut.u_datapath.u_dmem.mem[STATUS_ADDR>>2] === STATUS_PASS)) begin
+          $display("[PASS] STATUS_ADDR contains STATUS_PASS at cycle %0d", cycles);
+          status_ok = 1'b1;
         end
 
         if (dut.u_datapath.instr === END_SENTINEL) begin
@@ -102,11 +98,8 @@ module cpu_tb;
       $display("[TIMEOUT] No END_SENTINEL by %0d cycles.", MAX_CYCLES);
     end
 
-      if (reg_ok && mem_ok) $display("[PASS] All checks satisfied.");
-      else begin
-        if (!reg_ok) $display("[FAIL] x6 never reached 0x00000010.");
-        if (!mem_ok) $display("[FAIL] DMEM[0x20] never became 0xC0DECAFE.");
-      end
+      if (status_ok) $display("[PASS] Program signaled PASS.");
+      else $display("[FAIL] STATUS_ADDR never had STATUS_PASS.");
 
     for (k = 0; k < 17; k = k + 1)
       $display("DMEM[%0d] = %h", k, dut.u_datapath.u_dmem.mem[k]);

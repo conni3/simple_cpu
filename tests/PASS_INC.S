@@ -1,7 +1,7 @@
-#ifndef PASS_ADDR
-#define PASS_ADDR 0x20
+#ifndef STATUS_ADDR
+#define STATUS_ADDR 0x00
 #endif
 
-#ifndef PASS_DATA
-#define PASS_DATA 0xC0DECAFE
+#ifndef STATUS_PASS
+#define STATUS_PASS 0xC0DECAFE
 #endif
