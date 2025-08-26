@@ -461,12 +461,12 @@ Program counter register holding the current instruction address.
 
 **Waveform explanation:** The PC register samples `next_pc` on rising clock edges and resets to zero. The waveform shows reset, sequential increments by 4, and a branch target load, all occurring synchronously on clock edges.
 
-### reg_file
+### regfile
 Register file supporting two reads and one write each cycle.
 
-![reg_file](../images/docs/reg_file.svg)
-![reg_file schematic](../images/schematics/reg_file.svg)
-![reg_file waveform](../images/waveforms/regfile.png)
+![regfile](../images/docs/regfile.svg)
+![regfile schematic](../images/schematics/regfile.svg)
+![regfile waveform](../images/waveforms/regfile.png)
 
 **Waveform explanation:** The register file has synchronous writes and asynchronous reads. The waveform highlights reset clearing all registers, writes occurring on clock edges, reads reflecting values immediately, and attempts to write x0 being ignored.
 
