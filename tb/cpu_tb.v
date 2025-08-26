@@ -55,8 +55,8 @@ module cpu_tb;
 
   initial begin
     #1;
-    $display("[SANITY] imem[0]=%h dmem[16]=%h", dut.u_datapath.u_imem.mem[0],
-             dut.u_datapath.u_dmem.mem[16]);
+    $display("[SANITY] imem[0]=%h dmem[8]=%h", dut.u_datapath.u_imem.mem[0],
+             dut.u_datapath.u_dmem.mem[8]);
   end
 
   initial begin
@@ -82,8 +82,8 @@ module cpu_tb;
           reg_ok = 1'b1;
         end
 
-        if (!mem_ok && (dut.u_datapath.u_dmem.mem[16] === 32'hDEAD_BEEF)) begin
-          $display("[PASS-2] DMEM[0x40] == 0xDEADBEEF at cycle %0d", cycles);
+        if (!mem_ok && (dut.u_datapath.u_dmem.mem[8] === 32'h000C_08EB)) begin
+          $display("[PASS-2] DMEM[0x20] == 0x000C08EB at cycle %0d", cycles);
           mem_ok = 1'b1;
         end
 
@@ -102,11 +102,11 @@ module cpu_tb;
       $display("[TIMEOUT] No END_SENTINEL by %0d cycles.", MAX_CYCLES);
     end
 
-    if (reg_ok && mem_ok) $display("[PASS] All checks satisfied.");
-    else begin
-      if (!reg_ok) $display("[FAIL] x6 never reached 0x00000010.");
-      if (!mem_ok) $display("[FAIL] DMEM[0x40] never became 0xDEADBEEF.");
-    end
+      if (reg_ok && mem_ok) $display("[PASS] All checks satisfied.");
+      else begin
+        if (!reg_ok) $display("[FAIL] x6 never reached 0x00000010.");
+        if (!mem_ok) $display("[FAIL] DMEM[0x20] never became 0x000C08EB.");
+      end
 
     for (k = 0; k < 17; k = k + 1)
       $display("DMEM[%0d] = %h", k, dut.u_datapath.u_dmem.mem[k]);
