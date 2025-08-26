@@ -51,6 +51,9 @@ module next_pc_tb;
     is_jalr      = 1'b0;
     branch_taken = 1'b0;
 
+    $dumpfile("dump.vcd");
+    $dumpvars(0, next_pc_tb);
+
     // 1) pc + 4
     check(current_pc + 32'd4, "pc+4");
 

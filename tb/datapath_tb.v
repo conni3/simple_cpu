@@ -152,6 +152,9 @@ module datapath_tb;
     passed = 0;
     failed = 0;
 
+    $dumpfile("dump.vcd");
+    $dumpvars(0, datapath_tb);
+
 
     init_controls();
     reset = 1'b1;

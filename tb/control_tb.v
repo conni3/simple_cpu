@@ -171,7 +171,7 @@ module control_tb;
   // ---- Test Stimulus ----
   initial begin
     $display("Starting control unit tests...");
-    $dumpfile("control_tb.vcd");
+    $dumpfile("dump.vcd");
     $dumpvars(0, control_tb);
 
     passed = 0;
