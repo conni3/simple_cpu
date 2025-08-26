@@ -59,7 +59,18 @@ Waveform snapshots (expected vs. observed) were annotated to document each fix.
 
 Compared the design with PicoRV32:
 
-- **Instruction coverage**: partial RV32I vs. PicoRV32’s broader set.
+- **Instruction coverage**: partial RV32I vs. PicoRV32’s broader set. The core supports the following instructions:
+
+  | Category | Instructions |
+  | --- | --- |
+  | Arithmetic & logic (register) | add, sub, and, or, xor, sll, srl, sra, slt, sltu |
+  | Arithmetic & logic (immediate) | addi, xori, ori, andi, slli, srli, srai, slti, sltiu |
+  | Memory access | lw, sw |
+  | Branches | beq, bne, blt, bltu, bge, bgeu |
+  | Jumps | jal, jalr |
+  | Upper immediates & PC-relative | lui, auipc |
+
+  CSR/system ports are provisioned but remain unconnected; they are intended for future integration when the core expands to the privileged ISA and a pipelined architecture.
 - **Resource usage**: higher LUT/FF count due to single-cycle simplicity.
 - **Latency**: single cycle per instruction vs. PicoRV32’s multi-cycle approach.
 
