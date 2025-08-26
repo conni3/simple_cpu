@@ -72,3 +72,96 @@ No tests were executed in this read-only review environment.
 ### Notes
 This report is based on static inspection; dynamic behavior and performance were not validated.
 
+
+## Appendix: Module Overview
+
+### adder
+Ripple-carry adder for summing operands.
+
+![adder](../images/docs/adder.svg)
+
+### alu
+Performs arithmetic and logic operations and sets a zero flag.
+
+![alu](../images/docs/alu.svg)
+
+### alu_control
+Decodes ALUOp and funct fields into a specific ALU control code.
+
+![alu_control](../images/docs/alu_control.svg)
+
+### branch_comp
+Compares operands and determines branch decisions.
+
+![branch_comp](../images/docs/branch_comp.svg)
+
+### control
+Top-level control logic driving datapath and memory sequencing.
+
+![control](../images/docs/control.svg)
+
+### controller
+Finite state machine orchestrating overall CPU execution.
+
+![controller](../images/docs/controller.svg)
+
+### cpu
+Top-level CPU wrapper combining controller and datapath modules.
+
+![cpu](../images/docs/cpu.svg)
+
+### data_mem
+Data memory providing load and store access.
+
+![data_mem](../images/docs/data_mem.svg)
+
+### datapath
+Wires registers, ALU, memories, and multiplexers together.
+
+![datapath](../images/docs/datapath.svg)
+
+### decoder
+Extracts instruction fields and produces basic control signals.
+
+![decoder](../images/docs/decoder.svg)
+
+### decoder_glue
+Auxiliary logic supporting decoder outputs.
+
+![decoder_glue](../images/docs/decoder_glue.svg)
+
+### imm_gen
+Generates immediate values from instruction fields.
+
+![imm_gen](../images/docs/imm_gen.svg)
+
+### instr_mem
+Instruction memory storage for program code.
+
+![instr_mem](../images/docs/instr_mem.svg)
+
+### instr_slicer
+Splits the instruction into its constituent fields.
+
+![instr_slicer](../images/docs/instr_slicer.svg)
+
+### next_pc
+Computes the next program counter value based on branch logic.
+
+![next_pc](../images/docs/next_pc.svg)
+
+### pc
+Program counter register holding the current instruction address.
+
+![pc](../images/docs/pc.svg)
+
+### reg_file
+Register file supporting two reads and one write each cycle.
+
+![reg_file](../images/docs/reg_file.svg)
+
+### wb_mux
+Selects the data source for register write-back.
+
+![wb_mux](../images/docs/wb_mux.svg)
+
