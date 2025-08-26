@@ -37,17 +37,14 @@ This project implements a modular, single-cycle RISC-V CPU core written in Veril
 
 ## 5. Simulation & Debug Process
 
-Typical workflow when issues surfaced:
+Typical workflow when issues surfaced began by recreating the failure with `make` to run both Icarus and Vivado simulations, then inspecting waveforms in GTKWave or XSIM to compare expected versus observed behavior. Iterative passes then:
 
-1. **Recreate the failure** using `make` to run both Icarus and Vivado simulations.
-2. **Inspect waveforms** in GTKWave or XSIM to compare expected vs. observed behavior.
-3. **Iterate** from leaf modules to the integrated datapath and finally the full CPU.
+- created and tested glue modules,
+- handled design-choice incompatibilities,
+- refactored leaf modules for consistency, and
+- rewrote testbenches after refactors.
 
-Examples:
-- Instruction memory failed to load in XSIM due to a relative-path mismatch.
-- Undefined opcodes produced unexpected toggling on control signals.
-
-Waveform snapshots (expected vs. observed) were annotated to document each fix.
+Waveform snapshots (expected vs. observed) were annotated to document each fix, and the cycle repeated from leaf modules to the integrated datapath and finally the full CPU.
 
 ## 6. Validation
 
@@ -91,41 +88,54 @@ Key Vivado metrics for the synthesized core:
 
 ## 9. Learning Outcomes
 
-- Mastered Vivado TCL scripting and Makefile automation.
-- Gained experience in modular RTL design and waveform‑based debugging.
-- Developed a deeper understanding of datapath/control separation.
+- Mastered Vivado TCL scripting and Makefile automation. Early scripts created wiring mismatches when module ports were ordered incorrectly, but refining the TCL flow to auto-derive connections resolved the issue.
+- Gained experience in modular RTL design and waveform‑based debugging. A misuse of `funct7_5` led to incorrect shift operations; tracing the waveform exposed the bug and adjusting the decoder fixed it.
+- Developed a deeper understanding of datapath/control separation. Consolidating ALU functionality blurred control boundaries at first, yet reorganizing the case structure restored clarity and decoupled the units.
 
-## 10. Reflection (Internship Specific)
+## 10. Personal Reflections
+
+The internship accelerated my confidence in hardware design. Translating textbook knowledge into working modules and iterating through real tool flows taught me to reason about both logic and process, turning tentative skills into a dependable workflow.
+
+The aspects I enjoyed most were the automation and cross-tool experimentation. Watching a single `make` invoke lint, synthesis, simulation, and waveform visualization made each change immediately tangible and kept motivation high as the CPU gradually came to life.
+
+Some challenges linger, particularly around deep timing analysis and hardware validation. I still grapple with interpreting extensive Vivado reports and wish I had more board time to observe how the design behaves under real constraints.
+
+## 11. Reflection (Internship Specific)
 
 - **Challenges**: integrating disparate toolchains, resolving simulation mismatches.
 - **Skills gained**: FPGA flow familiarity, collaborative version control.
 - **Future application**: solid foundation for FYP and potential FPGA/ASIC roles.
 
-## 11. System Architecture
+## 12. System Architecture
 
 | Layer | Description |
 |-------|-------------|
 | **Top-Level CPU** | Integrates the controller and datapath, wiring instruction fields, control signals, and memory interfaces |
-| **Controller** | Extracts opcode, registers, immediates, and derives control signals via `decoder_glue` and `alu_control` |
+| **Controller** | Extracts opcode, registers, and immediates, delegating to `decoder_glue` and `alu_control` |
+| **decoder_glue** | Combines `decoder`, `control`, and `imm_gen` outputs into unified control signals |
 | **Datapath** | Coordinates instruction fetch, register file access, ALU operations, branch logic, memory access, and write-back selection |
 | **Next PC Unit** | Chooses sequential PC or branch/jump targets, aligning JALR addresses and verifying alignment |
 | **Leaf Modules** | ALU supports arithmetic, logical, and shift operations with zero detection; branch comparator evaluates conditional jumps |
+
+The controller passes decoded instruction fields to `decoder_glue`, which fuses control and immediate data before signaling the leaf modules.
 
 > **Figure 3:** _Controller–Datapath Interaction_
 > ![Controller–Datapath Interaction Placeholder](path/to/controller_datapath_interaction.png)
 
 A complete inventory of modules and their interfaces is documented for quick reference.
 
-## 12. Implementation Highlights
+## 13. Implementation Highlights
 - Parameterizable data and address widths allow experimentation with different memory sizes.  
 - Immediate generation, control, and execution paths remain decoupled for clarity and reuse.  
 - Memory files (`src/instr_mem.mem`, `src/data_mem.mem`) enable preloaded programs and data.  
 
-## 13. Testing & Verification
+## 14. Testing & Verification
 - Each module has an associated testbench (`tb/<module>_tb.v`), automatically discovered by the Makefile.  
 - Running `make` performs lint, build, simulation, waveform dumping, **and Vivado simulation** for all testbenches.
 - Schematic rendering (`make schem`) visualizes module structure, aiding design reviews.
-Recent Vivado reports provide a snapshot of the current design health. The DRC log flags a `ZPS7-1` warning indicating the PS7 block is required for the target device【F:logs/drc.rpt†L31-L38】. Timing checks reveal 2,080 register/latch pins without clocks, 11,328 unconstrained internal endpoints, and missing delay specs on one input and 35 outputs【F:logs/timing_summary.rpt†L52-L57】. Power analysis estimates 3.618 W total power with 3.453 W dynamic and 0.165 W static consumption【F:logs/power.rpt†L32-L41】, while utilization reports 2,439 slice LUTs (13.86 %) and 1,056 registers (3.00 %) in use【F:logs/utilization.rpt†L34-L40】. No formal coverage metrics are captured; testing remains limited to the RV32I subset exercised by existing programs.
+
+Recent Vivado reports provide a snapshot of the current design health. A DRC warning indicates the PS7 block is required for the target device. Timing analysis notes 2,080 register/latch pins without clocks, 11,328 unconstrained internal endpoints, and missing delay specifications on one input and 35 outputs. Power is estimated at 3.618 W (3.453 W dynamic and 0.165 W static), and resource utilization reaches 2,439 slice LUTs (13.86 %) and 1,056 registers (3.00 %). No formal coverage metrics are captured; testing remains limited to the RV32I subset exercised by existing programs. See the appendices or `logs/` folder for full report details.
+
 
 ### Simulation Testing
 Testing was performed on a local workstation using Icarus Verilog, with
@@ -142,23 +152,23 @@ long-duration behavior still need evaluation.
 > **Figure 4:** _Waveform Example_
 > ![Waveform Placeholder](path/to/waveform_example.png)
 
-## 14. Challenges & Mitigations
+## 15. Challenges & Mitigations
 - **Instruction-alignment checks** in `next_pc` identify misaligned addresses during simulation, preventing silent control-flow errors.  
 - **Branch diversity** is handled by a dedicated comparator module, simplifying decoder logic and ensuring extensibility.
 
-## 15. Results
+## 16. Results
 The repository provides a complete, simulation-ready RISC-V core with comprehensive testbenches and an extensible build system. The modular design facilitates future enhancements, experimentation, and instructional use.
 
-## 16. Future Work
+## 17. Future Work
 - Introduce pipelining to improve throughput.  
 - Add hazard detection and forwarding.  
 - Expand instruction coverage (e.g., system instructions, multiplication/division).  
 - Integrate a cache or memory hierarchy for realistic performance evaluation.
 
-## 17. Conclusion
+## 18. Conclusion
 This project delivers a clean, modular foundation for RISC-V CPU exploration. The codebase’s structure, documentation, and automated tooling—now including mandatory Vivado flows—make it suitable for both educational purposes and further research or development.
 
-## 18. Appendices
+## 19. Appendices
 
 - **Instruction Subset Table**: list supported RV32I instructions.
 - **Sample Testbench**: e.g., `alu_tb` with brief explanation.
@@ -166,7 +176,7 @@ This project delivers a clean, modular foundation for RISC-V CPU exploration. Th
 - **Vivado Reports**: synthesis, utilization, timing summaries.
 - **Repository Tree**: top-level project structure for quick orientation.
 
-## 19. Vivado Reports
+## 20. Vivado Reports
 The `logs/` directory contains Vivado-generated synthesis, timing, power, and rule-check reports for the `cpu` design. Key highlights include:
 
 - Clock reports show the top-level `clk` is unconstrained, leaving 2,080 endpoints without timing analysis.
@@ -178,7 +188,36 @@ The `logs/` directory contains Vivado-generated synthesis, timing, power, and ru
 
 These reports guide next steps such as adding clock constraints, resolving DRC warnings, and optimizing resource usage.
 
-## 20. Appendix: Module Overview
+### Testing
+Testing was performed on a local workstation using Icarus Verilog, with
+spot checks run in Vivado's XSIM to ensure compatibility with the AMD
+toolflow. Module-level testbenches executed successfully and waveforms
+were reviewed for key components. Hardware FPGA runs were not possible
+due to limited board access and internship time, so full-system
+integration tests remain outstanding.
+
+### Notes
+Results reflect these simulation-only tests; hardware performance and
+long-duration behavior still need evaluation.
+
+
+## 21. Appendix: Module Overview
+
+### Repository Tree
+
+```text
+src/
+tb/
+logs/
+docs/
+images/
+include/
+scripts/
+tests/
+vivado_proj/
+waves/
+```
+
 ### Core Modules
 
 #### cpu
@@ -479,7 +518,7 @@ Selects the data source for register write-back.
 
 **Waveform explanation:** The write‑back multiplexer resolves register write requests, honoring kill gating and x0 suppression. When `kill_wb=1`, `reg_write_out` is forced low and `rd_out` goes to zero. If the destination is x0, writes are also suppressed. These combinational decisions ensure cancelled instructions and writes to x0 never update the register file.
 
-## 21. References
+## 22. References
 
 1. *RISC‑V ISA Specification, Volume I*  
 2. *Icarus Verilog* and *GTKWave* documentation  
