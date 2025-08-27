@@ -220,6 +220,8 @@ integration tests remain outstanding.
 | regfile | Reset, sequential writes, back-to-back writes, randomized accesses, re-reset | Reads match writes, x0 constant | 154 |
 | wb_mux | ALU, MEM, PC+4 paths; kill gating; x0/x31 writes | Selected data routed; gating works | 8 |
 
+> **Limitation:** Load and store support is restricted to word-aligned operations. Byte and half-word accesses, along with any sign-extension logic, are not implemented.
+
 ### Testing Notes
 Results reflect these simulation-only tests; hardware performance and
 long-duration behavior still need evaluation.
@@ -241,7 +243,7 @@ The repository provides a complete, simulation-ready RISC-V core with comprehens
 - Integrate a cache or memory hierarchy for realistic performance evaluation.
 
 ## 18. Conclusion
-This project delivers a clean, modular foundation for RISC-V CPU exploration. The codebase’s structure, documentation, and automated tooling—now including mandatory Vivado flows—make it suitable for both educational purposes and further research or development.
+This project delivers a clean, modular foundation for RISC-V CPU exploration. The codebase’s structure, documentation, and automated tooling—now including mandatory Vivado flows—make it suitable for both educational purposes and further research or development. However, load/store capability is limited to word-aligned operations; byte and half-word accesses with sign-extension are not yet supported, so the core should be regarded as a partial RV32I implementation.
 
 ## 19. Appendices
 
