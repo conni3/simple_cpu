@@ -30,3 +30,5 @@
 
 ## Behavior
 Implements a simple 32‑bit data memory with synchronous writes and combinational reads controlled by `we`/`re`.
+
+> **Note:** Only word-aligned load and store operations are supported. Byte or half‑word accesses and their accompanying sign‑extension logic are not implemented.
