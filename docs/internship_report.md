@@ -77,14 +77,10 @@ As a hardware design intern on the Simple CPU project:
 
 ## 5. Simulation & Debug Process
 
-Typical workflow when issues surfaced began by recreating the failure with `make` to run both Icarus and Vivado simulations, then inspecting waveforms in GTKWave or XSIM to compare expected versus observed behavior. Iterative passes then:
-
-- created and tested glue modules,
-- handled design-choice incompatibilities,
-- refactored leaf modules for consistency, and
-- rewrote testbenches after refactors.
-
-Waveform snapshots (expected vs. observed) were annotated to document each fix, and the cycle repeated from leaf modules to the integrated datapath and finally the full CPU.
+The project's end-to-end simulation flow is consolidated in
+[Section&nbsp;14](#14-testing--verification). That section outlines how
+`make` drives Icarus and Vivado runs, waveform inspection, and the
+iterative debug cycle used throughout development.
 
 ## 6. Validation
 
@@ -182,22 +178,17 @@ A complete inventory of modules and their interfaces is documented for quick ref
 - Memory files (`src/instr_mem.mem`, `src/data_mem.mem`) enable preloaded programs and data.  
 
 ## 14. Testing & Verification
-- Each module has an associated testbench (`tb/<module>_tb.v`), automatically discovered by the Makefile.  
-- Running `make` performs lint, build, simulation, waveform dumping, **and Vivado simulation** for all testbenches.
+
+This section consolidates the simulation workflow, verification results, and Vivado report highlights.
+
+### Simulation Workflow
+- Each module has an associated testbench (`tb/<module>_tb.v`) automatically discovered by the Makefile.
+- Running `make` performs lint, build, simulation, waveform dumping, and Vivado simulation for all testbenches.
 - Schematic rendering (`make schem`) visualizes module structure, aiding design reviews.
+Typical debug passes began by recreating failures with `make`, inspecting waveforms in GTKWave or XSIM, and iterating on modules and testbenches.
 
-Recent Vivado reports provide a snapshot of the current design health. A DRC warning indicates the PS7 block is required for the target device. Timing analysis notes 2,080 register/latch pins without clocks, 11,328 unconstrained internal endpoints, and missing delay specifications on one input and 35 outputs. Power is estimated at 3.618 W (3.453 W dynamic and 0.165 W static), and resource utilization reaches 2,439 slice LUTs (13.86 %) and 1,056 registers (3.00 %). No formal coverage metrics are captured; testing remains limited to the RV32I subset exercised by existing programs. See the appendices or `logs/` folder for full report details.
-
-
-### Simulation Testing
-Testing was performed on a local workstation using Icarus Verilog, with
-spot checks run in Vivado's XSIM to ensure compatibility with the AMD
-toolflow. Module-level testbenches executed successfully and waveforms
-were reviewed for key components. Hardware FPGA runs were not possible
-due to limited board access and internship time, so full-system
-integration tests remain outstanding.
-
-### Testing and ISA Coverage
+### Verification Results
+Testing was performed on a local workstation using Icarus Verilog with spot checks in Vivado's XSIM to ensure compatibility with the AMD toolflow. Module-level testbenches executed successfully and waveforms were reviewed for key components. Hardware FPGA runs were not possible due to limited board access and internship time, so full-system integration tests remain outstanding.
 
 | Module | Tests (what instructions) | Expected behavior | Total number of tests |
 | --- | --- | --- | --- |
@@ -220,20 +211,16 @@ integration tests remain outstanding.
 | regfile | Reset, sequential writes, back-to-back writes, randomized accesses, re-reset | Reads match writes, x0 constant | 154 |
 | wb_mux | ALU, MEM, PC+4 paths; kill gating; x0/x31 writes | Selected data routed; gating works | 8 |
 
-### Assembly Test Programs
-- `branches.S` – exercises conditional branches (`beq`, `bne`, `blt`, `bltu`, `bge`, `bgeu`) to check the branch comparator and next-PC logic.
-- `i_alu.S` – covers immediate arithmetic and logic (`addi`, `xori`, `ori`, `andi`) plus shifts and comparisons (`slli`, `srli`, `srai`, `slti`, `sltiu`).
-- `r_alu.S` – verifies register-to-register ALU operations such as add/sub, bitwise ops, shifts (`sll`, `srl`, `sra`), and set-less-than variants.
-- `mem_rw.S` – validates word-aligned memory accesses by storing then loading a pattern using `lui`, `sw`, and `lw` instructions.
-- `jumps.S` – checks PC-relative jumps and links via `auipc`, `jal`, and register-indirect `jalr`.
-- `x0_guard.S` – confirms writes to `x0` are ignored and that the zero register can be used safely in comparisons.
+Results reflect these simulation-only tests; hardware performance and long-duration behavior still need evaluation.
 
-See [tests/README.md](../tests/README.md) for instructions on regenerating the assembly programs and their `.mem` files.
->  **Limitation:** Load and store support is restricted to word-aligned operations. Byte and half-word accesses, along with any sign-extension logic, are not implemented.
-
-### Testing Notes
-Results reflect these simulation-only tests; hardware performance and
-long-duration behavior still need evaluation.
+### Vivado Report Highlights
+Vivado-generated synthesis, timing, power, and rule-check reports for the `cpu` design reside in `logs/`. Key points include:
+- Clock reports show the top-level `clk` is unconstrained, leaving 2,080 endpoints without timing analysis.
+- A design rule check warns about a missing PS7 block (`ZPS7-1`).
+- Methodology analysis flags 1,000 non-clocked sequential cells and extensive use of distributed RAM.
+- Power analysis estimates total on-chip power of 3.618 W (3.453 W dynamic and 0.165 W static).
+- Timing summary lists thousands of unconstrained internal endpoints and undefined I/O delays.
+- Utilization reports 2,439 slice LUTs (13.86 %) and 1,056 registers (3.00 %).
 
 > **Figure 8:** _Waveform Example_
 > ![Waveform Placeholder](path/to/waveform_example.png)
@@ -268,29 +255,8 @@ This project delivers a clean, modular foundation for RISC-V CPU exploration. Th
 - **Repository Tree**: top-level project structure for quick orientation.
 
 ## 20. Vivado Reports
-The `logs/` directory contains Vivado-generated synthesis, timing, power, and rule-check reports for the `cpu` design. Key highlights include:
 
-- Clock reports show the top-level `clk` is unconstrained, leaving 2,080 endpoints without timing analysis.
-- A design rule check warns about a missing PS7 block (`ZPS7-1`).
-- Methodology analysis flags 1,000 non-clocked sequential cells and extensive use of distributed RAM.
-- Power analysis estimates total on-chip power of 3.618 W with the program counter consuming the largest share.
-- Timing summary lists thousands of unconstrained internal endpoints and undefined I/O delays.
-- Utilization reports 2,439 slice LUTs and 1,056 slice registers in use.
-
-These reports guide next steps such as adding clock constraints, resolving DRC warnings, and optimizing resource usage.
-
-### Testing
-Testing was performed on a local workstation using Icarus Verilog, with
-spot checks run in Vivado's XSIM to ensure compatibility with the AMD
-toolflow. Module-level testbenches executed successfully and waveforms
-were reviewed for key components. Hardware FPGA runs were not possible
-due to limited board access and internship time, so full-system
-integration tests remain outstanding.
-
-### Notes
-Results reflect these simulation-only tests; hardware performance and
-long-duration behavior still need evaluation.
-
+See [Section&nbsp;14](#14-testing--verification) for an overview of the latest Vivado synthesis, timing, and power findings. The `logs/` directory retains the full reports for detailed review.
 
 ## 21. Appendix: Module Overview
 
