@@ -220,7 +220,16 @@ integration tests remain outstanding.
 | regfile | Reset, sequential writes, back-to-back writes, randomized accesses, re-reset | Reads match writes, x0 constant | 154 |
 | wb_mux | ALU, MEM, PC+4 paths; kill gating; x0/x31 writes | Selected data routed; gating works | 8 |
 
-> **Limitation:** Load and store support is restricted to word-aligned operations. Byte and half-word accesses, along with any sign-extension logic, are not implemented.
+### Assembly Test Programs
+- `branches.S` – exercises conditional branches (`beq`, `bne`, `blt`, `bltu`, `bge`, `bgeu`) to check the branch comparator and next-PC logic.
+- `i_alu.S` – covers immediate arithmetic and logic (`addi`, `xori`, `ori`, `andi`) plus shifts and comparisons (`slli`, `srli`, `srai`, `slti`, `sltiu`).
+- `r_alu.S` – verifies register-to-register ALU operations such as add/sub, bitwise ops, shifts (`sll`, `srl`, `sra`), and set-less-than variants.
+- `mem_rw.S` – validates word-aligned memory accesses by storing then loading a pattern using `lui`, `sw`, and `lw` instructions.
+- `jumps.S` – checks PC-relative jumps and links via `auipc`, `jal`, and register-indirect `jalr`.
+- `x0_guard.S` – confirms writes to `x0` are ignored and that the zero register can be used safely in comparisons.
+
+See [tests/README.md](../tests/README.md) for instructions on regenerating the assembly programs and their `.mem` files.
+>  **Limitation:** Load and store support is restricted to word-aligned operations. Byte and half-word accesses, along with any sign-extension logic, are not implemented.
 
 ### Testing Notes
 Results reflect these simulation-only tests; hardware performance and
