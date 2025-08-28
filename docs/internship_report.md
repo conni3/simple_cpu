@@ -1,7 +1,7 @@
 # RISC-V CPU Design and Simulation – Internship Report
 
 ## Acknowledgments
-I extend my heartfelt thanks to my supervisors and mentors for their guidance and encouragement throughout this internship.
+I extend my sincere thanks to my supervisors and mentors for their guidance and encouragement throughout this internship.
 I am equally grateful to the host organization for providing the resources and supportive environment that made this work possible.
 Additional appreciation goes to colleagues, collaborators, and the institutions that offered technical assistance and shared tools that contributed to the success of this project.
 
@@ -130,11 +130,11 @@ Key Vivado metrics for the synthesized core:
 
 ## 10. Personal Reflections
 
-The internship accelerated my confidence in hardware design. Translating textbook knowledge into working modules and iterating through real tool flows taught me to reason about both logic and process, turning tentative skills into a dependable workflow.
+The internship increased my confidence in hardware design. Translating textbook knowledge into working modules and iterating through real tool flows taught me to reason about both logic and process, transforming tentative skills into a dependable workflow.
 
-The aspects I enjoyed most were the automation and cross-tool experimentation. Watching a single `make` invoke lint, synthesis, simulation, and waveform visualization made each change immediately tangible and kept motivation high as the CPU gradually came to life.
+The automation and cross-tool experimentation proved particularly instructive. The `make`-driven automation invoked linting, synthesis, simulation, and waveform visualization in a single step, providing immediate feedback as CPU functionality developed.
 
-Some challenges linger, particularly around deep timing analysis and hardware validation. I still grapple with interpreting extensive Vivado reports and wish I had more board time to observe how the design behaves under real constraints.
+Challenges remain, particularly in advanced timing analysis and hardware validation. Interpreting extensive Vivado reports and evaluating behavior under real constraints require further study and additional board time.
 
 ## 11. Reflection (Internship Specific)
 
