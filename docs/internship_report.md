@@ -235,10 +235,15 @@ long-duration behavior still need evaluation.
 The repository provides a complete, simulation-ready RISC-V core with comprehensive testbenches and an extensible build system. The modular design facilitates future enhancements, experimentation, and instructional use.
 
 ## 17. Future Work
-- Introduce pipelining to improve throughput.  
-- Add hazard detection and forwarding.  
-- Expand instruction coverage (e.g., system instructions, multiplication/division).  
+- Introduce pipelining to improve throughput.
+- Add hazard detection and forwarding.
+- Expand instruction coverage (e.g., system instructions, multiplication/division).
 - Integrate a cache or memory hierarchy for realistic performance evaluation.
+- Integrate formal verification using tools like SymbiYosys to prove key properties.
+- Incorporate code and functional coverage tools to measure test completeness.
+
+Formal proofs and coverage metrics reveal corner cases that simulation alone might miss, increasing confidence that the design
+behaves correctly under all conditions.
 
 ## 18. Conclusion
 This project delivers a clean, modular foundation for RISC-V CPU exploration. The codebase’s structure, documentation, and automated tooling—now including mandatory Vivado flows—make it suitable for both educational purposes and further research or development.
