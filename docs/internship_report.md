@@ -545,4 +545,5 @@ Selects between ALU result, memory data, or `pc_plus4` and gates writes to avoid
 2. *Icarus Verilog* and *GTKWave* documentation  
 3. *Xilinx Vivado Design Suite* user guides  
 4. *Yosys* and *netlistsvg* documentation
+5. David A. Patterson and John L. Hennessy, *Computer Organization and Design RISC-V Edition*
 
