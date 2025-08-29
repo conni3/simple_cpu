@@ -9,13 +9,10 @@ CFLAGS := -march=rv32i -mabi=ilp32 -nostdlib -nostartfiles -Wl,-Tcommon.ld -stat
           -DSTATUS_ADDR=$(STATUS_ADDR) -DSTATUS_PASS=$(STATUS_PASS)
 ASM    := r_alu.S i_alu.S branches.S jumps.S mem_rw.S x0_guard.S
 
-# rule: .S -> .elf -> .mem (32b words)
 all: $(ASM:.S=.mem)
 
 %.elf: %.S common.ld PASS_INC.S
 	$(CC) $(CFLAGS) -o $@ $<
-
-# Convert ELF to raw binary then dump as 32-bit little-endian words
 
 %.mem: %.elf
 	$(OBJC) -O binary $< $*.bin

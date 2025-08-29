@@ -1,31 +1,31 @@
     .section .text
     .globl _start
-#include "PASS_INC.S"
+
 _start:
     addi x1, x0, 10
     addi x2, x0, 10
     addi x3, x0, -1
     addi x4, x0, 1
 
-    beq  x1, x2, 1f      # taken
-    addi x0, x0, 1       # must be skipped
+    beq  x1, x2, 1f      
+    addi x0, x0, 1       
 1:
-    bne  x1, x2, 2f      # not taken
-    addi x5, x0, 111     # executed
+    bne  x1, x2, 2f      
+    addi x5, x0, 111     
 2:
-    blt  x3, x4, 3f      # -1 < 1 => taken
+    blt  x3, x4, 3f      
     addi x0, x0, 1
 3:
-    bltu x3, x4, 4f      # unsigned: (0xFFFF_FFFF) < 1 ? no => not taken
-    addi x6, x0, 222     # executed
+    bltu x3, x4, 4f      
+    addi x6, x0, 222     
 4:
-    bge  x1, x2, 5f      # 10 >= 10 => taken
+    bge  x1, x2, 5f      
     addi x0, x0, 1
 5:
-    bgeu x4, x3, 6f      # unsigned: 1 >= 0xFFFF_FFFF => yes, taken
+    bgeu x4, x3, 6f      
     addi x0, x0, 1
 6:
-    # PASS
+    
     li   t0, STATUS_PASS
     sw   t0, STATUS_ADDR(x0)
 1:  jal  x0, 0
