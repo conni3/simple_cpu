@@ -1,14 +1,54 @@
 # RISC-V CPU Design and Simulation – Internship Report
 
-## 1. Introduction  
+## Acknowledgments
+I extend my sincere thanks to my supervisors and mentors for their guidance and encouragement throughout this internship.
+I am equally grateful to the host organization for providing the resources and supportive environment that made this work possible.
+Additional appreciation goes to colleagues, collaborators, and the institutions that offered technical assistance and shared tools that contributed to the success of this project.
+
+## Abstract
+This report documents the design and simulation of a modular, single-cycle RISC-V CPU core. It outlines project objectives, tools and environment, methodology, verification strategies, and key results achieved.
+
+## Table of Contents
+
+1. Introduction ............................................. 1
+2. Objectives ............................................... 1
+3. Tools & Environment ...................................... 2
+4. Methodology .............................................. 2
+5. Simulation & Debug Process ............................... 2
+6. Validation ............................................... 2
+7. Comparison & Benchmarking ............................... 3
+8. Limitations .............................................. 3
+9. Learning Outcomes ........................................ 3
+10. Personal Reflections .................................... 4
+11. Reflection (Internship Specific) ........................ 4
+12. System Architecture ..................................... 4
+13. Implementation Highlights .............................. 5
+14. Testing & Verification ................................. 5
+15. Challenges & Mitigations ............................... 6
+16. Results ................................................ 6
+17. Future Work ............................................ 6
+18. Conclusion ............................................. 6
+19. Appendices ............................................. 6
+20. Vivado Reports ......................................... 7
+21. Appendix: Module Overview .............................. 7
+22. References ............................................ 14
+
+## 1. Introduction
 This project implements a modular, single-cycle RISC-V CPU core written in Verilog. The repository includes reusable building blocks, control logic, a streamlined Makefile-driven flow, and testbenches for simulation.
 
-> **Figure 1:** _Overall CPU Block Diagram_  
+> **Figure 1:** _Overall CPU Block Diagram_
 > ![CPU Block Diagram Placeholder](path/to/overall_cpu_block_diagram.png)
 
-## 2. Objectives  
-- Develop a fully functional single-cycle CPU that executes a subset of the RISC-V ISA.  
-- Provide self-contained Verilog modules for instruction decoding, control, execution, memory access, and write-back.  
+### Role and Contributions
+
+As a hardware design intern on the Simple CPU project:
+
+- **Daily tasks**: implementing Verilog modules, writing testbenches, running simulations, reviewing waveforms, and refining the Makefile workflow.
+- **Key contributions**: developed the ALU and branch comparator blocks, integrated schematic generation into the build flow, and improved testbench coverage.
+
+## 2. Objectives
+- Develop a fully functional single-cycle CPU that executes a subset of the RISC-V ISA.
+- Provide self-contained Verilog modules for instruction decoding, control, execution, memory access, and write-back.
 - Automate linting, simulation, waveform generation, and schematic rendering using a unified `make` workflow that includes both Icarus Verilog and Vivado flows.
 
 ## 3. Tools & Environment  
@@ -37,14 +77,10 @@ This project implements a modular, single-cycle RISC-V CPU core written in Veril
 
 ## 5. Simulation & Debug Process
 
-Typical workflow when issues surfaced began by recreating the failure with `make` to run both Icarus and Vivado simulations, then inspecting waveforms in GTKWave or XSIM to compare expected versus observed behavior. Iterative passes then:
-
-- created and tested glue modules,
-- handled design-choice incompatibilities,
-- refactored leaf modules for consistency, and
-- rewrote testbenches after refactors.
-
-Waveform snapshots (expected vs. observed) were annotated to document each fix, and the cycle repeated from leaf modules to the integrated datapath and finally the full CPU.
+The project's end-to-end simulation flow is consolidated in
+[Section&nbsp;14](#14-testing--verification). That section outlines how
+`make` drives Icarus and Vivado runs, waveform inspection, and the
+iterative debug cycle used throughout development.
 
 ## 6. Validation
 
@@ -94,11 +130,11 @@ Key Vivado metrics for the synthesized core:
 
 ## 10. Personal Reflections
 
-The internship accelerated my confidence in hardware design. Translating textbook knowledge into working modules and iterating through real tool flows taught me to reason about both logic and process, turning tentative skills into a dependable workflow.
+The internship increased my confidence in hardware design. Translating textbook knowledge into working modules and iterating through real tool flows taught me to reason about both logic and process, transforming tentative skills into a dependable workflow.
 
-The aspects I enjoyed most were the automation and cross-tool experimentation. Watching a single `make` invoke lint, synthesis, simulation, and waveform visualization made each change immediately tangible and kept motivation high as the CPU gradually came to life.
+The automation and cross-tool experimentation proved particularly instructive. The `make`-driven automation invoked linting, synthesis, simulation, and waveform visualization in a single step, providing immediate feedback as CPU functionality developed.
 
-Some challenges linger, particularly around deep timing analysis and hardware validation. I still grapple with interpreting extensive Vivado reports and wish I had more board time to observe how the design behaves under real constraints.
+Challenges remain, particularly in advanced timing analysis and hardware validation. Interpreting extensive Vivado reports and evaluating behavior under real constraints require further study and additional board time.
 
 ## 11. Reflection (Internship Specific)
 
@@ -142,22 +178,17 @@ A complete inventory of modules and their interfaces is documented for quick ref
 - Memory files (`src/instr_mem.mem`, `src/data_mem.mem`) enable preloaded programs and data.  
 
 ## 14. Testing & Verification
-- Each module has an associated testbench (`tb/<module>_tb.v`), automatically discovered by the Makefile.  
-- Running `make` performs lint, build, simulation, waveform dumping, **and Vivado simulation** for all testbenches.
+
+This section consolidates the simulation workflow, verification results, and Vivado report highlights.
+
+### Simulation Workflow
+- Each module has an associated testbench (`tb/<module>_tb.v`) automatically discovered by the Makefile.
+- Running `make` performs lint, build, simulation, waveform dumping, and Vivado simulation for all testbenches.
 - Schematic rendering (`make schem`) visualizes module structure, aiding design reviews.
+Typical debug passes began by recreating failures with `make`, inspecting waveforms in GTKWave or XSIM, and iterating on modules and testbenches.
 
-Recent Vivado reports provide a snapshot of the current design health. A DRC warning indicates the PS7 block is required for the target device. Timing analysis notes 2,080 register/latch pins without clocks, 11,328 unconstrained internal endpoints, and missing delay specifications on one input and 35 outputs. Power is estimated at 3.618 W (3.453 W dynamic and 0.165 W static), and resource utilization reaches 2,439 slice LUTs (13.86 %) and 1,056 registers (3.00 %). No formal coverage metrics are captured; testing remains limited to the RV32I subset exercised by existing programs. See the appendices or `logs/` folder for full report details.
-
-
-### Simulation Testing
-Testing was performed on a local workstation using Icarus Verilog, with
-spot checks run in Vivado's XSIM to ensure compatibility with the AMD
-toolflow. Module-level testbenches executed successfully and waveforms
-were reviewed for key components. Hardware FPGA runs were not possible
-due to limited board access and internship time, so full-system
-integration tests remain outstanding.
-
-### Testing and ISA Coverage
+### Verification Results
+Testing was performed on a local workstation using Icarus Verilog with spot checks in Vivado's XSIM to ensure compatibility with the AMD toolflow. Module-level testbenches executed successfully and waveforms were reviewed for key components. Hardware FPGA runs were not possible due to limited board access and internship time, so full-system integration tests remain outstanding.
 
 | Module | Tests (what instructions) | Expected behavior | Total number of tests |
 | --- | --- | --- | --- |
@@ -180,9 +211,16 @@ integration tests remain outstanding.
 | regfile | Reset, sequential writes, back-to-back writes, randomized accesses, re-reset | Reads match writes, x0 constant | 154 |
 | wb_mux | ALU, MEM, PC+4 paths; kill gating; x0/x31 writes | Selected data routed; gating works | 8 |
 
-### Testing Notes
-Results reflect these simulation-only tests; hardware performance and
-long-duration behavior still need evaluation.
+Results reflect these simulation-only tests; hardware performance and long-duration behavior still need evaluation.
+
+### Vivado Report Highlights
+Vivado-generated synthesis, timing, power, and rule-check reports for the `cpu` design reside in `logs/`. Key points include:
+- Clock reports show the top-level `clk` is unconstrained, leaving 2,080 endpoints without timing analysis.
+- A design rule check warns about a missing PS7 block (`ZPS7-1`).
+- Methodology analysis flags 1,000 non-clocked sequential cells and extensive use of distributed RAM.
+- Power analysis estimates total on-chip power of 3.618 W (3.453 W dynamic and 0.165 W static).
+- Timing summary lists thousands of unconstrained internal endpoints and undefined I/O delays.
+- Utilization reports 2,439 slice LUTs (13.86 %) and 1,056 registers (3.00 %).
 
 > **Figure 8:** _Waveform Example_
 > ![Waveform Placeholder](path/to/waveform_example.png)
@@ -195,13 +233,18 @@ long-duration behavior still need evaluation.
 The repository provides a complete, simulation-ready RISC-V core with comprehensive testbenches and an extensible build system. The modular design facilitates future enhancements, experimentation, and instructional use.
 
 ## 17. Future Work
-- Introduce pipelining to improve throughput.  
-- Add hazard detection and forwarding.  
-- Expand instruction coverage (e.g., system instructions, multiplication/division).  
+- Introduce pipelining to improve throughput.
+- Add hazard detection and forwarding.
+- Expand instruction coverage (e.g., system instructions, multiplication/division).
 - Integrate a cache or memory hierarchy for realistic performance evaluation.
+- Integrate formal verification using tools like SymbiYosys to prove key properties.
+- Incorporate code and functional coverage tools to measure test completeness.
+
+Formal proofs and coverage metrics reveal corner cases that simulation alone might miss, increasing confidence that the design
+behaves correctly under all conditions.
 
 ## 18. Conclusion
-This project delivers a clean, modular foundation for RISC-V CPU exploration. The codebase’s structure, documentation, and automated tooling—now including mandatory Vivado flows—make it suitable for both educational purposes and further research or development.
+This project delivers a clean, modular foundation for RISC-V CPU exploration. The codebase’s structure, documentation, and automated tooling—now including mandatory Vivado flows—make it suitable for both educational purposes and further research or development. However, load/store capability is limited to word-aligned operations; byte and half-word accesses with sign-extension are not yet supported, so the core should be regarded as a partial RV32I implementation.
 
 ## 19. Appendices
 
@@ -212,29 +255,8 @@ This project delivers a clean, modular foundation for RISC-V CPU exploration. Th
 - **Repository Tree**: top-level project structure for quick orientation.
 
 ## 20. Vivado Reports
-The `logs/` directory contains Vivado-generated synthesis, timing, power, and rule-check reports for the `cpu` design. Key highlights include:
 
-- Clock reports show the top-level `clk` is unconstrained, leaving 2,080 endpoints without timing analysis.
-- A design rule check warns about a missing PS7 block (`ZPS7-1`).
-- Methodology analysis flags 1,000 non-clocked sequential cells and extensive use of distributed RAM.
-- Power analysis estimates total on-chip power of 3.618 W with the program counter consuming the largest share.
-- Timing summary lists thousands of unconstrained internal endpoints and undefined I/O delays.
-- Utilization reports 2,439 slice LUTs and 1,056 slice registers in use.
-
-These reports guide next steps such as adding clock constraints, resolving DRC warnings, and optimizing resource usage.
-
-### Testing
-Testing was performed on a local workstation using Icarus Verilog, with
-spot checks run in Vivado's XSIM to ensure compatibility with the AMD
-toolflow. Module-level testbenches executed successfully and waveforms
-were reviewed for key components. Hardware FPGA runs were not possible
-due to limited board access and internship time, so full-system
-integration tests remain outstanding.
-
-### Notes
-Results reflect these simulation-only tests; hardware performance and
-long-duration behavior still need evaluation.
-
+See [Section&nbsp;14](#14-testing--verification) for an overview of the latest Vivado synthesis, timing, and power findings. The `logs/` directory retains the full reports for detailed review.
 
 ## 21. Appendix: Module Overview
 
@@ -505,4 +527,5 @@ Selects between ALU result, memory data, or `pc_plus4` and gates writes to avoid
 2. *Icarus Verilog* and *GTKWave* documentation  
 3. *Xilinx Vivado Design Suite* user guides  
 4. *Yosys* and *netlistsvg* documentation
+5. David A. Patterson and John L. Hennessy, *Computer Organization and Design RISC-V Edition*
 

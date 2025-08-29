@@ -1,16 +1,12 @@
 `timescale 1ns / 1ps
 `include "defines.vh"
-// `defines.vh` can hold WB encodings if you prefer
 
 module decoder_glue #(
     parameter DATA_WIDTH = 32
 ) (
     input wire [31:0] instr,
 
-    // immediates
     output wire [DATA_WIDTH-1:0] imm_out,
-
-    // controls to datapath
     output wire       reg_write,
     output wire       mem_read,
     output wire       mem_write,
@@ -23,7 +19,6 @@ module decoder_glue #(
     output wire [1:0] alu_op,
     output wire [2:0] imm_sel,
 
-    // optional: for next_pc/traps/etc.
     output wire is_jal,
     output wire is_jalr,
     output wire is_branch,
@@ -37,12 +32,10 @@ module decoder_glue #(
 
 );
 
-  // -------- slicer --------
   wire [4:0] rd = instr[11:7];
   wire [4:0] rs1 = instr[19:15];
   wire [4:0] rs2 = instr[24:20];
 
-  // -------- coarse decode --------
   decoder #(
       .DATA_WIDTH(DATA_WIDTH)
   ) u_dec (
@@ -60,7 +53,6 @@ module decoder_glue #(
       .is_system (is_system)
   );
 
-  // -------- main control --------
   control #(
       .DATA_WIDTH(DATA_WIDTH)
   ) u_ctl (
@@ -87,7 +79,6 @@ module decoder_glue #(
       .op1_sel   (op1_sel)
   );
 
-  // -------- immediate gen --------
   imm_gen u_imm (
       .instr  (instr),
       .imm_sel(imm_sel),  // `Imm_I/S/B/U/J` from defines.vh
