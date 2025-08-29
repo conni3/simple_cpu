@@ -2,18 +2,11 @@
 `include "defines.vh"
 
 module datapath_tb;
-
-
-
-
   reg clk = 1'b0;
   reg reset = 1'b1;
   always #5 clk = ~clk;
   reg  [31:0] pc_before;
   reg  [31:0] pc_after;
-
-
-
 
   reg  [ 6:0] opcode;
   reg  [ 4:0] rd;
@@ -36,13 +29,7 @@ module datapath_tb;
   reg         is_jal;
   reg         is_jalr;
 
-
-
-
   wire [31:0] instr;
-
-
-
 
   datapath uut (
       .clk  (clk),
